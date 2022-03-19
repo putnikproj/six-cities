@@ -1,7 +1,11 @@
 import Main from '../main/main';
 
-function App(): JSX.Element {
-  return <Main />;
+type AppProps = {
+  placesAmount: number,
+};
+
+function App({ placesAmount }: AppProps): JSX.Element {
+  return <Main placesAmount={placesAmount} />;
 }
 
 export default App;
