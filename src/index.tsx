@@ -1,10 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
-
-const Settings = {
-  PLACES_AMOUNT: 312,
-};
+import { Settings } from './const';
 
 ReactDOM.render(
   <React.StrictMode>
