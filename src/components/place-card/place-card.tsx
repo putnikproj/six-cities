@@ -7,6 +7,8 @@ type PlaceCardProps = {
 }
 
 function PlaceCard({ offer }: PlaceCardProps): JSX.Element {
+  const rating = Math.round(offer.rating);
+
   return (
     <article className="cities__place-card place-card">
       {offer.isPremium
@@ -23,7 +25,13 @@ function PlaceCard({ offer }: PlaceCardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button button" type="button">
+          <button
+            className={
+              'place-card__bookmark-button button'
+                .concat(offer.isFavorite ? ' place-card__bookmark-button--active' : '')
+            }
+            type="button"
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
@@ -32,7 +40,7 @@ function PlaceCard({ offer }: PlaceCardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: '80%'}}></span>
+            <span style={{width: `${0 + rating * 20}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

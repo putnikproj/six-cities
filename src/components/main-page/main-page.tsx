@@ -1,11 +1,13 @@
-import PlaceCard from '../place-card/place-card';
+import PlaceList from '../place-list/place-list';
 import Header from '../header/header';
+import { Offers } from '../../types/offer';
 
 type mainProps = {
   placesAmount: number,
+  offers: Offers,
 };
 
-function MainPage({ placesAmount }: mainProps): JSX.Element {
+function MainPage({ placesAmount, offers }: mainProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Header />
@@ -68,13 +70,7 @@ function MainPage({ placesAmount }: mainProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                <PlaceCard />
-                <PlaceCard />
-                <PlaceCard />
-                <PlaceCard />
-                <PlaceCard />
-              </div>
+              <PlaceList offers={offers} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
