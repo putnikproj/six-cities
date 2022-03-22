@@ -1,6 +1,7 @@
+import { Offers } from '../../types/offer';
+
 import CitiesPlaceList from '../cities-place-list/cities-place-list';
 import Header from '../header/header';
-import { Offers } from '../../types/offer';
 
 type mainProps = {
   placesAmount: number,

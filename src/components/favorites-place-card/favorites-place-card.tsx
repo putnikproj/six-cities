@@ -8,7 +8,7 @@ type FavoritesPlaceCardProps = {
   offer: Offer,
 };
 
-function FavoritesPlaceCard({ offer }: FavoritesPlaceCardProps) {
+function FavoritesPlaceCard({ offer }: FavoritesPlaceCardProps): JSX.Element {
   return (
     <article className="favorites__card place-card">
       <div className="favorites__image-wrapper place-card__image-wrapper">

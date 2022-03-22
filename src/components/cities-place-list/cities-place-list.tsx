@@ -1,5 +1,6 @@
 // import { useState } from 'react';
 import { Offers } from '../../types/offer';
+
 import CitiesPlaceCard from '../cities-place-card/cities-place-card';
 
 type PlaceListProps = {
