@@ -1,4 +1,4 @@
-import PlaceList from '../place-list/place-list';
+import CitiesPlaceList from '../cities-place-list/cities-place-list';
 import Header from '../header/header';
 import { Offers } from '../../types/offer';
 
@@ -70,7 +70,7 @@ function MainPage({ placesAmount, offers }: mainProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <PlaceList offers={offers} />
+              <CitiesPlaceList offers={offers} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>

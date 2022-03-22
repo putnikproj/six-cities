@@ -5,7 +5,7 @@ export const AppRoute = {
   OFFER: '/offer',
 } as const;
 
-export const IS_AUTH = false;
+export const IS_AUTH = true;
 
 export const Settings = {
   PLACES_AMOUNT: 312,

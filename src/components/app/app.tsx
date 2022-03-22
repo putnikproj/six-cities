@@ -21,7 +21,7 @@ function App({ placesAmount, offers }: AppProps): JSX.Element {
         <Route path={AppRoute.ROOT} element={<MainPage offers={offers} placesAmount={placesAmount} />} />
         <Route path={AppRoute.LOGIN} element={<LoginPage />} />
         <Route path={AppRoute.FAVORITES} element={
-          <PrivateRoute isAuth={IS_AUTH} element={<FavoritesPage />} />
+          <PrivateRoute isAuth={IS_AUTH} element={<FavoritesPage offers={offers} />} />
         }
         />
         <Route path={AppRoute.OFFER} element={<OfferPage />} />
