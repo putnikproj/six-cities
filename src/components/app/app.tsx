@@ -1,6 +1,7 @@
 import { AppRoute, IS_AUTH } from '../../const';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import PrivateRoute from '../private-route/private-route';
+import { Offers } from '../../types/offer';
 
 import MainPage from '../main-page/main-page';
 import LoginPage from '../login-page/login-page';
@@ -10,9 +11,10 @@ import NotFoundPage from '../not-found-page/not-found-page';
 
 type AppProps = {
   placesAmount: number,
+  offers: Offers
 };
 
-function App({ placesAmount }: AppProps): JSX.Element {
+function App({ placesAmount, offers }: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
