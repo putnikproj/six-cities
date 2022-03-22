@@ -1,6 +1,7 @@
 import { Offers } from '../../types/offer';
 
 import Header from '../header/header';
+import Footer from '../footer/footer';
 import FavoritesPlaceList from '../favorites-place-list/favorites-place-list';
 
 type FavoritesPageProps = {
@@ -20,6 +21,8 @@ function FavoritesPage({ offers }: FavoritesPageProps): JSX.Element {
           </section>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }
