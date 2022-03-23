@@ -37,7 +37,7 @@ function PlaceCard({ offer, className }: PlaceCardProps): JSX.Element {
         </div>
       </div>
       <h2 className="place-card__name">
-        <Link to={AppRoute.OFFER}>{offer.title}</Link>
+        <Link to={`${AppRoute.OFFER}/${offer.id}`}>{offer.title}</Link>
       </h2>
       <p className="place-card__type">{offer.type}</p>
     </div>

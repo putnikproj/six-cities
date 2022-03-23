@@ -12,7 +12,7 @@ function FavoritesPlaceCard({ offer }: FavoritesPlaceCardProps): JSX.Element {
   return (
     <article className="favorites__card place-card">
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <Link to={AppRoute.OFFER}>
+        <Link to={`${AppRoute.OFFER}/${offer.id}`}>
           <img className="place-card__image" src={offer.previewImage} width="150" height="110" alt="Place" />
         </Link>
       </div>

@@ -6,8 +6,10 @@ function NotFoundPage(): JSX.Element {
   return (
     <>
       <Header />
-      <h1>404. Page not found</h1>
-      <Link to={AppRoute.ROOT}>Go to main page</Link>
+      <div className="container">
+        <h1>404. Page not found</h1>
+        <Link to={AppRoute.ROOT}>Go to main page</Link>
+      </div>
     </>
   );
 }
