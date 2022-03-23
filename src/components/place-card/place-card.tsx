@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { Offer } from '../../types/offer';
+import { capitalizeFirstLetter } from '../../util';
 
 type PlaceCardProps = {
   offer: Offer,
@@ -39,7 +40,7 @@ function PlaceCard({ offer, className }: PlaceCardProps): JSX.Element {
       <h2 className="place-card__name">
         <Link to={`${AppRoute.OFFER}/${offer.id}`}>{offer.title}</Link>
       </h2>
-      <p className="place-card__type">{offer.type}</p>
+      <p className="place-card__type">{capitalizeFirstLetter(offer.type)}</p>
     </div>
   );
 }

@@ -14,13 +14,13 @@ export const offers: Offers = [
     description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
     goods: ['Heating', 'Kitchen', 'Cable TV', 'Washing machine', 'Coffee machine', 'Dishwasher'],
     host: {
-      avatarUrl: 'img/1.png',
+      avatarUrl: 'img/avatar-angelina.jpg',
       id: 3,
       isPro: true,
       name: 'Angelina',
     },
     id: 1,
-    images: ['img/1.png', 'img/2.png'],
+    images: ['img/room.jpg', 'img/apartment-01.jpg', 'img/apartment-02.jpg', 'img/apartment-02.jpg', 'img/room.jpg', 'img/room.jpg', 'img/room.jpg'],
     isFavorite: false,
     isPremium: false,
     location: {
