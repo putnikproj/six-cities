@@ -1,5 +1,26 @@
 import { ChangeEvent, useState } from 'react';
 
+// Star component
+type StarProps = {
+  value: number,
+  score: number,
+  title: string,
+  onChange: ({ target }: ChangeEvent<HTMLInputElement>) => void,
+};
+function Star({value, score, title, onChange}: StarProps) {
+  return (
+    <>
+      <input className="form__rating-input visually-hidden" name="rating" value={value} id={`${value}-stars`} type="radio" checked={score === value} onChange={onChange} />
+      <label htmlFor={`${value}-stars`} className="reviews__rating-label form__rating-label" title={title}>
+        <svg className="form__star-image" width="37" height="33">
+          <use xlinkHref="#icon-star"></use>
+        </svg>
+      </label>
+    </>
+  );
+}
+
+// Main component
 function AddReviewForm() {
   const [score, setScore] = useState(0);
   const [reviewText, setReviewText] = useState('');
@@ -12,34 +33,16 @@ function AddReviewForm() {
     setScore(Number(target.value));
   }
 
-  // Star component
-  type StarProps = {
-    value: number,
-    title: string,
-  }
-  function Star({value, title}: StarProps) {
-    return (
-      <>
-        <input className="form__rating-input visually-hidden" name="rating" value={value} id={`${value}-stars`} type="radio" checked={score === value} onChange={handleRadioButtonChange} />
-        <label htmlFor={`${value}-stars`} className="reviews__rating-label form__rating-label" title={title}>
-          <svg className="form__star-image" width="37" height="33">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
-      </>
-    );
-  }
-
   return (
     <form className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
 
       <div className="reviews__rating-form form__rating">
-        <Star value={5} title="perfect" />
-        <Star value={4} title="good" />
-        <Star value={3} title="not bad" />
-        <Star value={2} title="badly" />
-        <Star value={1} title="terribly" />
+        <Star value={5} score={score} title="perfect" onChange={handleRadioButtonChange} />
+        <Star value={4} score={score} title="good" onChange={handleRadioButtonChange} />
+        <Star value={3} score={score} title="not bad" onChange={handleRadioButtonChange} />
+        <Star value={2} score={score} title="badly" onChange={handleRadioButtonChange} />
+        <Star value={1} score={score} title="terribly" onChange={handleRadioButtonChange} />
       </div>
 
       <textarea
