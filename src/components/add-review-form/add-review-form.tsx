@@ -1,4 +1,4 @@
-import { ChangeEvent, Fragment, useState } from 'react';
+import { ChangeEvent, Fragment, useState, useEffect } from 'react';
 
 // Rating component
 type RatingProps = {
@@ -38,6 +38,18 @@ function Rating({score, onChange}: RatingProps) {
 function AddReviewForm() {
   const [score, setScore] = useState(0);
   const [reviewText, setReviewText] = useState('');
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+
+  // Effect that checks, should submit button be desabled or not
+  useEffect(() => {
+    const shouldSubmitBeEnabled = () => reviewText.length >= 50 && score !== 0;
+
+    if (shouldSubmitBeEnabled()) {
+      setIsSubmitDisabled(false);
+    } else {
+      setIsSubmitDisabled(true);
+    }
+  }, [reviewText.length, score]);
 
   function handleTextAreaChange({ target }: ChangeEvent<HTMLTextAreaElement>) {
     setReviewText(target.value);
@@ -67,7 +79,7 @@ function AddReviewForm() {
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled>Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={isSubmitDisabled}>Submit</button>
       </div>
 
     </form>
