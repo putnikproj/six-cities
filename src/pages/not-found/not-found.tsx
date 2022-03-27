@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import Header from '../header/header';
+import Header from '../../components/header/header';
 
-function NotFoundPage(): JSX.Element {
+function NotFound(): JSX.Element {
   return (
     <>
       <Header />
@@ -14,4 +14,4 @@ function NotFoundPage(): JSX.Element {
   );
 }
 
-export default NotFoundPage;
+export default NotFound;

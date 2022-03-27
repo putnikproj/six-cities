@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Offers } from '../../types/offer';
 
-import CitiesPlaceList from '../cities-place-list/cities-place-list';
-import Header from '../header/header';
+import CitiesPlaceList from '../../components/cities-place-list/cities-place-list';
+import Header from '../../components/header/header';
 
 function CitiesTabs() {
   const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
@@ -56,7 +56,7 @@ type mainProps = {
   offers: Offers,
 };
 
-function MainPage({ placesAmount, offers }: mainProps): JSX.Element {
+function Main({ placesAmount, offers }: mainProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Header />
@@ -81,4 +81,4 @@ function MainPage({ placesAmount, offers }: mainProps): JSX.Element {
   );
 }
 
-export default MainPage;
+export default Main;

@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import Header from '../header/header';
+import Header from '../../components/header/header';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -30,7 +30,7 @@ function LoginForm() {
   );
 }
 
-function LoginPage(): JSX.Element {
+function Login(): JSX.Element {
   return (
     <div className="page page--gray page--login">
       <Header />
@@ -57,4 +57,4 @@ function LoginPage(): JSX.Element {
   );
 }
 
-export default LoginPage;
+export default Login;

@@ -6,10 +6,10 @@ import { Review, Reviews } from '../../types/review';
 import { capitalizeFirstLetter } from '../../util';
 import { MAX_OFFER_IMAGES, MAX_OFFER_REVIEWS } from '../../const';
 
-import NotFoundPage from '../not-found-page/not-found-page';
-import AddReviewForm from '../add-review-form/add-review-form';
-import Header from '../header/header';
-import OfferPlaceList from '../offer-place-list/offer-place-list';
+import NotFound from '../not-found/not-found';
+import AddReviewForm from '../../components/add-review-form/add-review-form';
+import Header from '../../components/header/header';
+import OfferPlaceList from '../../components/offer-place-list/offer-place-list';
 
 function Gallery({ images }: { images: Offer['images'] }) {
   return (
@@ -178,7 +178,7 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
   const { id } = useParams();
   const offer = offers.find((elem) => elem.id === Number(id));
   if (!offer) {
-    return <NotFoundPage />;
+    return <NotFound />;
   }
 
   const rating = Math.round(offer.rating);

@@ -4,11 +4,11 @@ import PrivateRoute from '../private-route/private-route';
 import { Offers } from '../../types/offer';
 import { reviews } from '../../mocks/reviews';
 
-import MainPage from '../main-page/main-page';
-import LoginPage from '../login-page/login-page';
-import FavoritesPage from '../favorites-page/favorites-page';
-import OfferPage from '../offer-page/offer-page';
-import NotFoundPage from '../not-found-page/not-found-page';
+import Main from '../../pages/main/main';
+import Login from '../../pages/login/login';
+import Favorites from '../../pages/favorites/favorites';
+import Offer from '../../pages/offer/offer';
+import NotFound from '../../pages/not-found/not-found';
 
 type AppProps = {
   placesAmount: number,
@@ -19,14 +19,14 @@ function App({ placesAmount, offers }: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={AppRoute.ROOT} element={<MainPage offers={offers} placesAmount={placesAmount} />} />
-        <Route path={AppRoute.LOGIN} element={<LoginPage />} />
+        <Route path={AppRoute.ROOT} element={<Main offers={offers} placesAmount={placesAmount} />} />
+        <Route path={AppRoute.LOGIN} element={<Login />} />
         <Route path={AppRoute.FAVORITES} element={
-          <PrivateRoute isAuth={IS_AUTH} element={<FavoritesPage offers={offers} />} />
+          <PrivateRoute isAuth={IS_AUTH} element={<Favorites offers={offers} />} />
         }
         />
-        <Route path={`${AppRoute.OFFER}/:id`} element={<OfferPage offers={offers} reviews={reviews} />} />
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path={`${AppRoute.OFFER}/:id`} element={<Offer offers={offers} reviews={reviews} />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

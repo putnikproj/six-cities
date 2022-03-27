@@ -1,14 +1,14 @@
 import { Offers } from '../../types/offer';
 
-import Header from '../header/header';
-import Footer from '../footer/footer';
-import FavoritesPlaceList from '../favorites-place-list/favorites-place-list';
+import Header from '../../components/header/header';
+import Footer from '../../components/footer/footer';
+import FavoritesPlaceList from '../../components/favorites-place-list/favorites-place-list';
 
 type FavoritesPageProps = {
   offers: Offers,
 }
 
-function FavoritesPage({ offers }: FavoritesPageProps): JSX.Element {
+function Favorites({ offers }: FavoritesPageProps): JSX.Element {
   return (
     <div className="page">
       <Header />
@@ -27,4 +27,4 @@ function FavoritesPage({ offers }: FavoritesPageProps): JSX.Element {
   );
 }
 
-export default FavoritesPage;
+export default Favorites;
