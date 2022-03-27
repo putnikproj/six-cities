@@ -9,6 +9,8 @@ export const IS_AUTH = true;
 
 export const MAX_OFFER_IMAGES = 6;
 
+export const MAX_OFFER_REVIEWS = 10;
+
 export const Settings = {
   PLACES_AMOUNT: 312,
 };

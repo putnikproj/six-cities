@@ -2,6 +2,7 @@ import { AppRoute, IS_AUTH } from '../../const';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import PrivateRoute from '../private-route/private-route';
 import { Offers } from '../../types/offer';
+import { reviews } from '../../mocks/reviews';
 
 import MainPage from '../main-page/main-page';
 import LoginPage from '../login-page/login-page';
@@ -24,7 +25,7 @@ function App({ placesAmount, offers }: AppProps): JSX.Element {
           <PrivateRoute isAuth={IS_AUTH} element={<FavoritesPage offers={offers} />} />
         }
         />
-        <Route path={`${AppRoute.OFFER}/:id`} element={<OfferPage offers={offers} />} />
+        <Route path={`${AppRoute.OFFER}/:id`} element={<OfferPage offers={offers} reviews={reviews} />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

@@ -1,4 +1,4 @@
-import { Reviews } from '../types/offer';
+import { Reviews } from '../types/review';
 
 export const reviews: Reviews = [
   {
@@ -7,7 +7,7 @@ export const reviews: Reviews = [
     id: 1,
     rating: 4,
     user: {
-      avatarUrl: 'img/1.png',
+      avatarUrl: 'img/avatar-max.jpg',
       id: 4,
       isPro: false,
       name: 'Max',
@@ -19,7 +19,7 @@ export const reviews: Reviews = [
     id: 2,
     rating: 2,
     user: {
-      avatarUrl: 'img/2.png',
+      avatarUrl: 'img/avatar-max.jpg',
       id: 9,
       isPro: true,
       name: 'Maxim',
