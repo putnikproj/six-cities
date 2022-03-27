@@ -5,7 +5,21 @@ export const AppRoute = {
   OFFER: '/offer',
 } as const;
 
+export const PlaceCardType = {
+  MAIN: 'MAIN',
+  FAVORITES: 'FAVORITES',
+  OFFER: 'OFFER',
+} as const;
+
+export const PlaceCardPrefix = {
+  MAIN: 'cities',
+  FAVORITES: 'favorites',
+  OFFER: 'near-places',
+} as const;
+
 export const IS_AUTH = true;
+
+export const MAX_OFFER_NEAR_PLACES = 3;
 
 export const MAX_OFFER_IMAGES = 6;
 

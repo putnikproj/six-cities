@@ -1,7 +1,9 @@
-import { Offers } from '../../types/offer';
 import { Link } from 'react-router-dom';
+import { PlaceCardType } from '../../const';
 
-import FavoritesPlaceCard from '../favorites-place-card/favorites-place-card';
+import { Offers } from '../../types/offer';
+
+import PlaceCard from '../place-card/place-card';
 
 type FavoritesPlaceCardProps = {
   offers: Offers,
@@ -21,7 +23,7 @@ function FavoritesPlaceList({ offers }: FavoritesPlaceCardProps): JSX.Element {
       locationItems[offer.city.name] = [];
     }
 
-    locationItems[offer.city.name].push(<FavoritesPlaceCard key={offer.id} offer={offer} />);
+    locationItems[offer.city.name].push(<PlaceCard key={offer.id} offer={offer} type={PlaceCardType.FAVORITES} />);
   });
 
   return (
