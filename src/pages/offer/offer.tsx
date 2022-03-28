@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { Offer, Offers } from '../../types/offer';
+import { Offer, Offers, Host } from '../../types/offer';
 import { Review, Reviews } from '../../types/review';
 import { capitalizeFirstLetter } from '../../util';
 import { MAX_OFFER_IMAGES, MAX_OFFER_REVIEWS } from '../../const';
@@ -11,6 +11,8 @@ import AddReviewForm from '../../components/add-review-form/add-review-form';
 import Header from '../../components/header/header';
 import OfferPlaceList from '../../components/offer-place-list/offer-place-list';
 import Stars from '../../components/stars/stars';
+import BookmarkButton from '../../components/bookmark-button/bookmark-button';
+import PremiumLabel from '../../components/premium-label/premium-label';
 
 function Gallery({ images }: { images: Offer['images'] }) {
   return (
@@ -19,6 +21,7 @@ function Gallery({ images }: { images: Offer['images'] }) {
         {
           images.map((image, index) => (
             (index < MAX_OFFER_IMAGES) && (
+              // There I can use index as key, because this elem is static, it won't be changed
               // eslint-disable-next-line react/no-array-index-key
               <div key={index} className="property__image-wrapper">
                 <img className="property__image" src={image} alt="studio" />
@@ -34,29 +37,24 @@ function Gallery({ images }: { images: Offer['images'] }) {
 function OfferInformation({ offer }: { offer: Offer }) {
   return (
     <>
-      {/* Premium block */}
-      { offer.isPremium
-        ? <div className="property__mark"><span>Premium</span></div>
-        : null }
+      { offer.isPremium && <PremiumLabel classNames="property__mark" /> }
 
-      {/* Title and button to favorites */}
+      {/* Title and button bookmark button */}
       <div className="property__name-wrapper">
         <h1 className="property__name">
           { offer.title }
         </h1>
-        <button
-          className={classNames(
+        <BookmarkButton
+          containerClassNames={classNames(
             'property__bookmark-button',
             'button',
             { 'property__bookmark-button--active' : offer.isFavorite },
           )}
-          type="button"
-        >
-          <svg className="property__bookmark-icon" width="31" height="33">
-            <use xlinkHref="#icon-bookmark"></use>
-          </svg>
-          <span className="visually-hidden">To bookmarks</span>
-        </button>
+          imageClassNames="property__bookmark-icon"
+          isActive={offer.isFavorite}
+          width="31"
+          height="33"
+        />
       </div>
 
       {/* Rating */}
@@ -65,7 +63,7 @@ function OfferInformation({ offer }: { offer: Offer }) {
         <span className="property__rating-value rating__value">{offer.rating}</span>
       </div>
 
-      {/* Type, bedrooms, maxAdults block */}
+      {/* Type, bedrooms, maxAdults */}
       <ul className="property__features">
         <li className="property__feature property__feature--entire">
           { capitalizeFirstLetter(offer.type) }
@@ -99,27 +97,32 @@ function OfferInformation({ offer }: { offer: Offer }) {
   );
 }
 
-function MeetTheHost({ offer }: { offer: Offer }) {
+function MeetTheHost({ host, description }: { host: Host, description: Offer['description'] }) {
   return (
     <div className="property__host">
       <h2 className="property__host-title">Meet the host</h2>
+
+      {/* Avatar */}
       <div className="property__host-user user">
         <div
-          className={
-            'property__avatar-wrapper user__avatar-wrapper'
-              .concat(offer.host.isPro ? ' property__avatar-wrapper--pro' : '')
-          }
+          className={classNames(
+            'property__avatar-wrapper',
+            'user__avatar-wrapper',
+            { 'property__avatar-wrapper--pro': host.isPro },
+          )}
         >
-          <img className="property__avatar user__avatar" src={offer.host.avatarUrl} width="74" height="74" alt="Host avatar" />
+          <img className="property__avatar user__avatar" src={host.avatarUrl} width="74" height="74" alt="Host avatar" />
         </div>
         <span className="property__user-name">
-          { offer.host.name }
+          { host.name }
         </span>
-        { (offer.host.isPro) && <span className="property__user-status">Pro</span> }
+        { (host.isPro) && <span className="property__user-status">Pro</span> }
       </div>
+
+      {/* Description */}
       <div className="property__description">
         <p className="property__text">
-          { offer.description }
+          { description }
         </p>
       </div>
     </div>
@@ -129,6 +132,8 @@ function MeetTheHost({ offer }: { offer: Offer }) {
 function ReviewBlock({ review }: { review: Review }) {
   return (
     <li className="reviews__item">
+
+      {/* Avatar */}
       <div className="reviews__user user">
         <div className="reviews__avatar-wrapper user__avatar-wrapper">
           <img className="reviews__avatar user__avatar" src={review.user.avatarUrl} width="54" height="54" alt="Reviews avatar" />
@@ -137,16 +142,20 @@ function ReviewBlock({ review }: { review: Review }) {
           {review.user.name}
         </span>
       </div>
+
       <div className="reviews__info">
+
+        {/* Rating */}
         <div className="reviews__rating rating">
-          <div className="reviews__stars rating__stars">
-            <span style={{width: `${0 + review.rating * 20}%`}}></span>
-            <span className="visually-hidden">Rating</span>
-          </div>
+          <Stars containerClassNames="reviews__stars" rating={review.rating} />
         </div>
+
+        {/* Text */}
         <p className="reviews__text">
           {review.comment}
         </p>
+
+        {/* Time */}
         <time className="reviews__time" dateTime={review.date}>
           {new Date(review.date).toLocaleString('en-US', {month: 'long', year: 'numeric'})}
         </time>
@@ -175,6 +184,7 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
 
   const { id } = useParams();
   const offer = offers.find((elem) => elem.id === Number(id));
+
   if (!offer) {
     return <NotFound />;
   }
@@ -191,7 +201,7 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
             <div className="property__wrapper">
 
               <OfferInformation offer={offer} />
-              <MeetTheHost offer={offer} />
+              <MeetTheHost host={offer.host} description={offer.description} />
               <ReviewsBlock reviews={reviews} />
 
             </div>
