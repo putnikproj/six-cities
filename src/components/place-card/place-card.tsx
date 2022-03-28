@@ -5,6 +5,8 @@ import { AppRoute, PlaceCardPrefix, PlaceCardType } from '../../const';
 import { Offer } from '../../types/offer';
 import { capitalizeFirstLetter } from '../../util';
 
+import Stars from '../stars/stars';
+
 type Keys = keyof typeof PlaceCardType;
 type Values = typeof PlaceCardType[Keys];
 
@@ -14,7 +16,6 @@ type PlaceCardProps = {
 }
 
 function PlaceCard({ offer, type }: PlaceCardProps): JSX.Element {
-  const rating = Math.round(offer.rating);
   const isPremium = offer.isPremium && (type !== PlaceCardType.FAVORITES);
 
   const classNamePrefix = PlaceCardPrefix[type];
@@ -70,10 +71,7 @@ function PlaceCard({ offer, type }: PlaceCardProps): JSX.Element {
           </button>
         </div>
         <div className="place-card__rating rating">
-          <div className="place-card__stars rating__stars">
-            <span style={{width: `${0 + rating * 20}%`}}></span>
-            <span className="visually-hidden">Rating</span>
-          </div>
+          <Stars rating={offer.rating} containerClassNames={'place-card__stars'} />
         </div>
         <h2 className="place-card__name">
           <Link to={`${AppRoute.OFFER}/${offer.id}`}>{offer.title}</Link>

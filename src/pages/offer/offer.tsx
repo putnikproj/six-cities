@@ -10,6 +10,7 @@ import NotFound from '../not-found/not-found';
 import AddReviewForm from '../../components/add-review-form/add-review-form';
 import Header from '../../components/header/header';
 import OfferPlaceList from '../../components/offer-place-list/offer-place-list';
+import Stars from '../../components/stars/stars';
 
 function Gallery({ images }: { images: Offer['images'] }) {
   return (
@@ -30,7 +31,7 @@ function Gallery({ images }: { images: Offer['images'] }) {
   );
 }
 
-function OfferInformation({ offer, rating }: { offer: Offer, rating: number }) {
+function OfferInformation({ offer }: { offer: Offer }) {
   return (
     <>
       {/* Premium block */}
@@ -60,11 +61,8 @@ function OfferInformation({ offer, rating }: { offer: Offer, rating: number }) {
 
       {/* Rating */}
       <div className="property__rating rating">
-        <div className="property__stars rating__stars">
-          <span style={{width: `${0 + rating * 20}%`}}></span>
-          <span className="visually-hidden">Rating</span>
-        </div>
-        <span className="property__rating-value rating__value">4.8</span>
+        <Stars rating={offer.rating} containerClassNames={'property__stars'} />
+        <span className="property__rating-value rating__value">{offer.rating}</span>
       </div>
 
       {/* Type, bedrooms, maxAdults block */}
@@ -181,8 +179,6 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
     return <NotFound />;
   }
 
-  const rating = Math.round(offer.rating);
-
   return (
     <div className='page'>
       <Header />
@@ -194,7 +190,7 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
           <div className="property__container container">
             <div className="property__wrapper">
 
-              <OfferInformation offer={offer} rating={rating} />
+              <OfferInformation offer={offer} />
               <MeetTheHost offer={offer} />
               <ReviewsBlock reviews={reviews} />
 
