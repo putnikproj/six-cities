@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { Offer, Offers, Host } from '../../types/offer';
-import { Review, Reviews } from '../../types/review';
+import { Reviews } from '../../types/review';
 import { capitalizeFirstLetter } from '../../util';
 import { MAX_OFFER_IMAGES, MAX_OFFER_REVIEWS } from '../../const';
 
@@ -13,6 +13,7 @@ import OfferPlaceList from '../../components/offer-place-list/offer-place-list';
 import Stars from '../../components/stars/stars';
 import BookmarkButton from '../../components/bookmark-button/bookmark-button';
 import PremiumLabel from '../../components/premium-label/premium-label';
+import ReviewsList from '../../components/reviews-list/reviews-list';
 
 function Gallery({ images }: { images: Offer['images'] }) {
   return (
@@ -129,53 +130,6 @@ function MeetTheHost({ host, description }: { host: Host, description: Offer['de
   );
 }
 
-function ReviewBlock({ review }: { review: Review }) {
-  return (
-    <li className="reviews__item">
-
-      {/* Avatar */}
-      <div className="reviews__user user">
-        <div className="reviews__avatar-wrapper user__avatar-wrapper">
-          <img className="reviews__avatar user__avatar" src={review.user.avatarUrl} width="54" height="54" alt="Reviews avatar" />
-        </div>
-        <span className="reviews__user-name">
-          {review.user.name}
-        </span>
-      </div>
-
-      <div className="reviews__info">
-
-        {/* Rating */}
-        <div className="reviews__rating rating">
-          <Stars containerClassNames="reviews__stars" rating={review.rating} />
-        </div>
-
-        {/* Text */}
-        <p className="reviews__text">
-          {review.comment}
-        </p>
-
-        {/* Time */}
-        <time className="reviews__time" dateTime={review.date}>
-          {new Date(review.date).toLocaleString('en-US', {month: 'long', year: 'numeric'})}
-        </time>
-      </div>
-    </li>
-  );
-}
-
-function ReviewsBlock({ reviews }: { reviews: Reviews }) {
-  return (
-    <section className="property__reviews reviews">
-      <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
-      <ul className="reviews__list">
-        {reviews.map((review, index) => (index < MAX_OFFER_REVIEWS) && (<ReviewBlock key={review.id} review={review} />))}
-      </ul>
-      <AddReviewForm />
-    </section>
-  );
-}
-
 type OfferPageProps = {
   offers: Offers,
   reviews: Reviews
@@ -202,7 +156,10 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
 
               <OfferInformation offer={offer} />
               <MeetTheHost host={offer.host} description={offer.description} />
-              <ReviewsBlock reviews={reviews} />
+              <section className="property__reviews reviews">
+                <ReviewsList reviews={reviews} maxReviews={MAX_OFFER_REVIEWS} />
+                <AddReviewForm />
+              </section>
 
             </div>
           </div>
