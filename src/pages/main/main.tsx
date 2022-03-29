@@ -1,9 +1,11 @@
 import { Offers } from '../../types/offer';
+import { city } from '../../mocks/city';
 
 import CitiesPlaceList from '../../components/cities-place-list/cities-place-list';
 import Header from '../../components/header/header';
 import CitiesTabs from '../../components/cities-tabs/cities-tabs';
 import PlacesSorting from '../../components/places-sorting/places-sorting';
+import Map from '../../components/map/map';
 
 // Main page component
 type mainProps = {
@@ -27,7 +29,9 @@ function Main({ placesAmount, offers }: mainProps): JSX.Element {
               <CitiesPlaceList offers={offers} />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map city={city} />
+              </section>
             </div>
           </div>
         </div>
