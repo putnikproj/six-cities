@@ -28,3 +28,12 @@ export const MAX_OFFER_REVIEWS = 10;
 export const Settings = {
   PLACES_AMOUNT: 312,
 };
+
+export const Cities = {
+  PARIS: 'Paris',
+  COLOGNE: 'Cologne',
+  BRUSSELS: 'Brussels',
+  AMSTERDAM: 'Amsterdam',
+  HAMBURG: 'Hamburg',
+  DUSSELDORF: 'Dusseldorf',
+} as const;
