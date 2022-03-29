@@ -17,6 +17,20 @@ export const PlaceCardPrefix = {
   OFFER: 'near-places',
 } as const;
 
+export const CityName = {
+  PARIS: 'Paris',
+  COLOGNE: 'Cologne',
+  BRUSSELS: 'Brussels',
+  AMSTERDAM: 'Amsterdam',
+  HAMBURG: 'Hamburg',
+  DUSSELDORF: 'Dusseldorf',
+} as const;
+
+export const PointerImage = {
+  DEFAULT: 'img/pin.svg',
+  ACTIVE: 'img/pin-active.svg',
+} as const;
+
 export const IS_AUTH = true;
 
 export const MAX_OFFER_NEAR_PLACES = 3;
@@ -28,12 +42,3 @@ export const MAX_OFFER_REVIEWS = 10;
 export const Settings = {
   PLACES_AMOUNT: 312,
 };
-
-export const CityName = {
-  PARIS: 'Paris',
-  COLOGNE: 'Cologne',
-  BRUSSELS: 'Brussels',
-  AMSTERDAM: 'Amsterdam',
-  HAMBURG: 'Hamburg',
-  DUSSELDORF: 'Dusseldorf',
-} as const;

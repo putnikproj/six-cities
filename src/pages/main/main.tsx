@@ -30,7 +30,7 @@ function Main({ placesAmount, offers }: mainProps): JSX.Element {
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={city} />
+                <Map city={city} offers={offers} />
               </section>
             </div>
           </div>
