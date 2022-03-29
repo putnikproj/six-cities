@@ -1,25 +1,13 @@
-export type Location = {
-  latitude: number,
-  longitude: number,
-  zoom: number,
-};
-
-export type Host = {
-  avatarUrl: string,
-  id: number,
-  isPro: boolean,
-  name: string,
-};
+import { Location } from './location';
+import { City } from './city';
+import { User } from './user';
 
 export type Offer = {
   bedrooms: number,
-  city: {
-    location: Location,
-    name: string,
-  },
+  city: City,
   description: string,
   goods: string[],
-  host: Host,
+  host: User,
   id: number,
   images: string[],
   isFavorite: boolean,

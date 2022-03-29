@@ -1,7 +1,8 @@
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { Offer, Offers, Host } from '../../types/offer';
+import { Offer, Offers } from '../../types/offer';
+import { User } from '../../types/user';
 import { Reviews } from '../../types/review';
 import { capitalizeFirstLetter } from '../../util';
 import { MAX_OFFER_IMAGES, MAX_OFFER_REVIEWS } from '../../const';
@@ -98,7 +99,7 @@ function OfferInformation({ offer }: { offer: Offer }) {
   );
 }
 
-function MeetTheHost({ host, description }: { host: Host, description: Offer['description'] }) {
+function MeetTheHost({ host, description }: { host: User, description: Offer['description'] }) {
   return (
     <div className="property__host">
       <h2 className="property__host-title">Meet the host</h2>

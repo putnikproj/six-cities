@@ -29,7 +29,7 @@ export const Settings = {
   PLACES_AMOUNT: 312,
 };
 
-export const Cities = {
+export const CityName = {
   PARIS: 'Paris',
   COLOGNE: 'Cologne',
   BRUSSELS: 'Brussels',
