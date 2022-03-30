@@ -1,19 +1,39 @@
-// import { useState } from 'react';
-
-import { Offers } from '../../types/offer';
+import { Offer, Offers } from '../../types/offer';
+import { Point } from '../../types/point';
 import { PlaceCardType } from '../../const';
+import { offerToPoint } from '../../util';
 
 import PlaceCard from '../place-card/place-card';
 
 type CitiesPlaceListProps = {
   offers: Offers,
+  onCardEnterLeave: (point?: Point | undefined) => void,
 };
-function PlaceList({ offers }: CitiesPlaceListProps): JSX.Element  {
-  // const [activeCard, setActiveCard] = useState(offers[0].id);
+
+function PlaceList({ offers, onCardEnterLeave }: CitiesPlaceListProps): JSX.Element  {
+
+  function handleMouseEnterLeave(offer?: Offer | undefined) {
+    return () => {
+      if (!offer) {
+        onCardEnterLeave();
+        return;
+      }
+
+      onCardEnterLeave(offerToPoint(offer));
+    };
+  }
 
   return (
     <div className="cities__places-list places__list tabs__content">
-      {offers.map((offer) => <PlaceCard key={offer.id} offer={offer} type={PlaceCardType.MAIN} />)}
+      {offers.map((offer) => (
+        <div
+          key={offer.id}
+          onMouseEnter={handleMouseEnterLeave(offer)}
+          onMouseLeave={handleMouseEnterLeave()}
+        >
+          <PlaceCard offer={offer} type={PlaceCardType.MAIN} />
+        </div>
+      ))}
     </div>
   );
 }
