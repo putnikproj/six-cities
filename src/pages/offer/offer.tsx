@@ -5,7 +5,8 @@ import { Offer, Offers } from '../../types/offer';
 import { User } from '../../types/user';
 import { Reviews } from '../../types/review';
 import { capitalizeFirstLetter } from '../../util';
-import { MAX_OFFER_IMAGES, MAX_OFFER_REVIEWS } from '../../const';
+import { MAX_OFFER_IMAGES, MAX_OFFER_NEAR_PLACES, MAX_OFFER_REVIEWS } from '../../const';
+import { city } from '../../mocks/city';
 
 import NotFound from '../not-found/not-found';
 import AddReviewForm from '../../components/add-review-form/add-review-form';
@@ -15,6 +16,7 @@ import Stars from '../../components/stars/stars';
 import BookmarkButton from '../../components/bookmark-button/bookmark-button';
 import PremiumLabel from '../../components/premium-label/premium-label';
 import ReviewsList from '../../components/reviews-list/reviews-list';
+import Map from '../../components/map/map';
 
 function Gallery({ images }: { images: Offer['images'] }) {
   return (
@@ -139,6 +141,7 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
 
   const { id } = useParams();
   const offer = offers.find((elem) => elem.id === Number(id));
+  const offersNearby = offers.slice(0, MAX_OFFER_NEAR_PLACES);
 
   if (!offer) {
     return <NotFound />;
@@ -165,13 +168,15 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
             </div>
           </div>
 
-          <section className="property__map map"></section>
+          <section className="property__map map">
+            <Map city={city} offers={[offer, ...offersNearby]} activeOffer={offer} />
+          </section>
         </section>
 
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <OfferPlaceList offers={offers} />
+            <OfferPlaceList offers={offersNearby} />
           </section>
         </div>
       </main>
