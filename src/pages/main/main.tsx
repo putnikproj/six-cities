@@ -1,5 +1,6 @@
 import { Offers } from '../../types/offer';
 import { city } from '../../mocks/city';
+import { offerToPoint } from '../../util';
 
 import CitiesPlaceList from '../../components/cities-place-list/cities-place-list';
 import Header from '../../components/header/header';
@@ -30,7 +31,10 @@ function Main({ placesAmount, offers }: mainProps): JSX.Element {
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={city} offers={offers} />
+                <Map
+                  city={city}
+                  points={offers.map((offer) => offerToPoint(offer))}
+                />
               </section>
             </div>
           </div>

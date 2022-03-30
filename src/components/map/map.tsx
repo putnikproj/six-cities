@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import { City } from '../../types/city';
 import useMap from '../../hooks/useMap';
 import { PointerImage } from '../../const';
-import { Offer, Offers } from '../../types/offer';
+import { Point, Points } from '../../types/point';
 
 const defaultPointerIcon = new Icon({
   iconUrl: PointerImage.DEFAULT,
@@ -21,11 +21,11 @@ const activePointerIcon = new Icon({
 
 type MapProps = {
   city: City,
-  offers: Offers,
-  activeOffer?: Offer | undefined,
+  points: Points,
+  activePoint?: Point | undefined,
 };
 
-function Map({ city, offers, activeOffer }: MapProps): JSX.Element {
+function Map({ city, points, activePoint }: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
@@ -37,12 +37,14 @@ function Map({ city, offers, activeOffer }: MapProps): JSX.Element {
 
     // Save markers in array to clean them if rerender needed
     const markers: Marker<object>[] = [];
-    offers.forEach((offer) => {
-      const isActive = activeOffer && activeOffer.id === offer.id;
+    const allPoints = activePoint ? [activePoint, ...points] : points;
+
+    allPoints.forEach((point) => {
+      const isActive = activePoint && activePoint.id === point.id;
 
       const marker = new Marker<object>({
-        lat: offer.location.latitude,
-        lng: offer.location.longitude,
+        lat: point.latitude,
+        lng: point.longitude,
       });
 
       marker
@@ -58,7 +60,7 @@ function Map({ city, offers, activeOffer }: MapProps): JSX.Element {
         marker.removeFrom(map);
       });
     };
-  }, [activeOffer, map, offers]);
+  }, [points, activePoint, map]);
 
   return (
     <div

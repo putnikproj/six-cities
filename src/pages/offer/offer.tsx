@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Offer, Offers } from '../../types/offer';
 import { User } from '../../types/user';
 import { Reviews } from '../../types/review';
-import { capitalizeFirstLetter } from '../../util';
+import { capitalizeFirstLetter, offerToPoint } from '../../util';
 import { MAX_OFFER_IMAGES, MAX_OFFER_NEAR_PLACES, MAX_OFFER_REVIEWS } from '../../const';
 import { city } from '../../mocks/city';
 
@@ -169,7 +169,11 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
           </div>
 
           <section className="property__map map">
-            <Map city={city} offers={[offer, ...offersNearby]} activeOffer={offer} />
+            <Map
+              city={city}
+              points={offersNearby.map((item) => offerToPoint(item))}
+              activePoint={offerToPoint(offer)}
+            />
           </section>
         </section>
 
