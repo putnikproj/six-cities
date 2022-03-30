@@ -1,9 +1,9 @@
-import { Reviews } from '../../types/review';
+import { Review } from '../../types/review';
 
 import ReviewBlock from '../review/review';
 
 type ReviewsListProps = {
-  reviews: Reviews
+  reviews: Review[]
   maxReviews: number,
 }
 

@@ -1,11 +1,11 @@
-import { Offers } from '../../types/offer';
+import { Offer } from '../../types/offer';
 
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import FavoritesPlaceList from '../../components/favorites-place-list/favorites-place-list';
 
 type FavoritesPageProps = {
-  offers: Offers,
+  offers: Offer[],
 }
 
 function Favorites({ offers }: FavoritesPageProps): JSX.Element {

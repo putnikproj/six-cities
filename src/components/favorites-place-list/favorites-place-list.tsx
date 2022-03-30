@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { PlaceCardType } from '../../const';
 
-import { Offers } from '../../types/offer';
+import { Offer } from '../../types/offer';
 
 import PlaceCard from '../place-card/place-card';
 
 type FavoritesPlaceCardProps = {
-  offers: Offers,
+  offers: Offer[],
 }
 
 function FavoritesPlaceList({ offers }: FavoritesPlaceCardProps): JSX.Element {

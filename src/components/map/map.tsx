@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import { City } from '../../types/city';
 import useMap from '../../hooks/useMap';
 import { PointerImage } from '../../const';
-import { Point, Points } from '../../types/point';
+import { Point } from '../../types/point';
 
 const defaultPointerIcon = new Icon({
   iconUrl: PointerImage.DEFAULT,
@@ -21,7 +21,7 @@ const activePointerIcon = new Icon({
 
 type MapProps = {
   city: City,
-  points: Points,
+  points: Point[],
   activePoint?: Point | undefined,
 };
 

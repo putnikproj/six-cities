@@ -1,4 +1,4 @@
-import { Offer, Offers } from '../../types/offer';
+import { Offer } from '../../types/offer';
 import { Point } from '../../types/point';
 import { PlaceCardType } from '../../const';
 import { offerToPoint } from '../../util';
@@ -6,7 +6,7 @@ import { offerToPoint } from '../../util';
 import PlaceCard from '../place-card/place-card';
 
 type CitiesPlaceListProps = {
-  offers: Offers,
+  offers: Offer[],
   onCardEnterLeave: (point?: Point | undefined) => void,
 };
 

@@ -4,5 +4,3 @@ import { Offer } from './offer';
 export type Point = Location & {
   id: Offer['id'],
 }
-
-export type Points = Point[];

@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { Offer, Offers } from '../../types/offer';
+import { Offer } from '../../types/offer';
 import { User } from '../../types/user';
-import { Reviews } from '../../types/review';
+import { Review } from '../../types/review';
 import { capitalizeFirstLetter, offerToPoint } from '../../util';
 import { MAX_OFFER_IMAGES, MAX_OFFER_NEAR_PLACES, MAX_OFFER_REVIEWS } from '../../const';
 import { city } from '../../mocks/city';
@@ -134,8 +134,8 @@ function MeetTheHost({ host, description }: { host: User, description: Offer['de
 }
 
 type OfferPageProps = {
-  offers: Offers,
-  reviews: Reviews
+  offers: Offer[],
+  reviews: Review[]
 };
 function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Offers } from '../../types/offer';
+import { Offer } from '../../types/offer';
 import { city } from '../../mocks/city';
 import { offerToPoint } from '../../util';
 import { Point } from '../../types/point';
@@ -14,7 +14,7 @@ import Map from '../../components/map/map';
 // Main page component
 type mainProps = {
   placesAmount: number,
-  offers: Offers,
+  offers: Offer[],
 };
 
 function Main({ placesAmount, offers }: mainProps): JSX.Element {
