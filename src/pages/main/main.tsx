@@ -20,7 +20,9 @@ type mainProps = {
 function Main({ placesAmount, offers }: mainProps): JSX.Element {
   const [activePoint, setActivePoint] = useState<Point | undefined>();
 
-  const handleCardEnterLeave = (point?: Point | undefined) => setActivePoint(point);
+  const handleCardEnterLeave = (point?: Point | undefined) => {
+    setActivePoint(point);
+  };
 
   return (
     <div className="page page--gray page--main">
@@ -42,6 +44,7 @@ function Main({ placesAmount, offers }: mainProps): JSX.Element {
                   city={city}
                   points={offers.map((offer) => offerToPoint(offer))}
                   activePoint={activePoint}
+                  shouldRerenderPoints={false}
                 />
               </section>
             </div>
