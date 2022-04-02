@@ -21,9 +21,12 @@ function App({ placesAmount, offers }: AppProps): JSX.Element {
       <Routes>
         <Route path={AppRoute.ROOT} element={<Main offers={offers} placesAmount={placesAmount} />} />
         <Route path={AppRoute.LOGIN} element={<Login />} />
-        <Route path={AppRoute.FAVORITES} element={
-          <PrivateRoute isAuth={IS_AUTH} element={<Favorites offers={offers} />} />
-        }
+        <Route path={AppRoute.FAVORITES}
+          element={
+            <PrivateRoute isAuth={IS_AUTH}>
+              <Favorites offers={offers} />
+            </PrivateRoute>
+          }
         />
         <Route path={`${AppRoute.OFFER}/:id`} element={<Offer offers={offers} reviews={reviews} />} />
         <Route path="*" element={<NotFound />} />
