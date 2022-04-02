@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { Offer } from '../../types/offer';
+import { Offer as OfferType } from '../../types/offer';
 import { User } from '../../types/user';
 import { Review } from '../../types/review';
 import { capitalizeFirstLetter, offerToPoint } from '../../util';
@@ -18,7 +18,7 @@ import PremiumLabel from '../../components/premium-label/premium-label';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import Map from '../../components/map/map';
 
-function Gallery({ images }: { images: Offer['images'] }) {
+function Gallery({ images }: { images: OfferType['images'] }) {
   return (
     <div className="property__gallery-container container">
       <div className="property__gallery">
@@ -38,7 +38,7 @@ function Gallery({ images }: { images: Offer['images'] }) {
   );
 }
 
-function OfferInformation({ offer }: { offer: Offer }) {
+function OfferInformation({ offer }: { offer: OfferType }) {
   return (
     <>
       { offer.isPremium && <PremiumLabel classNames="property__mark" /> }
@@ -101,7 +101,7 @@ function OfferInformation({ offer }: { offer: Offer }) {
   );
 }
 
-function MeetTheHost({ host, description }: { host: User, description: Offer['description'] }) {
+function MeetTheHost({ host, description }: { host: User, description: OfferType['description'] }) {
   return (
     <div className="property__host">
       <h2 className="property__host-title">Meet the host</h2>
@@ -134,10 +134,10 @@ function MeetTheHost({ host, description }: { host: User, description: Offer['de
 }
 
 type OfferPageProps = {
-  offers: Offer[],
+  offers: OfferType[],
   reviews: Review[]
 };
-function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
+function Offer({ offers, reviews }: OfferPageProps): JSX.Element {
 
   const { id } = useParams();
   const offer = offers.find((elem) => elem.id === Number(id));
@@ -188,4 +188,4 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
   );
 }
 
-export default OfferPage;
+export default Offer;
