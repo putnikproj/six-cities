@@ -34,7 +34,7 @@ function Main({ placesAmount, offers }: mainProps): JSX.Element {
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{placesAmount} places to stay in Amsterdam</b>
               <PlacesSorting />
-              <CitiesPlaceList offers={offers} onCardEnterLeave={handleCardEnterLeave} />
+              <CitiesPlaceList onCardEnterLeave={handleCardEnterLeave} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">

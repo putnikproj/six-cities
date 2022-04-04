@@ -1,16 +1,27 @@
+import { connect, ConnectedProps } from 'react-redux';
+
 import { Offer } from '../../types/offer';
 import { Point } from '../../types/point';
+import { State } from '../../types/state';
 import { PlaceCardType } from '../../const';
 import { offerToPoint } from '../../util';
 
 import PlaceCard from '../place-card/place-card';
 
-type CitiesPlaceListProps = {
-  offers: Offer[],
+function mapStateToProps(state: State) {
+  return {
+    offers: state.offers,
+  };
+}
+
+const connector = connect(mapStateToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type CitiesPlaceListProps = PropsFromRedux & {
   onCardEnterLeave: (point?: Point | undefined) => void,
 };
 
-function PlaceList({ offers, onCardEnterLeave }: CitiesPlaceListProps): JSX.Element  {
+function CitiesPlaceList({ offers, onCardEnterLeave }: CitiesPlaceListProps): JSX.Element  {
 
   function handleMouseEnterLeave(offer?: Offer | undefined) {
     return () => {
@@ -38,4 +49,4 @@ function PlaceList({ offers, onCardEnterLeave }: CitiesPlaceListProps): JSX.Elem
   );
 }
 
-export default PlaceList;
+export default connector(CitiesPlaceList);
