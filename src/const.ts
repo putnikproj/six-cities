@@ -5,6 +5,11 @@ export const AppRoute = {
   OFFER: '/offer',
 } as const;
 
+export const ActionType = {
+  CHANGE_CITY: 'main/changeCity',
+  ADD_CITY_OFFERS: 'main/addCityOffers',
+} as const;
+
 export const PlaceCardType = {
   MAIN: 'MAIN',
   FAVORITES: 'FAVORITES',
