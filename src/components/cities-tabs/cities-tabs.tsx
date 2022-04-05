@@ -1,41 +1,18 @@
-import { SyntheticEvent, useEffect } from 'react';
-import { Dispatch } from 'redux';
-import { connect, ConnectedProps } from 'react-redux';
+import { SyntheticEvent } from 'react';
 import classNames from 'classnames';
 
 import { CityName } from '../../const';
-import { State } from '../../types/state';
-import { ActionsType, addCityOffers, changeCity } from '../../store/action';
-import { offers } from '../../mocks/offers';
+import { ActiveCity } from '../../types/city';
 
-function mapStateToProps(state: State) {
-  return {
-    activeCity: state.activeCity,
-  };
-}
+type CitiesTabsProps = {
+  activeCity: ActiveCity,
+  onCityChange: (city: ActiveCity) => void,
+};
 
-function mapDispatchToProps(dispatch: Dispatch<ActionsType>) {
-  return {
-    loadCities(cityOffers: State['offers']) {
-      dispatch(addCityOffers(cityOffers));
-    },
-    changeActiveCity(cityName: State['activeCity']) {
-      dispatch(changeCity(cityName));
-    },
-  };
-}
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function CitiesTabs({ activeCity, changeActiveCity, loadCities }: PropsFromRedux) {
-  useEffect(() => {
-    loadCities(offers.filter((offer) => offer.city.name === activeCity));
-  }, [activeCity, loadCities]);
-
-  const handleLinkClick = (city: State['activeCity']) => (evt: SyntheticEvent<HTMLAnchorElement>) => {
+function CitiesTabs({ activeCity, onCityChange }: CitiesTabsProps) {
+  const handleLinkClick = (city: ActiveCity) => (evt: SyntheticEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
-    changeActiveCity(city);
+    onCityChange(city);
   };
 
   return (
@@ -68,4 +45,4 @@ function CitiesTabs({ activeCity, changeActiveCity, loadCities }: PropsFromRedux
   );
 }
 
-export default connector(CitiesTabs);
+export default CitiesTabs;

@@ -1,7 +1,7 @@
-import { CityName } from '../const';
+import { ActiveCity } from './city';
 import { Offer } from './offer';
 
 export type State = {
-  activeCity: typeof CityName[keyof typeof CityName],
+  activeCity: ActiveCity,
   offers: Offer[],
 };

@@ -1,55 +1,66 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { Dispatch } from 'redux';
+import { connect, ConnectedProps } from 'react-redux';
+import classNames from 'classnames';
 
-import { Offer } from '../../types/offer';
-import { city } from '../../mocks/city';
-import { offerToPoint } from '../../util';
-import { Point } from '../../types/point';
+import { State } from '../../types/state';
+import { ActionsType, setActiveCity, setCityOffers } from '../../store/action';
+import { ActiveCity } from '../../types/city';
+import { offers as offersMoks } from '../../mocks/offers';
 
-import CitiesPlaceList from '../../components/cities-place-list/cities-place-list';
 import Header from '../../components/header/header';
 import CitiesTabs from '../../components/cities-tabs/cities-tabs';
-import PlacesSorting from '../../components/places-sorting/places-sorting';
-import Map from '../../components/map/map';
+import Cities from '../../components/cities/cities';
 
-// Main page component
-type mainProps = {
-  placesAmount: number,
-  offers: Offer[],
-};
+function mapStateToProps(state: State) {
+  return {
+    offers: state.offers,
+    activeCity: state.activeCity,
+  };
+}
 
-function Main({ placesAmount, offers }: mainProps): JSX.Element {
-  const [activePoint, setActivePoint] = useState<Point | undefined>();
+function mapDispatchToProps(dispatch: Dispatch<ActionsType>) {
+  return {
+    loadCities(cityOffers: State['offers']) {
+      dispatch(setCityOffers({ offers: cityOffers }));
+    },
+    changeActiveCity(cityName: State['activeCity']) {
+      dispatch(setActiveCity({ cityName }));
+    },
+  };
+}
 
-  const handleCardEnterLeave = (point?: Point | undefined) => setActivePoint(point);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type CitiesProps = PropsFromRedux;
+
+function Main({ offers, activeCity, loadCities, changeActiveCity }: CitiesProps): JSX.Element {
+  useEffect(() => {
+    //TODO. For now the logic of gettin cities in accordance to active city will be there
+    loadCities(offersMoks.filter((offer) => offer.city.name === activeCity));
+  }, [activeCity, loadCities]);
+
+  const handleCityChange = (newActiveCity: ActiveCity) => {
+    changeActiveCity(newActiveCity);
+  };
 
   return (
     <div className="page page--gray page--main">
       <Header />
 
-      <main className="page__main page__main--index">
-        <CitiesTabs />
-        <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{placesAmount} places to stay in Amsterdam</b>
-              <PlacesSorting />
-              <CitiesPlaceList onCardEnterLeave={handleCardEnterLeave} />
-            </section>
-            <div className="cities__right-section">
-              <section className="cities__map map">
-                <Map
-                  city={city}
-                  points={offers.map((offer) => offerToPoint(offer))}
-                  activePoint={activePoint}
-                />
-              </section>
-            </div>
-          </div>
-        </div>
+      <main
+        className={classNames(
+          'page__main',
+          'page__main--index',
+          { 'page__main--index-empty': offers.length === 0 },
+        )}
+      >
+        <CitiesTabs activeCity={activeCity} onCityChange={handleCityChange} />
+        <Cities activeCity={activeCity} offers={offers} />
       </main>
     </div>
   );
 }
 
-export default Main;
+export default connector(Main);

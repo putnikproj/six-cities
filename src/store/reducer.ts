@@ -9,9 +9,9 @@ const initialState: State = {
 
 export function reducer(state = initialState, action: ActionsType) {
   switch (action.type) {
-    case ActionType.CHANGE_CITY:
+    case ActionType.SET_ACTIVE_CITY:
       return { ...state, activeCity: action.payload.cityName };
-    case ActionType.ADD_CITY_OFFERS:
+    case ActionType.SET_CITY_OFFERS:
       return { ...state, offers: action.payload.offers };
     default:
       return state;

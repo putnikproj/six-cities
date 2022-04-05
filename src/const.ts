@@ -6,8 +6,8 @@ export const AppRoute = {
 } as const;
 
 export const ActionType = {
-  CHANGE_CITY: 'main/changeCity',
-  ADD_CITY_OFFERS: 'main/addCityOffers',
+  SET_ACTIVE_CITY: 'main/setActiveCity',
+  SET_CITY_OFFERS: 'main/setCityOffers',
 } as const;
 
 export const PlaceCardType = {
@@ -43,7 +43,3 @@ export const MAX_OFFER_NEAR_PLACES = 3;
 export const MAX_OFFER_IMAGES = 6;
 
 export const MAX_OFFER_REVIEWS = 10;
-
-export const Settings = {
-  PLACES_AMOUNT: 312,
-};

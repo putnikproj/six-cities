@@ -11,15 +11,14 @@ import Offer from '../../pages/offer/offer';
 import NotFound from '../../pages/not-found/not-found';
 
 type AppProps = {
-  placesAmount: number,
   offers: OfferType[],
 };
 
-function App({ placesAmount, offers }: AppProps): JSX.Element {
+function App({ offers }: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={AppRoute.ROOT} element={<Main offers={offers} placesAmount={placesAmount} />} />
+        <Route path={AppRoute.ROOT} element={<Main />} />
         <Route path={AppRoute.LOGIN} element={<Login />} />
         <Route path={AppRoute.FAVORITES}
           element={
