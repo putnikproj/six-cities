@@ -1,6 +1,8 @@
 import { Location } from './location';
 import { City } from './city';
 import { User } from './user';
+import { EnumValues } from './util-types';
+import { SortType } from '../const';
 
 export type Offer = {
   bedrooms: number,
@@ -20,3 +22,5 @@ export type Offer = {
   title: string,
   type: string,
 };
+
+export type OfferSort = EnumValues<typeof SortType>;

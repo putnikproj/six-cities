@@ -8,6 +8,7 @@ export const AppRoute = {
 export const ActionType = {
   SET_ACTIVE_CITY: 'main/setActiveCity',
   SET_CITY_OFFERS: 'main/setCityOffers',
+  SET_SORT_TYPE: 'main/setSortType',
 } as const;
 
 export const PlaceCardType = {
@@ -34,6 +35,13 @@ export const CityName = {
 export const PointerImage = {
   DEFAULT: 'img/pin.svg',
   ACTIVE: 'img/pin-active.svg',
+} as const;
+
+export const SortType = {
+  DEFAULT: 'Popular',
+  PRICE_LOW_TO_HIGH: 'PriceLowToHigh',
+  PRICE_HIGH_TO_LOW: 'PriceHighToLow',
+  RATING_HIGH_TO_LOW: 'TopRatedFirst',
 } as const;
 
 export const IS_AUTH = true;

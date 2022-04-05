@@ -1,7 +1,8 @@
 import { ActiveCity } from './city';
-import { Offer } from './offer';
+import { Offer, OfferSort } from './offer';
 
 export type State = {
   activeCity: ActiveCity,
   offers: Offer[],
+  sortType: OfferSort,
 };

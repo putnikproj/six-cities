@@ -1,10 +1,12 @@
-import { ActionType, CityName } from '../const';
+import { ActionType, CityName, SortType } from '../const';
+import { sortOffers } from '../sort-offers';
 import { State } from '../types/state';
 import { ActionsType } from './action';
 
 const initialState: State = {
-  activeCity: CityName.PARIS,
+  activeCity: CityName.AMSTERDAM,
   offers: [],
+  sortType: SortType.DEFAULT,
 };
 
 export function reducer(state = initialState, action: ActionsType) {
@@ -12,7 +14,9 @@ export function reducer(state = initialState, action: ActionsType) {
     case ActionType.SET_ACTIVE_CITY:
       return { ...state, activeCity: action.payload.cityName };
     case ActionType.SET_CITY_OFFERS:
-      return { ...state, offers: action.payload.offers };
+      return { ...state, offers: sortOffers(action.payload.offers, state.sortType) };
+    case ActionType.SET_SORT_TYPE:
+      return { ...state, sortType: action.payload.sortType, offers: sortOffers(state.offers, action.payload.sortType) };
     default:
       return state;
   }
