@@ -16,7 +16,13 @@ export const setSortType = (payload: { sortType: State['sortType'] }) => ({
   payload,
 } as const);
 
+export const setActiveOffer = (payload: { activeOffer: State['activeOffer'] }) => ({
+  type: ActionType.SET_ACTIVE_OFFER,
+  payload,
+} as const);
+
 export type ActionsType =
   | ReturnType<typeof setActiveCity>
   | ReturnType<typeof setCityOffers>
-  | ReturnType<typeof setSortType>;
+  | ReturnType<typeof setSortType>
+  | ReturnType<typeof setActiveOffer>;

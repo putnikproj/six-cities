@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import { Icon, Marker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -6,6 +7,8 @@ import { City } from '../../types/city';
 import useMap from '../../hooks/useMap';
 import { PointerImage } from '../../const';
 import { Point } from '../../types/point';
+import { State } from '../../types/state';
+import { offerToPoint } from '../../util';
 
 const defaultPointerIcon = new Icon({
   iconUrl: PointerImage.DEFAULT,
@@ -19,10 +22,19 @@ const activePointerIcon = new Icon({
   iconAnchor: [13.5, 39],
 });
 
-type MapProps = {
+function mapStateToProps(state: State) {
+  return {
+    activePoint: state.activeOffer ? offerToPoint(state.activeOffer) : state.activeOffer,
+  };
+}
+
+const connector = connect(mapStateToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type MapProps = PropsFromRedux & {
   city: City,
   points: Point[],
-  activePoint?: Point | undefined,
+  // activePoint?: Point | undefined,
 };
 
 function Map({ city, points, activePoint }: MapProps): JSX.Element {
@@ -73,4 +85,4 @@ function Map({ city, points, activePoint }: MapProps): JSX.Element {
   );
 }
 
-export default Map;
+export default connector(Map);

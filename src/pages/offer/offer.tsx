@@ -172,7 +172,6 @@ function Offer({ offers, reviews }: OfferPageProps): JSX.Element {
             <Map
               city={city}
               points={offersNearby.map((item) => offerToPoint(item))}
-              activePoint={offerToPoint(offer)}
             />
           </section>
         </section>

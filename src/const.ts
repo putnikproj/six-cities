@@ -9,6 +9,7 @@ export const ActionType = {
   SET_ACTIVE_CITY: 'main/setActiveCity',
   SET_CITY_OFFERS: 'main/setCityOffers',
   SET_SORT_TYPE: 'main/setSortType',
+  SET_ACTIVE_OFFER: 'main/setActiveOffer',
 } as const;
 
 export const PlaceCardType = {

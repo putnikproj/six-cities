@@ -7,6 +7,7 @@ const initialState: State = {
   activeCity: CityName.AMSTERDAM,
   offers: [],
   sortType: SortType.DEFAULT,
+  activeOffer: undefined,
 };
 
 export function reducer(state = initialState, action: ActionsType) {
@@ -17,6 +18,8 @@ export function reducer(state = initialState, action: ActionsType) {
       return { ...state, offers: sortOffers(action.payload.offers, state.sortType) };
     case ActionType.SET_SORT_TYPE:
       return { ...state, sortType: action.payload.sortType, offers: sortOffers(state.offers, action.payload.sortType) };
+    case ActionType.SET_ACTIVE_OFFER:
+      return { ...state, activeOffer: action.payload.activeOffer };
     default:
       return state;
   }

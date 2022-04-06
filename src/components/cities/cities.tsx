@@ -1,9 +1,6 @@
-import { useState } from 'react';
-
 import { city } from '../../mocks/city';
 import { ActiveCity } from '../../types/city';
 import { Offer } from '../../types/offer';
-import { Point } from '../../types/point';
 import { offerToPoint } from '../../util';
 
 import CitiesPlaceList from '../cities-place-list/cities-place-list';
@@ -15,9 +12,6 @@ type CitiesProps = {
 };
 
 function Cities({ offers, activeCity }: CitiesProps) {
-  const [activePoint, setActivePoint] = useState<Point | undefined>();
-
-  const handleCardEnterLeave = (point?: Point | undefined) => setActivePoint(point);
 
   if (offers.length === 0) {
     return (
@@ -39,7 +33,7 @@ function Cities({ offers, activeCity }: CitiesProps) {
     <div className="cities">
       <div className="cities__places-container container">
         {/* left section */}
-        <CitiesPlaceList offers={offers} onCardEnterLeave={handleCardEnterLeave} />
+        <CitiesPlaceList offers={offers} />
 
         {/* right section */}
         <div className="cities__right-section">
@@ -47,7 +41,6 @@ function Cities({ offers, activeCity }: CitiesProps) {
             <Map
               city={city}
               points={offers.map((offer) => offerToPoint(offer))}
-              activePoint={activePoint}
             />
           </section>
         </div>

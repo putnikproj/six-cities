@@ -1,26 +1,40 @@
+import { Dispatch } from 'redux';
+import { connect, ConnectedProps } from 'react-redux';
+
 import { Offer } from '../../types/offer';
-import { Point } from '../../types/point';
 import { PlaceCardType } from '../../const';
-import { offerToPoint } from '../../util';
+import { ActionsType, setActiveOffer } from '../../store/action';
 
 import PlaceCard from '../place-card/place-card';
 import PlacesSorting from '../places-sorting/places-sorting';
+import { State } from '../../types/state';
 
-type CitiesPlaceListProps = {
+function mapDispatchToProps(dispatch: Dispatch<ActionsType>) {
+  return {
+    сhangeActiveOffer(newActiveOffer: State['activeOffer']) {
+      dispatch(setActiveOffer({ activeOffer: newActiveOffer }));
+    },
+  };
+}
+
+
+const connector = connect(null, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type CitiesPlaceListProps = PropsFromRedux & {
   offers: Offer[],
-  onCardEnterLeave: (point?: Point | undefined) => void,
 };
 
-function CitiesPlaceList({ offers, onCardEnterLeave }: CitiesPlaceListProps): JSX.Element  {
+function CitiesPlaceList({ offers, сhangeActiveOffer }: CitiesPlaceListProps): JSX.Element  {
 
   function handleMouseEnterLeave(offer?: Offer | undefined) {
     return () => {
       if (!offer) {
-        onCardEnterLeave();
+        сhangeActiveOffer(undefined);
         return;
       }
 
-      onCardEnterLeave(offerToPoint(offer));
+      сhangeActiveOffer(offer);
     };
   }
 
@@ -49,4 +63,4 @@ function CitiesPlaceList({ offers, onCardEnterLeave }: CitiesPlaceListProps): JS
   );
 }
 
-export default CitiesPlaceList;
+export default connector(CitiesPlaceList);
