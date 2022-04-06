@@ -37,7 +37,9 @@ function Map({ city, points, activePoint }: MapProps): JSX.Element {
 
     // Save markers in array to clean them if rerender needed
     const markers: Marker<object>[] = [];
-    const allPoints = activePoint ? [activePoint, ...points] : points;
+
+    const shouldAddActivePoint = activePoint && !points.find((point) => point.id === activePoint.id);
+    const allPoints = shouldAddActivePoint ? [...points, activePoint] : points;
 
     allPoints.forEach((point) => {
       const isActive = activePoint && activePoint.id === point.id;
