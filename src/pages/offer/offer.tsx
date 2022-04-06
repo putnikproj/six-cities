@@ -148,7 +148,7 @@ function Offer({ offers, reviews }: OfferPageProps): JSX.Element {
   const offersNearby = offers.slice(0, MAX_OFFER_NEAR_PLACES);
 
   useEffect(() => {
-    dispatch(setActiveOffer({ activeOffer: offer }));
+    dispatch(setActiveOffer({ activeOffer: offer || null }));
   }, [dispatch, offer]);
 
   if (!offer) {

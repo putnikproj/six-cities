@@ -4,10 +4,10 @@ import { State } from '../types/state';
 import { ActionsType } from './action';
 
 const initialState: State = {
-  activeCity: CityName.AMSTERDAM,
+  activeCity: CityName.PARIS,
   offers: [],
   sortType: SortType.DEFAULT,
-  activeOffer: undefined,
+  activeOffer: null,
 };
 
 export function reducer(state = initialState, action: ActionsType) {

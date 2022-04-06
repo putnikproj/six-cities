@@ -30,7 +30,7 @@ function CitiesPlaceList({ offers, сhangeActiveOffer }: CitiesPlaceListProps): 
   function handleMouseEnterLeave(offer?: Offer | undefined) {
     return () => {
       if (!offer) {
-        сhangeActiveOffer(undefined);
+        сhangeActiveOffer(null);
         return;
       }
 

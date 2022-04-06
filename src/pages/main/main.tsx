@@ -42,7 +42,7 @@ function Main({ offers, activeCity, loadCities, changeActiveCity, changeActiveOf
   useEffect(() => {
     //TODO. For now the logic of gettin cities in accordance to active city will be there
     loadCities(offersMoks.filter((offer) => offer.city.name === activeCity));
-    changeActiveOffer(undefined);
+    changeActiveOffer(null);
   }, [activeCity, changeActiveOffer, loadCities]);
 
   const handleCityChange = (newActiveCity: ActiveCity) => {

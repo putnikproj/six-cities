@@ -5,5 +5,5 @@ export type State = {
   activeCity: ActiveCity,
   offers: Offer[],
   sortType: OfferSort,
-  activeOffer: Offer | undefined,
+  activeOffer: Offer | null,
 };
