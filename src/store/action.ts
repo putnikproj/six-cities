@@ -1,28 +1,30 @@
 import { ActionType } from '../const';
 import { State } from '../types/state';
 
-export const setActiveCity = (payload: { cityName: State['activeCity'] }) => ({
+export const setActiveCity = (cityName: State['activeCity']) => ({
   type: ActionType.SET_ACTIVE_CITY,
-  payload,
+  payload: {
+    cityName,
+  },
 } as const);
 
-export const setCityOffers = (payload: { offers: State['offers'] }) => ({
+export const setCityOffers = (offers: State['offers']) => ({
   type: ActionType.SET_CITY_OFFERS,
-  payload,
+  payload: {
+    offers,
+  },
 } as const);
 
-export const setSortType = (payload: { sortType: State['sortType'] }) => ({
+export const setSortType = (sortType: State['sortType']) => ({
   type: ActionType.SET_SORT_TYPE,
-  payload,
+  payload: {
+    sortType,
+  },
 } as const);
 
-export const setActiveOffer = (payload: { activeOffer: State['activeOffer'] }) => ({
+export const setActiveOffer = (activeOffer: State['activeOffer']) => ({
   type: ActionType.SET_ACTIVE_OFFER,
-  payload,
+  payload: {
+    activeOffer,
+  },
 } as const);
-
-export type ActionsType =
-  | ReturnType<typeof setActiveCity>
-  | ReturnType<typeof setCityOffers>
-  | ReturnType<typeof setSortType>
-  | ReturnType<typeof setActiveOffer>;

@@ -6,3 +6,6 @@ export const store = createStore(
   reducer,
   composeWithDevToolsDevelopmentOnly(),
 );
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

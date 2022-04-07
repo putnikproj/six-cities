@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
-import { Dispatch } from 'redux';
-import { connect, ConnectedProps } from 'react-redux';
 import classNames from 'classnames';
 
-import { State } from '../../types/state';
-import { ActionsType, setActiveCity, setActiveOffer, setCityOffers } from '../../store/action';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { setActiveCity, setActiveOffer, setCityOffers } from '../../store/action';
 import { ActiveCity } from '../../types/city';
 import { offers as offersMoks } from '../../mocks/offers';
 
@@ -12,41 +11,21 @@ import Header from '../../components/header/header';
 import CitiesTabs from '../../components/cities-tabs/cities-tabs';
 import Cities from '../../components/cities/cities';
 
-function mapStateToProps(state: State) {
-  return {
-    offers: state.offers,
-    activeCity: state.activeCity,
-  };
-}
+function Main(): JSX.Element {
+  const offers = useTypedSelector((state) => state.offers);
+  const activeCity = useTypedSelector((state) => state.activeCity);
 
-function mapDispatchToProps(dispatch: Dispatch<ActionsType>) {
-  return {
-    loadCities(cityOffers: State['offers']) {
-      dispatch(setCityOffers({ offers: cityOffers }));
-    },
-    changeActiveCity(cityName: State['activeCity']) {
-      dispatch(setActiveCity({ cityName }));
-    },
-    changeActiveOffer(newActiveOffer: State['activeOffer']) {
-      dispatch(setActiveOffer({ activeOffer: newActiveOffer }));
-    },
-  };
-}
+  const dispatch = useTypedDispatch();
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-type CitiesProps = PropsFromRedux;
-
-function Main({ offers, activeCity, loadCities, changeActiveCity, changeActiveOffer }: CitiesProps): JSX.Element {
   useEffect(() => {
     //TODO. For now the logic of gettin cities in accordance to active city will be there
-    loadCities(offersMoks.filter((offer) => offer.city.name === activeCity));
-    changeActiveOffer(null);
-  }, [activeCity, changeActiveOffer, loadCities]);
+    const cityOffers = offersMoks.filter((offer) => offer.city.name === activeCity);
+    dispatch(setCityOffers(cityOffers));
+    dispatch(setActiveOffer(null));
+  }, [activeCity, dispatch]);
 
   const handleCityChange = (newActiveCity: ActiveCity) => {
-    changeActiveCity(newActiveCity);
+    dispatch(setActiveCity(newActiveCity));
   };
 
   return (
@@ -67,4 +46,4 @@ function Main({ offers, activeCity, loadCities, changeActiveCity, changeActiveOf
   );
 }
 
-export default connector(Main);
+export default Main;

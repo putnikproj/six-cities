@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { Dispatch } from 'redux';
-import { connect, ConnectedProps } from 'react-redux';
 import classNames from 'classnames';
 
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { SortType } from '../../const';
 import { OfferSort } from '../../types/offer';
-import { State } from '../../types/state';
-import { ActionsType, setSortType } from '../../store/action';
+import { setSortType } from '../../store/action';
 
 const options = {
   [SortType.DEFAULT]: 'Popular',
@@ -15,26 +14,10 @@ const options = {
   [SortType.RATING_HIGH_TO_LOW]: 'Top rated first',
 };
 
-function mapStateToProps(state: State) {
-  return {
-    sortType: state.sortType,
-  };
-}
+function PlacesSorting() {
+  const sortType = useTypedSelector((state) => state.sortType);
+  const dispatch = useTypedDispatch();
 
-function mapDispatchToProps(dispatch: Dispatch<ActionsType>) {
-  return {
-    changeSortType(sortType: State['sortType']) {
-      dispatch(setSortType({ sortType }));
-    },
-  };
-}
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-type PlacesSortingProps = PropsFromRedux;
-
-function PlacesSorting({ sortType, changeSortType }: PlacesSortingProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleDropdownOpenerClick = () => setIsDropdownOpen((prevState) => !prevState);
@@ -45,7 +28,7 @@ function PlacesSorting({ sortType, changeSortType }: PlacesSortingProps) {
       return;
     }
 
-    changeSortType(newSortType);
+    dispatch(setSortType(newSortType));
   };
 
   return (
@@ -82,4 +65,4 @@ function PlacesSorting({ sortType, changeSortType }: PlacesSortingProps) {
   );
 }
 
-export default connector(PlacesSorting);
+export default PlacesSorting;

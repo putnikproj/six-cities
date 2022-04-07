@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { Offer as OfferType } from '../../types/offer';
 import { User } from '../../types/user';
 import { Review } from '../../types/review';
@@ -141,14 +141,14 @@ type OfferPageProps = {
   reviews: Review[]
 };
 function Offer({ offers, reviews }: OfferPageProps): JSX.Element {
-  const dispatch = useDispatch();
+  const dispatch = useTypedDispatch();
 
   const { id } = useParams();
   const offer = offers.find((elem) => elem.id === Number(id));
   const offersNearby = offers.slice(0, MAX_OFFER_NEAR_PLACES);
 
   useEffect(() => {
-    dispatch(setActiveOffer({ activeOffer: offer || null }));
+    dispatch(setActiveOffer(offer || null));
   }, [dispatch, offer]);
 
   if (!offer) {
