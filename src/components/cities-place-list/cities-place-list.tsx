@@ -1,7 +1,6 @@
-import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { useActions } from '../../hooks/useActions';
 import { Offer } from '../../types/offer';
 import { PlaceCardType } from '../../const';
-import { setActiveOffer } from '../../store/action';
 
 import PlaceCard from '../place-card/place-card';
 import PlacesSorting from '../places-sorting/places-sorting';
@@ -11,16 +10,16 @@ type CitiesPlaceListProps = {
 };
 
 function CitiesPlaceList({ offers }: CitiesPlaceListProps): JSX.Element  {
-  const dispatch = useTypedDispatch();
+  const { setActiveOffer } = useActions();
 
   function handleMouseEnterLeave(offer?: Offer | undefined) {
     return () => {
       if (!offer) {
-        dispatch(setActiveOffer(null));
+        setActiveOffer(null);
         return;
       }
 
-      dispatch(setActiveOffer(offer));
+      setActiveOffer(offer);
     };
   }
 

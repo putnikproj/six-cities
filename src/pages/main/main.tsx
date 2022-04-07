@@ -2,8 +2,7 @@ import { useEffect } from 'react';
 import classNames from 'classnames';
 
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { useTypedDispatch } from '../../hooks/useTypedDispatch';
-import { setActiveCity, setActiveOffer, setCityOffers } from '../../store/action';
+import { useActions } from '../../hooks/useActions';
 import { ActiveCity } from '../../types/city';
 import { offers as offersMoks } from '../../mocks/offers';
 
@@ -15,17 +14,17 @@ function Main(): JSX.Element {
   const offers = useTypedSelector((state) => state.offers);
   const activeCity = useTypedSelector((state) => state.activeCity);
 
-  const dispatch = useTypedDispatch();
+  const { setActiveCity, setActiveOffer, setCityOffers } = useActions();
 
   useEffect(() => {
     //TODO. For now the logic of gettin cities in accordance to active city will be there
     const cityOffers = offersMoks.filter((offer) => offer.city.name === activeCity);
-    dispatch(setCityOffers(cityOffers));
-    dispatch(setActiveOffer(null));
-  }, [activeCity, dispatch]);
+    setCityOffers(cityOffers);
+    setActiveOffer(null);
+  }, [activeCity, setActiveOffer, setCityOffers]);
 
   const handleCityChange = (newActiveCity: ActiveCity) => {
-    dispatch(setActiveCity(newActiveCity));
+    setActiveCity(newActiveCity);
   };
 
   return (

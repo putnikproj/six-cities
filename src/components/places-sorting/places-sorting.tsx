@@ -2,10 +2,9 @@ import { useState } from 'react';
 import classNames from 'classnames';
 
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { useActions } from '../../hooks/useActions';
 import { SortType } from '../../const';
 import { OfferSort } from '../../types/offer';
-import { setSortType } from '../../store/action';
 
 const options = {
   [SortType.DEFAULT]: 'Popular',
@@ -16,7 +15,7 @@ const options = {
 
 function PlacesSorting() {
   const sortType = useTypedSelector((state) => state.sortType);
-  const dispatch = useTypedDispatch();
+  const { setSortType } = useActions();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -28,7 +27,7 @@ function PlacesSorting() {
       return;
     }
 
-    dispatch(setSortType(newSortType));
+    setSortType(newSortType);
   };
 
   return (
