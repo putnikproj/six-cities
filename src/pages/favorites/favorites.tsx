@@ -5,8 +5,8 @@ import Footer from '../../components/footer/footer';
 import FavoritesPlaceList from '../../components/favorites-place-list/favorites-place-list';
 
 type FavoritesPageProps = {
-  offers: Offer[],
-}
+  offers: Offer[];
+};
 
 function Favorites({ offers }: FavoritesPageProps): JSX.Element {
   return (

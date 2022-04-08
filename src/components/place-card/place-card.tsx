@@ -10,24 +10,21 @@ import BookmarkButton from '../bookmark-button/bookmark-button';
 import PremiumLabel from '../premium-label/premium-label';
 
 type PlaceCardProps = {
-  offer: Offer,
-  type: typeof PlaceCardType[keyof typeof PlaceCardType],
-}
+  offer: Offer;
+  type: typeof PlaceCardType[keyof typeof PlaceCardType];
+};
 
 function PlaceCard({ offer, type }: PlaceCardProps): JSX.Element {
-
-  const isPremium = offer.isPremium && (type !== PlaceCardType.FAVORITES);
+  const isPremium = offer.isPremium && type !== PlaceCardType.FAVORITES;
   const classNamePrefix = PlaceCardPrefix[type];
 
   function renderImage(): JSX.Element {
     return (
       <>
-        {isPremium && <PremiumLabel classNames="place-card__mark" /> }
+        {isPremium && <PremiumLabel classNames="place-card__mark" />}
 
-        <div className={classNames(
-          'place-card__image-wrapper',
-          `${classNamePrefix}__image-wrapper`,
-        )}
+        <div
+          className={classNames('place-card__image-wrapper', `${classNamePrefix}__image-wrapper`)}
         >
           <Link to={`${AppRoute.OFFER}/${offer.id}`}>
             <img
@@ -45,23 +42,21 @@ function PlaceCard({ offer, type }: PlaceCardProps): JSX.Element {
 
   function renderInformation(): JSX.Element {
     return (
-      <div className={classNames(
-        'place-card__info',
-        { 'favorites__card-info': type === PlaceCardType.FAVORITES },
-      )}
+      <div
+        className={classNames('place-card__info', {
+          'favorites__card-info': type === PlaceCardType.FAVORITES,
+        })}
       >
-        { /* Renders price and bookmark button */ }
+        {/* Renders price and bookmark button */}
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <BookmarkButton
-            containerClassNames={classNames(
-              'place-card__bookmark-button',
-              'button',
-              { 'place-card__bookmark-button--active': offer.isFavorite },
-            )}
+            containerClassNames={classNames('place-card__bookmark-button', 'button', {
+              'place-card__bookmark-button--active': offer.isFavorite,
+            })}
             imageClassNames="place-card__bookmark-icon"
             isActive={offer.isFavorite}
             width="18"
@@ -69,12 +64,12 @@ function PlaceCard({ offer, type }: PlaceCardProps): JSX.Element {
           />
         </div>
 
-        { /* Renders rating */ }
+        {/* Renders rating */}
         <div className="place-card__rating rating">
           <Stars rating={offer.rating} containerClassNames={'place-card__stars'} />
         </div>
 
-        { /* Renders title and type */ }
+        {/* Renders title and type */}
         <h2 className="place-card__name">
           <Link to={`${AppRoute.OFFER}/${offer.id}`}>{offer.title}</Link>
         </h2>
@@ -84,14 +79,15 @@ function PlaceCard({ offer, type }: PlaceCardProps): JSX.Element {
   }
 
   return (
-    <article className={classNames(
-      'place-card',
-      { [`${classNamePrefix}__card`]: type !== PlaceCardType.MAIN },
-      { [`${classNamePrefix}__place-card`]: type === PlaceCardType.MAIN },
-    )}
+    <article
+      className={classNames(
+        'place-card',
+        { [`${classNamePrefix}__card`]: type !== PlaceCardType.MAIN },
+        { [`${classNamePrefix}__place-card`]: type === PlaceCardType.MAIN },
+      )}
     >
-      { renderImage() }
-      { renderInformation() }
+      {renderImage()}
+      {renderInformation()}
     </article>
   );
 }

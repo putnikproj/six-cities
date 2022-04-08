@@ -11,7 +11,7 @@ import Offer from '../../pages/offer/offer';
 import NotFound from '../../pages/not-found/not-found';
 
 type AppProps = {
-  offers: OfferType[],
+  offers: OfferType[];
 };
 
 function App({ offers }: AppProps): JSX.Element {
@@ -20,14 +20,18 @@ function App({ offers }: AppProps): JSX.Element {
       <Routes>
         <Route path={AppRoute.ROOT} element={<Main />} />
         <Route path={AppRoute.LOGIN} element={<Login />} />
-        <Route path={AppRoute.FAVORITES}
+        <Route
+          path={AppRoute.FAVORITES}
           element={
             <PrivateRoute isAuth={IS_AUTH}>
               <Favorites offers={offers} />
             </PrivateRoute>
           }
         />
-        <Route path={`${AppRoute.OFFER}/:id`} element={<Offer offers={offers} reviews={reviews} />} />
+        <Route
+          path={`${AppRoute.OFFER}/:id`}
+          element={<Offer offers={offers} reviews={reviews} />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

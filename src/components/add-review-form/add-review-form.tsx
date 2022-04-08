@@ -2,13 +2,13 @@ import { ChangeEvent, Fragment, useState, useEffect } from 'react';
 
 // Rating component
 type RatingProps = {
-  score: number,
-  onChange: ({ target }: ChangeEvent<HTMLInputElement>) => void,
+  score: number;
+  onChange: ({ target }: ChangeEvent<HTMLInputElement>) => void;
 };
-function Rating({score, onChange}: RatingProps) {
+function Rating({ score, onChange }: RatingProps) {
   type star = {
-    value: number,
-    title: string,
+    value: number;
+    title: string;
   };
   const stars: star[] = [
     { value: 5, title: 'perfect' },
@@ -20,16 +20,28 @@ function Rating({score, onChange}: RatingProps) {
 
   return (
     <div className="reviews__rating-form form__rating">
-      { stars.map(({ value, title }: star) => (
+      {stars.map(({ value, title }: star) => (
         <Fragment key={value}>
-          <input className="form__rating-input visually-hidden" name="rating" value={value} id={`${value}-stars`} type="radio" checked={score === value} onChange={onChange} />
-          <label htmlFor={`${value}-stars`} className="reviews__rating-label form__rating-label" title={title}>
+          <input
+            className="form__rating-input visually-hidden"
+            name="rating"
+            value={value}
+            id={`${value}-stars`}
+            type="radio"
+            checked={score === value}
+            onChange={onChange}
+          />
+          <label
+            htmlFor={`${value}-stars`}
+            className="reviews__rating-label form__rating-label"
+            title={title}
+          >
             <svg className="form__star-image" width="37" height="33">
               <use xlinkHref="#icon-star"></use>
             </svg>
           </label>
         </Fragment>
-      )) }
+      ))}
     </div>
   );
 }
@@ -61,7 +73,9 @@ function AddReviewForm() {
 
   return (
     <form className="reviews__form form" action="#" method="post">
-      <label className="reviews__label form__label" htmlFor="review">Your review</label>
+      <label className="reviews__label form__label" htmlFor="review">
+        Your review
+      </label>
 
       <Rating score={score} onChange={handleRadioButtonChange} />
 
@@ -72,16 +86,21 @@ function AddReviewForm() {
         placeholder="Tell how was your stay, what you like and what can be improved"
         onChange={handleTextAreaChange}
         value={reviewText}
-      >
-      </textarea>
+      ></textarea>
 
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
-          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
+          To submit review please make sure to set <span className="reviews__star">rating</span> and
+          describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={isSubmitDisabled}>Submit</button>
+        <button
+          className="reviews__submit form__submit button"
+          type="submit"
+          disabled={isSubmitDisabled}
+        >
+          Submit
+        </button>
       </div>
-
     </form>
   );
 }

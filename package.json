@@ -29,7 +29,10 @@
       "react-app",
       "react-app/jest",
       "htmlacademy/react-typescript"
-    ]
+    ],
+    "rules": {
+      "react/jsx-closing-tag-location": "off"
+    }
   },
   "browserslist": {
     "production": [

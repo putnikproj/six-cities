@@ -17,7 +17,11 @@ export function reducer(state = initialState, action: ActionsType): State {
     case ActionType.SET_CITY_OFFERS:
       return { ...state, offers: sortOffers(action.payload.offers, state.sortType) };
     case ActionType.SET_SORT_TYPE:
-      return { ...state, sortType: action.payload.sortType, offers: sortOffers(state.offers, action.payload.sortType) };
+      return {
+        ...state,
+        sortType: action.payload.sortType,
+        offers: sortOffers(state.offers, action.payload.sortType),
+      };
     case ActionType.SET_ACTIVE_OFFER:
       return { ...state, activeOffer: action.payload.activeOffer };
     default:

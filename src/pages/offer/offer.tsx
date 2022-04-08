@@ -24,17 +24,16 @@ function Gallery({ images }: { images: OfferType['images'] }) {
   return (
     <div className="property__gallery-container container">
       <div className="property__gallery">
-        {
-          images.map((image, index) => (
-            (index < MAX_OFFER_IMAGES) && (
+        {images.map(
+          (image, index) =>
+            index < MAX_OFFER_IMAGES && (
               // There I can use index as key, because this elem is static, it won't be changed
               // eslint-disable-next-line react/no-array-index-key
               <div key={index} className="property__image-wrapper">
                 <img className="property__image" src={image} alt="studio" />
               </div>
-            )
-          ))
-        }
+            ),
+        )}
       </div>
     </div>
   );
@@ -43,19 +42,15 @@ function Gallery({ images }: { images: OfferType['images'] }) {
 function OfferInformation({ offer }: { offer: OfferType }) {
   return (
     <>
-      { offer.isPremium && <PremiumLabel classNames="property__mark" /> }
+      {offer.isPremium && <PremiumLabel classNames="property__mark" />}
 
       {/* Title and button bookmark button */}
       <div className="property__name-wrapper">
-        <h1 className="property__name">
-          { offer.title }
-        </h1>
+        <h1 className="property__name">{offer.title}</h1>
         <BookmarkButton
-          containerClassNames={classNames(
-            'property__bookmark-button',
-            'button',
-            { 'property__bookmark-button--active' : offer.isFavorite },
-          )}
+          containerClassNames={classNames('property__bookmark-button', 'button', {
+            'property__bookmark-button--active': offer.isFavorite,
+          })}
           imageClassNames="property__bookmark-icon"
           isActive={offer.isFavorite}
           width="31"
@@ -72,13 +67,13 @@ function OfferInformation({ offer }: { offer: OfferType }) {
       {/* Type, bedrooms, maxAdults */}
       <ul className="property__features">
         <li className="property__feature property__feature--entire">
-          { capitalizeFirstLetter(offer.type) }
+          {capitalizeFirstLetter(offer.type)}
         </li>
         <li className="property__feature property__feature--bedrooms">
-          { offer.bedrooms === 1 ? '1 Bedroom' : `${offer.bedrooms} Bedrooms` }
+          {offer.bedrooms === 1 ? '1 Bedroom' : `${offer.bedrooms} Bedrooms`}
         </li>
         <li className="property__feature property__feature--adults">
-          { offer.maxAdults === 1 ? 'Max 1 adult' : `Max ${offer.maxAdults} adults` }
+          {offer.maxAdults === 1 ? 'Max 1 adult' : `Max ${offer.maxAdults} adults`}
         </li>
       </ul>
 
@@ -92,18 +87,18 @@ function OfferInformation({ offer }: { offer: OfferType }) {
       <div className="property__inside">
         <h2 className="property__inside-title">What&apos;s inside</h2>
         <ul className="property__inside-list">
-          { offer.goods.map((good) => (
+          {offer.goods.map((good) => (
             <li key={good} className="property__inside-item">
               {good}
             </li>
-          )) }
+          ))}
         </ul>
       </div>
     </>
   );
 }
 
-function MeetTheHost({ host, description }: { host: User, description: OfferType['description'] }) {
+function MeetTheHost({ host, description }: { host: User; description: OfferType['description'] }) {
   return (
     <div className="property__host">
       <h2 className="property__host-title">Meet the host</h2>
@@ -111,33 +106,33 @@ function MeetTheHost({ host, description }: { host: User, description: OfferType
       {/* Avatar */}
       <div className="property__host-user user">
         <div
-          className={classNames(
-            'property__avatar-wrapper',
-            'user__avatar-wrapper',
-            { 'property__avatar-wrapper--pro': host.isPro },
-          )}
+          className={classNames('property__avatar-wrapper', 'user__avatar-wrapper', {
+            'property__avatar-wrapper--pro': host.isPro,
+          })}
         >
-          <img className="property__avatar user__avatar" src={host.avatarUrl} width="74" height="74" alt="Host avatar" />
+          <img
+            className="property__avatar user__avatar"
+            src={host.avatarUrl}
+            width="74"
+            height="74"
+            alt="Host avatar"
+          />
         </div>
-        <span className="property__user-name">
-          { host.name }
-        </span>
-        { (host.isPro) && <span className="property__user-status">Pro</span> }
+        <span className="property__user-name">{host.name}</span>
+        {host.isPro && <span className="property__user-status">Pro</span>}
       </div>
 
       {/* Description */}
       <div className="property__description">
-        <p className="property__text">
-          { description }
-        </p>
+        <p className="property__text">{description}</p>
       </div>
     </div>
   );
 }
 
 type OfferPageProps = {
-  offers: OfferType[],
-  reviews: Review[]
+  offers: OfferType[];
+  reviews: Review[];
 };
 function Offer({ offers, reviews }: OfferPageProps): JSX.Element {
   const { setActiveOffer } = useActions();
@@ -155,7 +150,7 @@ function Offer({ offers, reviews }: OfferPageProps): JSX.Element {
   }
 
   return (
-    <div className='page'>
+    <div className="page">
       <Header />
 
       <main className="page__main page__main--property">
@@ -164,22 +159,17 @@ function Offer({ offers, reviews }: OfferPageProps): JSX.Element {
 
           <div className="property__container container">
             <div className="property__wrapper">
-
               <OfferInformation offer={offer} />
               <MeetTheHost host={offer.host} description={offer.description} />
               <section className="property__reviews reviews">
                 <ReviewsList reviews={reviews} maxReviews={MAX_OFFER_REVIEWS} />
                 <AddReviewForm />
               </section>
-
             </div>
           </div>
 
           <section className="property__map map">
-            <Map
-              city={city}
-              points={offersNearby.map((item) => offerToPoint(item))}
-            />
+            <Map city={city} points={offersNearby.map((item) => offerToPoint(item))} />
           </section>
         </section>
 

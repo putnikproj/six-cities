@@ -24,13 +24,13 @@ const activePointerIcon = new Icon({
 });
 
 type MarkerWithId = {
-  instance: Marker<object>,
-  id: Offer['id'],
-}
+  instance: Marker<object>;
+  id: Offer['id'];
+};
 
 type MapProps = {
-  city: City,
-  points: Point[],
+  city: City;
+  points: Point[];
 };
 
 function Map({ city, points }: MapProps): JSX.Element {
@@ -40,19 +40,25 @@ function Map({ city, points }: MapProps): JSX.Element {
   // Map markers. Needs in the second effect, that changes marker's 'activePointerIcon'
   const [mapMarkers, setMapMarkers] = useState<MarkerWithId[]>([]);
   // Active point that is taken from global store
-  const activePoint = useSelector((state: State) => state.activeOffer ? offerToPoint(state.activeOffer) : state.activeOffer);
+  const activePoint = useSelector((state: State) =>
+    state.activeOffer ? offerToPoint(state.activeOffer) : state.activeOffer,
+  );
 
   // Merges points and activePoint in one array if needed
   const shouldAddActivePoint = activePoint && !points.find((point) => point.id === activePoint.id);
-  const allPoints = useMemo(() => shouldAddActivePoint ? [...points, activePoint] : points, [activePoint, points, shouldAddActivePoint]);
+  const allPoints = useMemo(
+    () => (shouldAddActivePoint ? [...points, activePoint] : points),
+    [activePoint, points, shouldAddActivePoint],
+  );
 
   // Finds out if points prop has changed or not to understand should rerender mapPoints or not
   const [prevPointsIds, setPrevPointsIds] = useState<Offer['id'][] | undefined>();
   const pointsIds = allPoints.map((point) => point.id);
-  const havePointsPropChanged =
-    !(prevPointsIds
-      && allPoints.length === prevPointsIds.length
-      && allPoints.every((point) => prevPointsIds.includes(point.id)) );
+  const havePointsPropChanged = !(
+    prevPointsIds &&
+    allPoints.length === prevPointsIds.length &&
+    allPoints.every((point) => prevPointsIds.includes(point.id))
+  );
 
   //* Effects
   // Effect that renders markers on the map ONLY when points prop changes or mapRef created
@@ -88,8 +94,16 @@ function Map({ city, points }: MapProps): JSX.Element {
         marker.instance.removeFrom(map);
       });
     };
-  }, [map, activePoint, havePointsPropChanged, pointsIds, prevPointsIds, mapMarkers, shouldAddActivePoint, allPoints]);
-
+  }, [
+    map,
+    activePoint,
+    havePointsPropChanged,
+    pointsIds,
+    prevPointsIds,
+    mapMarkers,
+    shouldAddActivePoint,
+    allPoints,
+  ]);
 
   // Effect that changes point's 'activePointerIcon', if 'activeOffer' state changes
   useEffect(() => {
@@ -99,13 +113,7 @@ function Map({ city, points }: MapProps): JSX.Element {
     });
   }, [activePoint, mapMarkers]);
 
-  return (
-    <div
-      style={{height: '100%'}}
-      ref={mapRef}
-    >
-    </div>
-  );
+  return <div style={{ height: '100%' }} ref={mapRef}></div>;
 }
 
 export default Map;

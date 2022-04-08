@@ -5,8 +5,8 @@ import { CityName } from '../../const';
 import { ActiveCity } from '../../types/city';
 
 type CitiesTabsProps = {
-  activeCity: ActiveCity,
-  onCityChange: (city: ActiveCity) => void,
+  activeCity: ActiveCity;
+  onCityChange: (city: ActiveCity) => void;
 };
 
 function CitiesTabs({ activeCity, onCityChange }: CitiesTabsProps) {
@@ -21,23 +21,19 @@ function CitiesTabs({ activeCity, onCityChange }: CitiesTabsProps) {
       <div className="tabs">
         <section className="locations container">
           <ul className="locations__list tabs__list">
-
             {Object.values(CityName).map((city) => (
               <li key={city} className="locations__item">
                 <a
                   onClick={handleLinkClick(city)}
-                  className={classNames(
-                    'locations__item-link',
-                    'tabs__item',
-                    { 'tabs__item--active': activeCity === city },
-                  )}
+                  className={classNames('locations__item-link', 'tabs__item', {
+                    'tabs__item--active': activeCity === city,
+                  })}
                   href="/"
                 >
                   <span>{city}</span>
                 </a>
               </li>
             ))}
-
           </ul>
         </section>
       </div>

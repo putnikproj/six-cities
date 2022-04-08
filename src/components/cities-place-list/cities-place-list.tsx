@@ -6,10 +6,10 @@ import PlaceCard from '../place-card/place-card';
 import PlacesSorting from '../places-sorting/places-sorting';
 
 type CitiesPlaceListProps = {
-  offers: Offer[],
+  offers: Offer[];
 };
 
-function CitiesPlaceList({ offers }: CitiesPlaceListProps): JSX.Element  {
+function CitiesPlaceList({ offers }: CitiesPlaceListProps): JSX.Element {
   const { setActiveOffer } = useActions();
 
   function handleMouseEnterLeave(offer?: Offer | undefined) {
@@ -27,7 +27,9 @@ function CitiesPlaceList({ offers }: CitiesPlaceListProps): JSX.Element  {
     <section className="cities__places places">
       {/* Title */}
       <h2 className="visually-hidden">Places</h2>
-      <b className="places__found">{`${offers.length} ${offers.length === 1 ? 'place' : 'places'}`} to stay in Amsterdam</b>
+      <b className="places__found">
+        {`${offers.length} ${offers.length === 1 ? 'place' : 'places'}`} to stay in Amsterdam
+      </b>
 
       {/* Sorting */}
       <PlacesSorting />

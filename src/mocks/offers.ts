@@ -11,7 +11,8 @@ export const offers: Offer[] = [
       },
       name: 'Amsterdam',
     },
-    description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
+    description:
+      'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
     goods: ['Heating', 'Kitchen', 'Cable TV', 'Washing machine', 'Coffee machine', 'Dishwasher'],
     host: {
       avatarUrl: 'img/avatar-angelina.jpg',
@@ -20,7 +21,15 @@ export const offers: Offer[] = [
       name: 'Angelina',
     },
     id: 1,
-    images: ['img/room.jpg', 'img/apartment-01.jpg', 'img/apartment-02.jpg', 'img/apartment-02.jpg', 'img/room.jpg', 'img/room.jpg', 'img/room.jpg'],
+    images: [
+      'img/room.jpg',
+      'img/apartment-01.jpg',
+      'img/apartment-02.jpg',
+      'img/apartment-02.jpg',
+      'img/room.jpg',
+      'img/room.jpg',
+      'img/room.jpg',
+    ],
     isFavorite: false,
     isPremium: false,
     location: {
@@ -45,7 +54,8 @@ export const offers: Offer[] = [
       },
       name: 'Paris',
     },
-    description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
+    description:
+      'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
     goods: ['Heating', 'Kitchen', 'Cable TV', 'Washing machine', 'Coffee machine', 'Dishwasher'],
     host: {
       avatarUrl: 'img/1.png',
@@ -79,7 +89,8 @@ export const offers: Offer[] = [
       },
       name: 'Amsterdam',
     },
-    description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
+    description:
+      'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
     goods: ['Heating', 'Kitchen', 'Cable TV', 'Washing machine', 'Coffee machine', 'Dishwasher'],
     host: {
       avatarUrl: 'img/1.png',

@@ -40,23 +40,20 @@ function PlacesSorting() {
         </svg>
       </span>
       <ul
-        className={classNames(
-          'places__options',
-          'places__options--custom',
-          { 'places__options--opened': isDropdownOpen },
-        )}
+        className={classNames('places__options', 'places__options--custom', {
+          'places__options--opened': isDropdownOpen,
+        })}
       >
         {Object.entries(options).map(([option, text]) => (
           <li
             key={option}
-            className={classNames(
-              'places__option',
-              { 'places__option--active': sortType === option },
-            )}
+            className={classNames('places__option', {
+              'places__option--active': sortType === option,
+            })}
             tabIndex={0}
             onClick={handleDropdownClick(option as OfferSort)}
           >
-            { text }
+            {text}
           </li>
         ))}
       </ul>

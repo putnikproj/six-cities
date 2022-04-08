@@ -32,11 +32,9 @@ function Main(): JSX.Element {
       <Header />
 
       <main
-        className={classNames(
-          'page__main',
-          'page__main--index',
-          { 'page__main--index-empty': offers.length === 0 },
-        )}
+        className={classNames('page__main', 'page__main--index', {
+          'page__main--index-empty': offers.length === 0,
+        })}
       >
         <CitiesTabs activeCity={activeCity} onCityChange={handleCityChange} />
         <Cities activeCity={activeCity} offers={offers} />
