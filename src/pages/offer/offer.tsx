@@ -2,13 +2,14 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { useActions } from '../../hooks/useActions';
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { Offer as OfferType } from '../../types/offer';
 import { User } from '../../types/user';
 import { Review } from '../../types/review';
 import { capitalizeFirstLetter, offerToPoint } from '../../util';
 import { MAX_OFFER_IMAGES, MAX_OFFER_NEAR_PLACES, MAX_OFFER_REVIEWS } from '../../const';
 import { city } from '../../mocks/city';
+import { setActiveOffer } from '../../store/action';
 
 import NotFound from '../not-found/not-found';
 import AddReviewForm from '../../components/add-review-form/add-review-form';
@@ -135,15 +136,15 @@ type OfferPageProps = {
   reviews: Review[];
 };
 function Offer({ offers, reviews }: OfferPageProps): JSX.Element {
-  const { setActiveOffer } = useActions();
+  const dispatch = useTypedDispatch();
 
   const { id } = useParams();
   const offer = offers.find((elem) => elem.id === Number(id));
   const offersNearby = offers.slice(0, MAX_OFFER_NEAR_PLACES);
 
   useEffect(() => {
-    setActiveOffer(offer || null);
-  }, [offer, setActiveOffer]);
+    dispatch(setActiveOffer(offer || null));
+  }, [dispatch, offer]);
 
   if (!offer) {
     return <NotFound />;
