@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
-import { SortType } from '../../const';
+import { SortType } from '../../helpers/const';
 import { setSortType } from '../../store/action';
 
 const options = {

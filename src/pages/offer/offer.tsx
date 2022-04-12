@@ -6,8 +6,8 @@ import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { Offer as OfferType } from '../../types/offer';
 import { User } from '../../types/user';
 import { Review } from '../../types/review';
-import { capitalizeFirstLetter, offerToPoint } from '../../util';
-import { MAX_OFFER_IMAGES, MAX_OFFER_NEAR_PLACES, MAX_OFFER_REVIEWS } from '../../const';
+import { capitalizeFirstLetter, offerToPoint } from '../../helpers/util';
+import { MAX_OFFER_IMAGES, MAX_OFFER_NEAR_PLACES, MAX_OFFER_REVIEWS } from '../../helpers/const';
 import { city } from '../../mocks/city';
 import { setActiveOffer } from '../../store/action';
 

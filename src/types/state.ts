@@ -1,4 +1,4 @@
-import { CityName, SortType } from '../const';
+import { CityName, SortType } from '../helpers/const';
 import { Offer } from './offer';
 
 export type State = {

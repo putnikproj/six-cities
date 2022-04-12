@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { setActiveCity, setActiveOffer, setCityOffers } from '../../store/action';
-import { CityName } from '../../const';
+import { CityName } from '../../helpers/const';
 import { offers as offersMoks } from '../../mocks/offers';
 
 import Header from '../../components/header/header';

@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { AppRoute, PlaceCardPrefix, PlaceCardType } from '../../const';
+import { AppRoute, PlaceCardPrefix, PlaceCardType } from '../../helpers/const';
 import { Offer } from '../../types/offer';
-import { capitalizeFirstLetter } from '../../util';
+import { capitalizeFirstLetter } from '../../helpers/util';
 
 import Stars from '../stars/stars';
 import BookmarkButton from '../bookmark-button/bookmark-button';

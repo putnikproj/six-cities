@@ -1,5 +1,5 @@
-import { ActionType, CityName, SortType } from '../const';
-import { sortOffers } from '../sort-offers';
+import { ActionType, CityName, SortType } from '../helpers/const';
+import { sortOffers } from '../helpers/sort-offers';
 import { State } from '../types/state';
 import { ActionsType } from '../types/actions-type';
 

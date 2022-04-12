@@ -1,4 +1,4 @@
-import { AppRoute, IS_AUTH } from '../../const';
+import { AppRoute, IS_AUTH } from '../../helpers/const';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import PrivateRoute from '../private-route/private-route';
 import { Offer as OfferType } from '../../types/offer';

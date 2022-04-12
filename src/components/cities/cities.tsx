@@ -1,7 +1,7 @@
 import { city } from '../../mocks/city';
-import { CityName } from '../../const';
+import { CityName } from '../../helpers/const';
 import { Offer } from '../../types/offer';
-import { offerToPoint } from '../../util';
+import { offerToPoint } from '../../helpers/util';
 
 import CitiesPlaceList from '../cities-place-list/cities-place-list';
 import Map from '../map/map';

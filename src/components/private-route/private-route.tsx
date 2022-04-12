@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { AppRoute } from '../../const';
+import { AppRoute } from '../../helpers/const';
 
 type PrivateRouteProps = PropsWithChildren<{
   isAuth: boolean;

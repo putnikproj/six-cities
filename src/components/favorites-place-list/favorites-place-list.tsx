@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { PlaceCardType } from '../../const';
+import { PlaceCardType } from '../../helpers/const';
 
 import { Offer } from '../../types/offer';
 

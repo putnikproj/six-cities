@@ -1,6 +1,6 @@
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { Offer } from '../../types/offer';
-import { PlaceCardType } from '../../const';
+import { PlaceCardType } from '../../helpers/const';
 import { setActiveOffer } from '../../store/action';
 
 import PlaceCard from '../place-card/place-card';
