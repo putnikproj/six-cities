@@ -1,6 +1,6 @@
 import { ActionType, CityName, SortType } from '../helpers/const';
 import { State } from '../types/state';
-import { ActionsType } from '../types/actions-type';
+import { ActionsType } from '../types/store';
 
 const initialState: State = {
   activeCity: CityName.PARIS,
