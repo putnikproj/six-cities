@@ -1,5 +1,7 @@
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { Offer } from '../../types/offer';
+import { sortOffers } from '../../helpers/sort-offers';
 import { PlaceCardType } from '../../helpers/const';
 import { setActiveOffer } from '../../store/action';
 
@@ -11,6 +13,7 @@ type CitiesPlaceListProps = {
 };
 
 function CitiesPlaceList({ offers }: CitiesPlaceListProps): JSX.Element {
+  const sortType = useTypedSelector((state) => state.sortType);
   const dispatch = useTypedDispatch();
 
   function handleMouseEnterLeave(offer?: Offer | undefined) {
@@ -33,11 +36,11 @@ function CitiesPlaceList({ offers }: CitiesPlaceListProps): JSX.Element {
       </b>
 
       {/* Sorting */}
-      <PlacesSorting />
+      <PlacesSorting sortType={sortType} />
 
       {/* Places (offers) */}
       <div className="cities__places-list places__list tabs__content">
-        {offers.map((offer) => (
+        {sortOffers(offers, sortType).map((offer) => (
           <div
             key={offer.id}
             onMouseEnter={handleMouseEnterLeave(offer)}

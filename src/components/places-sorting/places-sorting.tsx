@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import classNames from 'classnames';
 
-import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { SortType } from '../../helpers/const';
 import { setSortType } from '../../store/action';
@@ -13,8 +12,11 @@ const options = {
   [SortType.RATING_HIGH_TO_LOW]: 'Top rated first',
 };
 
-function PlacesSorting() {
-  const sortType = useTypedSelector((state) => state.sortType);
+type PlacesSoringProps = {
+  sortType: SortType;
+};
+
+function PlacesSorting({ sortType }: PlacesSoringProps): JSX.Element {
   const dispatch = useTypedDispatch();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
