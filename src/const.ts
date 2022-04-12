@@ -1,54 +1,57 @@
-export const AppRoute = {
-  ROOT: '/',
-  LOGIN: '/login',
-  FAVORITES: '/favorites',
-  OFFER: '/offer',
-} as const;
-
-export const ActionType = {
-  SET_ACTIVE_CITY: 'main/setActiveCity',
-  SET_CITY_OFFERS: 'main/setCityOffers',
-  SET_SORT_TYPE: 'main/setSortType',
-  SET_ACTIVE_OFFER: 'main/setActiveOffer',
-} as const;
-
-export const PlaceCardType = {
-  MAIN: 'MAIN',
-  FAVORITES: 'FAVORITES',
-  OFFER: 'OFFER',
-} as const;
-
-export const PlaceCardPrefix = {
-  MAIN: 'cities',
-  FAVORITES: 'favorites',
-  OFFER: 'near-places',
-} as const;
-
-export const CityName = {
-  PARIS: 'Paris',
-  COLOGNE: 'Cologne',
-  BRUSSELS: 'Brussels',
-  AMSTERDAM: 'Amsterdam',
-  HAMBURG: 'Hamburg',
-  DUSSELDORF: 'Dusseldorf',
-} as const;
-
-export const PointerImage = {
-  DEFAULT: 'img/pin.svg',
-  ACTIVE: 'img/pin-active.svg',
-} as const;
-
-export const SortType = {
-  DEFAULT: 'Popular',
-  PRICE_LOW_TO_HIGH: 'PriceLowToHigh',
-  PRICE_HIGH_TO_LOW: 'PriceHighToLow',
-  RATING_HIGH_TO_LOW: 'TopRatedFirst',
-} as const;
-
 export const IS_AUTH = true;
-
 export const MAX_OFFER_NEAR_PLACES = 3;
-
 export const MAX_OFFER_IMAGES = 6;
-
 export const MAX_OFFER_REVIEWS = 10;
+
+// Routes
+export enum AppRoute {
+  ROOT = '/',
+  LOGIN = '/login',
+  FAVORITES = '/favorites',
+  OFFER = '/offer',
+}
+
+// Actions
+export enum ActionType {
+  SET_ACTIVE_CITY = 'main/setActiveCity',
+  SET_CITY_OFFERS = 'main/setCityOffers',
+  SET_SORT_TYPE = 'main/setSortType',
+  SET_ACTIVE_OFFER = 'main/setActiveOffer',
+}
+
+// Cities
+export enum CityName {
+  PARIS = 'Paris',
+  COLOGNE = 'Cologne',
+  BRUSSELS = 'Brussels',
+  AMSTERDAM = 'Amsterdam',
+  HAMBURG = 'Hamburg',
+  DUSSELDORF = 'Dusseldorf',
+}
+
+// Main page
+export enum SortType {
+  DEFAULT = 'Popular',
+  PRICE_LOW_TO_HIGH = 'PriceLowToHigh',
+  PRICE_HIGH_TO_LOW = 'PriceHighToLow',
+  RATING_HIGH_TO_LOW = 'TopRatedFirst',
+}
+
+// Place-card component
+export enum PlaceCardType {
+  MAIN = 'MAIN',
+  FAVORITES = 'FAVORITES',
+  OFFER = 'OFFER',
+}
+
+export enum PlaceCardPrefix {
+  MAIN = 'cities',
+  FAVORITES = 'favorites',
+  OFFER = 'near-places',
+}
+
+// Map component
+export enum PointerImage {
+  DEFAULT = 'img/pin.svg',
+  ACTIVE = 'img/pin-active.svg',
+}

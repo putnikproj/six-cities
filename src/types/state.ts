@@ -1,9 +1,9 @@
-import { ActiveCity } from './city';
-import { Offer, OfferSort } from './offer';
+import { CityName, SortType } from '../const';
+import { Offer } from './offer';
 
 export type State = {
-  activeCity: ActiveCity;
+  activeCity: CityName;
   offers: Offer[];
-  sortType: OfferSort;
+  sortType: SortType;
   activeOffer: Offer | null;
 };

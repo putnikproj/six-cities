@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { setActiveCity, setActiveOffer, setCityOffers } from '../../store/action';
-import { ActiveCity } from '../../types/city';
+import { CityName } from '../../const';
 import { offers as offersMoks } from '../../mocks/offers';
 
 import Header from '../../components/header/header';
@@ -24,7 +24,7 @@ function Main(): JSX.Element {
     dispatch(setActiveOffer(null));
   }, [activeCity, dispatch]);
 
-  const handleCityChange = (newActiveCity: ActiveCity) => {
+  const handleCityChange = (newActiveCity: CityName) => {
     dispatch(setActiveCity(newActiveCity));
   };
 

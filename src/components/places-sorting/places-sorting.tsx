@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { SortType } from '../../const';
-import { OfferSort } from '../../types/offer';
 import { setSortType } from '../../store/action';
 
 const options = {
@@ -22,7 +21,7 @@ function PlacesSorting() {
 
   const handleDropdownOpenerClick = () => setIsDropdownOpen((prevState) => !prevState);
 
-  const handleDropdownClick = (newSortType: OfferSort) => () => {
+  const handleDropdownClick = (newSortType: SortType) => () => {
     setIsDropdownOpen(false);
     if (newSortType === sortType) {
       return;
@@ -52,7 +51,7 @@ function PlacesSorting() {
               'places__option--active': sortType === option,
             })}
             tabIndex={0}
-            onClick={handleDropdownClick(option as OfferSort)}
+            onClick={handleDropdownClick(option as SortType)}
           >
             {text}
           </li>

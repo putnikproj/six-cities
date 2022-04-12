@@ -11,7 +11,7 @@ import PremiumLabel from '../premium-label/premium-label';
 
 type PlaceCardProps = {
   offer: Offer;
-  type: typeof PlaceCardType[keyof typeof PlaceCardType];
+  type: PlaceCardType;
 };
 
 function PlaceCard({ offer, type }: PlaceCardProps): JSX.Element {

@@ -1,5 +1,5 @@
 import { city } from '../../mocks/city';
-import { ActiveCity } from '../../types/city';
+import { CityName } from '../../const';
 import { Offer } from '../../types/offer';
 import { offerToPoint } from '../../util';
 
@@ -8,7 +8,7 @@ import Map from '../map/map';
 
 type CitiesProps = {
   offers: Offer[];
-  activeCity: ActiveCity;
+  activeCity: CityName;
 };
 
 function Cities({ offers, activeCity }: CitiesProps) {

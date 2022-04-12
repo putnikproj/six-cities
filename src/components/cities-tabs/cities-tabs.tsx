@@ -2,15 +2,14 @@ import { SyntheticEvent } from 'react';
 import classNames from 'classnames';
 
 import { CityName } from '../../const';
-import { ActiveCity } from '../../types/city';
 
 type CitiesTabsProps = {
-  activeCity: ActiveCity;
-  onCityChange: (city: ActiveCity) => void;
+  activeCity: CityName;
+  onCityChange: (city: CityName) => void;
 };
 
 function CitiesTabs({ activeCity, onCityChange }: CitiesTabsProps) {
-  const handleLinkClick = (city: ActiveCity) => (evt: SyntheticEvent<HTMLAnchorElement>) => {
+  const handleLinkClick = (city: CityName) => (evt: SyntheticEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
     onCityChange(city);
   };
