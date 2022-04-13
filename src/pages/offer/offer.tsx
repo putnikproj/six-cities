@@ -12,15 +12,15 @@ import { city } from '../../mocks/city';
 import { reviews } from '../../mocks/reviews';
 import { loadReviews, setActiveOffer } from '../../store/action';
 
-import NotFound from '../not-found/not-found';
-import AddReviewForm from '../../components/add-review-form/add-review-form';
-import Header from '../../components/header/header';
-import OfferPlaceList from '../../components/offer-place-list/offer-place-list';
-import Stars from '../../components/stars/stars';
-import BookmarkButton from '../../components/bookmark-button/bookmark-button';
-import PremiumLabel from '../../components/premium-label/premium-label';
-import ReviewsList from '../../components/reviews-list/reviews-list';
-import Map from '../../components/map/map';
+import NotFound from '../not-found';
+import Map from '../../components/map';
+import Stars from '../../components/stars';
+import Header from '../../components/header';
+import ReviewsList from '../../components/reviews-list';
+import PremiumLabel from '../../components/premium-label';
+import AddReviewForm from '../../components/add-review-form';
+import BookmarkButton from '../../components/bookmark-button';
+import OfferPlaceList from '../../components/offer-place-list';
 
 function Gallery({ images }: { images: OfferType['images'] }) {
   return (

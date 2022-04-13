@@ -7,9 +7,9 @@ import { setActiveCity, setActiveOffer, setCityOffers } from '../../store/action
 import { CityName } from '../../helpers/const';
 import { offers as offersMoks } from '../../mocks/offers';
 
-import Header from '../../components/header/header';
-import CitiesTabs from '../../components/cities-tabs/cities-tabs';
-import Cities from '../../components/cities/cities';
+import Header from '../../components/header';
+import CitiesTabs from '../../components/cities-tabs';
+import Cities from '../../components/cities';
 
 function Main(): JSX.Element {
   const offers = useTypedSelector((state) => state.offers);

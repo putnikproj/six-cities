@@ -5,8 +5,8 @@ import { sortOffers } from '../../helpers/sort-offers';
 import { PlaceCardType } from '../../helpers/const';
 import { setActiveOffer } from '../../store/action';
 
-import PlaceCard from '../place-card/place-card';
-import PlacesSorting from '../places-sorting/places-sorting';
+import PlaceCard from '../place-card';
+import PlacesSorting from '../places-sorting';
 
 type CitiesPlaceListProps = {
   offers: Offer[];

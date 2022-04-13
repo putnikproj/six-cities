@@ -1,7 +1,7 @@
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { MAX_OFFER_REVIEWS } from '../../helpers/const';
 
-import ReviewBlock from '../review/review';
+import Review from '../review';
 
 function ReviewsList(): JSX.Element {
   const reviews = useTypedSelector((state) => state.reviews);
@@ -14,7 +14,7 @@ function ReviewsList(): JSX.Element {
       <ul className="reviews__list">
         {reviews.map(
           (review, index) =>
-            index < MAX_OFFER_REVIEWS && <ReviewBlock key={review.id} review={review} />,
+            index < MAX_OFFER_REVIEWS && <Review key={review.id} review={review} />,
         )}
       </ul>
     </>

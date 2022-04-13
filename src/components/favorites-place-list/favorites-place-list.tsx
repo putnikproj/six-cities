@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { PlaceCardType } from '../../helpers/const';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
-import PlaceCard from '../place-card/place-card';
+import PlaceCard from '../place-card';
 
 function FavoritesPlaceList(): JSX.Element {
   const offers = useTypedSelector((state) => state.offers);

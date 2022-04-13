@@ -3,8 +3,8 @@ import { CityName } from '../../helpers/const';
 import { Offer } from '../../types/offer';
 import { offerToPoint } from '../../helpers/util';
 
-import CitiesPlaceList from '../cities-place-list/cities-place-list';
-import Map from '../map/map';
+import CitiesPlaceList from '../cities-place-list';
+import Map from '../map';
 
 type CitiesProps = {
   offers: Offer[];

@@ -1,7 +1,7 @@
 import { Offer } from '../../types/offer';
 import { PlaceCardType } from '../../helpers/const';
 
-import PlaceCard from '../place-card/place-card';
+import PlaceCard from '../place-card';
 
 type OfferPlaceListProps = {
   offers: Offer[];

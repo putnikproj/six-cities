@@ -1,6 +1,6 @@
-import Header from '../../components/header/header';
-import Footer from '../../components/footer/footer';
-import FavoritesPlaceList from '../../components/favorites-place-list/favorites-place-list';
+import Header from '../../components/header';
+import Footer from '../../components/footer';
+import FavoritesPlaceList from '../../components/favorites-place-list';
 
 function Favorites(): JSX.Element {
   return (

@@ -5,9 +5,9 @@ import { AppRoute, PlaceCardPrefix, PlaceCardType } from '../../helpers/const';
 import { Offer } from '../../types/offer';
 import { capitalizeFirstLetter } from '../../helpers/util';
 
-import Stars from '../stars/stars';
-import BookmarkButton from '../bookmark-button/bookmark-button';
-import PremiumLabel from '../premium-label/premium-label';
+import Stars from '../stars';
+import PremiumLabel from '../premium-label';
+import BookmarkButton from '../bookmark-button';
 
 type PlaceCardProps = {
   offer: Offer;

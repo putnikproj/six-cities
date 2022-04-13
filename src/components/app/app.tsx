@@ -1,12 +1,12 @@
 import { AppRoute, IS_AUTH } from '../../helpers/const';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import PrivateRoute from '../private-route/private-route';
+import PrivateRoute from '../private-route';
 
-import Main from '../../pages/main/main';
-import Login from '../../pages/login/login';
-import Favorites from '../../pages/favorites/favorites';
-import Offer from '../../pages/offer/offer';
-import NotFound from '../../pages/not-found/not-found';
+import Main from '../../pages/main';
+import Offer from '../../pages/offer';
+import Login from '../../pages/login';
+import NotFound from '../../pages/not-found';
+import Favorites from '../../pages/favorites';
 
 function App(): JSX.Element {
   return (

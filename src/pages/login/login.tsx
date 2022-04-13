@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import Header from '../../components/header/header';
+import Header from '../../components/header';
 
 function LoginForm() {
   const [email, setEmail] = useState('');

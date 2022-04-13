@@ -1,10 +1,12 @@
-import { Review } from '../../types/review';
-import Stars from '../stars/stars';
+import { Review as ReviewType } from '../../types/review';
+
+import Stars from '../stars';
 
 type ReviewBlockProps = {
-  review: Review;
+  review: ReviewType;
 };
-function ReviewBlock({ review }: ReviewBlockProps): JSX.Element {
+
+function Review({ review }: ReviewBlockProps): JSX.Element {
   return (
     <li className="reviews__item">
       {/* Avatar */}
@@ -39,4 +41,4 @@ function ReviewBlock({ review }: ReviewBlockProps): JSX.Element {
   );
 }
 
-export default ReviewBlock;
+export default Review;
