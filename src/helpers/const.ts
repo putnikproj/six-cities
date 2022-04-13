@@ -17,6 +17,7 @@ export enum ActionType {
   SET_CITY_OFFERS = 'main/setCityOffers',
   SET_SORT_TYPE = 'main/setSortType',
   SET_ACTIVE_OFFER = 'main/setActiveOffer',
+  LOAD_REVIEWS = 'offer/loadReviews',
 }
 
 // Cities

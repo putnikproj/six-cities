@@ -24,3 +24,9 @@ export const setActiveOffer = (activeOffer: State['activeOffer']) =>
     type: ActionType.SET_ACTIVE_OFFER,
     payload: { activeOffer },
   } as const);
+
+export const loadReviews = (reviews: State['reviews']) =>
+  ({
+    type: ActionType.LOAD_REVIEWS,
+    payload: { reviews },
+  } as const);

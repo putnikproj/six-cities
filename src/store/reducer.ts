@@ -7,6 +7,7 @@ const initialState: State = {
   offers: [],
   sortType: SortType.DEFAULT,
   activeOffer: null,
+  reviews: [],
 };
 
 export function reducer(state = initialState, action: ActionsType): State {
@@ -19,6 +20,8 @@ export function reducer(state = initialState, action: ActionsType): State {
       return { ...state, sortType: action.payload.sortType };
     case ActionType.SET_ACTIVE_OFFER:
       return { ...state, activeOffer: action.payload.activeOffer };
+    case ActionType.LOAD_REVIEWS:
+      return { ...state, reviews: action.payload.reviews };
     default:
       return state;
   }

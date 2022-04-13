@@ -2,14 +2,15 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { Offer as OfferType } from '../../types/offer';
 import { User } from '../../types/user';
-import { Review } from '../../types/review';
 import { capitalizeFirstLetter, offerToPoint } from '../../helpers/util';
-import { MAX_OFFER_IMAGES, MAX_OFFER_NEAR_PLACES, MAX_OFFER_REVIEWS } from '../../helpers/const';
+import { MAX_OFFER_IMAGES, MAX_OFFER_NEAR_PLACES } from '../../helpers/const';
 import { city } from '../../mocks/city';
-import { setActiveOffer } from '../../store/action';
+import { reviews } from '../../mocks/reviews';
+import { loadReviews, setActiveOffer } from '../../store/action';
 
 import NotFound from '../not-found/not-found';
 import AddReviewForm from '../../components/add-review-form/add-review-form';
@@ -131,11 +132,8 @@ function MeetTheHost({ host, description }: { host: User; description: OfferType
   );
 }
 
-type OfferPageProps = {
-  offers: OfferType[];
-  reviews: Review[];
-};
-function Offer({ offers, reviews }: OfferPageProps): JSX.Element {
+function Offer(): JSX.Element {
+  const offers = useTypedSelector((state) => state.offers);
   const dispatch = useTypedDispatch();
 
   const { id } = useParams();
@@ -144,6 +142,7 @@ function Offer({ offers, reviews }: OfferPageProps): JSX.Element {
 
   useEffect(() => {
     dispatch(setActiveOffer(offer || null));
+    dispatch(loadReviews(reviews));
   }, [dispatch, offer]);
 
   if (!offer) {
@@ -163,7 +162,7 @@ function Offer({ offers, reviews }: OfferPageProps): JSX.Element {
               <OfferInformation offer={offer} />
               <MeetTheHost host={offer.host} description={offer.description} />
               <section className="property__reviews reviews">
-                <ReviewsList reviews={reviews} maxReviews={MAX_OFFER_REVIEWS} />
+                <ReviewsList />
                 <AddReviewForm />
               </section>
             </div>

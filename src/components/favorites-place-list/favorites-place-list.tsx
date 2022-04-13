@@ -1,15 +1,12 @@
 import { Link } from 'react-router-dom';
 import { PlaceCardType } from '../../helpers/const';
-
-import { Offer } from '../../types/offer';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 import PlaceCard from '../place-card/place-card';
 
-type FavoritesPlaceCardProps = {
-  offers: Offer[];
-};
+function FavoritesPlaceList(): JSX.Element {
+  const offers = useTypedSelector((state) => state.offers);
 
-function FavoritesPlaceList({ offers }: FavoritesPlaceCardProps): JSX.Element {
   // This is needed to group cards by city.
   // This is a dictionary, where key is name of city and value is an array, where we push cards.
   type LocationItems = {

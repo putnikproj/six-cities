@@ -2,6 +2,7 @@ type StarsProps = {
   containerClassNames: string;
   rating: number;
 };
+
 function Stars({ containerClassNames, rating }: StarsProps) {
   return (
     <div className={`rating__stars ${containerClassNames}`}>

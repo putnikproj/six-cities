@@ -1,4 +1,4 @@
-type BookmarkButtonType = {
+type BookmarkButtonProps = {
   containerClassNames: string;
   imageClassNames: string;
   isActive: boolean;
@@ -14,7 +14,7 @@ function BookmarkButton({
   width,
   height,
   onClick,
-}: BookmarkButtonType) {
+}: BookmarkButtonProps) {
   return (
     <button className={containerClassNames} type="button" onClick={onClick}>
       <svg className={imageClassNames} width={width} height={height}>
