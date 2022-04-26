@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { AppRoute, PlaceCardPrefix, PlaceCardType } from '../../helpers/const';
-import { Offer } from '../../types/offer';
+import { Offer } from '../../types';
 import { capitalizeFirstLetter } from '../../helpers/util';
 
 import Stars from '../stars';

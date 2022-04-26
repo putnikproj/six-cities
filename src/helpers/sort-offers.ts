@@ -1,5 +1,5 @@
 import { SortType } from './const';
-import { Offer } from '../types/offer';
+import { Offer } from '../types';
 
 export function sortOffers(offers: Offer[], sortType: SortType): Offer[] {
   switch (sortType) {

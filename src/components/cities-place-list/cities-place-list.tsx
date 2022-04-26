@@ -1,6 +1,6 @@
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
-import { Offer } from '../../types/offer';
+import { Offer } from '../../types';
 import { sortOffers } from '../../helpers/sort-offers';
 import { PlaceCardType } from '../../helpers/const';
 import { setActiveOffer } from '../../store/action';

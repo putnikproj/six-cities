@@ -1,4 +1,4 @@
-import { Offer } from '../../types/offer';
+import { Offer } from '../../types';
 import { PlaceCardType } from '../../helpers/const';
 
 import PlaceCard from '../place-card';

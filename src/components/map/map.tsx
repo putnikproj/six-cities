@@ -6,10 +6,7 @@ import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
 import { PointerImage } from '../../helpers/const';
 import { offerToPoint } from '../../helpers/util';
-import { City } from '../../types/city';
-import { Point } from '../../types/point';
-import { State } from '../../types/state';
-import { Offer } from '../../types/offer';
+import { City, Point, State, Offer } from '../../types';
 
 const defaultPointerIcon = new Icon({
   iconUrl: PointerImage.DEFAULT,

@@ -1,5 +1,5 @@
 import { ActionType } from '../helpers/const';
-import { State } from '../types/state';
+import { State } from '../types';
 
 export const setActiveCity = (cityName: State['activeCity']) =>
   ({

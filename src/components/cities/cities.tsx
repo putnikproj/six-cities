@@ -1,6 +1,6 @@
 import { city } from '../../mocks/city';
 import { CityName } from '../../helpers/const';
-import { Offer } from '../../types/offer';
+import { Offer } from '../../types';
 import { offerToPoint } from '../../helpers/util';
 
 import CitiesPlaceList from '../cities-place-list';

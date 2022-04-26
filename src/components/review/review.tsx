@@ -1,4 +1,4 @@
-import { Review as ReviewType } from '../../types/review';
+import { Review as ReviewType } from '../../types';
 
 import Stars from '../stars';
 

@@ -4,8 +4,7 @@ import classNames from 'classnames';
 
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
-import { Offer as OfferType } from '../../types/offer';
-import { User } from '../../types/user';
+import { Offer as OfferType, User } from '../../types';
 import { capitalizeFirstLetter, offerToPoint } from '../../helpers/util';
 import { MAX_OFFER_IMAGES, MAX_OFFER_NEAR_PLACES } from '../../helpers/const';
 import { city } from '../../mocks/city';
