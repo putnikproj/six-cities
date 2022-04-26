@@ -1,4 +1,4 @@
-import { CityName, SortType } from '../helpers/const';
+import { CityName, SortType } from '../helpers/enum';
 import { Offer } from './offer';
 import { Review } from './review';
 

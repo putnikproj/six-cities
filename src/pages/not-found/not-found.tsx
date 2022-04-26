@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../helpers/const';
+import { AppRoute } from '../../helpers/enum';
 import Header from '../../components/header';
 
 function NotFound(): JSX.Element {

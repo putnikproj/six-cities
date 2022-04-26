@@ -1,4 +1,4 @@
-import { SortType } from './const';
+import { SortType } from './enum';
 import { Offer } from '../types';
 
 export function sortOffers(offers: Offer[], sortType: SortType): Offer[] {

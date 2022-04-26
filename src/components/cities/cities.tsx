@@ -1,5 +1,5 @@
 import { city } from '../../mocks/city';
-import { CityName } from '../../helpers/const';
+import { CityName } from '../../helpers/enum';
 import { Offer } from '../../types';
 import { offerToPoint } from '../../helpers/util';
 

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { PlaceCardType } from '../../helpers/const';
+import { PlaceCardType } from '../../helpers/enum';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 import PlaceCard from '../place-card';

@@ -4,7 +4,7 @@ import { Icon, Marker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import useMap from '../../hooks/useMap';
-import { PointerImage } from '../../helpers/const';
+import { PointerImage } from '../../helpers/enum';
 import { offerToPoint } from '../../helpers/util';
 import { City, Point, State, Offer } from '../../types';
 

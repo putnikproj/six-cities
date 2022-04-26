@@ -2,7 +2,7 @@ import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { Offer } from '../../types';
 import { sortOffers } from '../../helpers/sort-offers';
-import { PlaceCardType } from '../../helpers/const';
+import { PlaceCardType } from '../../helpers/enum';
 import { setActiveOffer } from '../../store/action';
 
 import PlaceCard from '../place-card';

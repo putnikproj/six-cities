@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { AppRoute, PlaceCardPrefix, PlaceCardType } from '../../helpers/const';
+import { AppRoute, PlaceCardPrefix, PlaceCardType } from '../../helpers/enum';
 import { Offer } from '../../types';
 import { capitalizeFirstLetter } from '../../helpers/util';
 

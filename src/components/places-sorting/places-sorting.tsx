@@ -2,7 +2,7 @@ import { useState } from 'react';
 import classNames from 'classnames';
 
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
-import { SortType } from '../../helpers/const';
+import { SortType } from '../../helpers/enum';
 import { setSortType } from '../../store/action';
 
 const options = {

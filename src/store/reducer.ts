@@ -1,4 +1,4 @@
-import { ActionType, CityName, SortType } from '../helpers/const';
+import { ActionType, CityName, SortType } from '../helpers/enum';
 import { State, ActionsType } from '../types';
 
 const initialState: State = {

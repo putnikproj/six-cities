@@ -1,5 +1,5 @@
 import { Offer } from '../../types';
-import { PlaceCardType } from '../../helpers/const';
+import { PlaceCardType } from '../../helpers/enum';
 
 import PlaceCard from '../place-card';
 

@@ -1,4 +1,5 @@
-import { AppRoute, IS_AUTH } from '../../helpers/const';
+import { IS_AUTH } from '../../helpers/const';
+import { AppRoute } from '../../helpers/enum';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import PrivateRoute from '../private-route';
 

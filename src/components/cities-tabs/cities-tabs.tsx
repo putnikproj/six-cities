@@ -1,7 +1,7 @@
 import { SyntheticEvent } from 'react';
 import classNames from 'classnames';
 
-import { CityName } from '../../helpers/const';
+import { CityName } from '../../helpers/enum';
 
 type CitiesTabsProps = {
   activeCity: CityName;
