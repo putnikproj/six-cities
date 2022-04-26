@@ -5,7 +5,7 @@ import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { SortType } from '../../helpers/enum';
 import { setSortType } from '../../store/action';
 
-const options = {
+const options: Record<SortType, string> = {
   [SortType.DEFAULT]: 'Popular',
   [SortType.PRICE_LOW_TO_HIGH]: 'Price: low to high',
   [SortType.PRICE_HIGH_TO_LOW]: 'Price: high to low',
@@ -46,14 +46,14 @@ function PlacesSorting({ sortType }: PlacesSoringProps): JSX.Element {
           'places__options--opened': isDropdownOpen,
         })}
       >
-        {Object.entries(options).map(([option, text]) => (
+        {(Object.entries(options) as [SortType, string][]).map(([option, text]) => (
           <li
             key={option}
             className={classNames('places__option', {
               'places__option--active': sortType === option,
             })}
             tabIndex={0}
-            onClick={handleDropdownClick(option as SortType)}
+            onClick={handleDropdownClick(option)}
           >
             {text}
           </li>
