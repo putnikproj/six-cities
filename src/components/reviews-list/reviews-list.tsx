@@ -1,7 +1,8 @@
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { MAX_OFFER_REVIEWS } from '../../helpers/const';
 
 import Review from '../review';
+
+const MAX_OFFER_REVIEWS = 10;
 
 function ReviewsList(): JSX.Element {
   const reviews = useTypedSelector((state) => state.reviews);

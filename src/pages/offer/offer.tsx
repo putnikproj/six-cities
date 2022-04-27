@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { offerToPoint } from '../../helpers/util';
-import { MAX_OFFER_NEAR_PLACES } from '../../helpers/const';
 import { city } from '../../mocks/city';
 import { reviews } from '../../mocks/reviews';
 import { loadReviews, setActiveOffer } from '../../store/action';
@@ -18,6 +17,8 @@ import ReviewsList from '../../components/reviews-list';
 import AddReviewForm from '../../components/add-review-form';
 import OfferPlaceList from '../../components/offer-place-list';
 import OfferInformation from './offer-information';
+
+const MAX_OFFER_NEAR_PLACES = 3;
 
 function Offer(): JSX.Element {
   const offers = useTypedSelector((state) => state.offers);

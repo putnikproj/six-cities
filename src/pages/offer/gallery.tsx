@@ -1,5 +1,6 @@
 import { Offer } from '../../types';
-import { MAX_OFFER_IMAGES } from '../../helpers/const';
+
+const MAX_OFFER_IMAGES = 6;
 
 function Gallery({ images }: { images: Offer['images'] }) {
   return (

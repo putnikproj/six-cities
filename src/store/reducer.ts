@@ -1,5 +1,16 @@
-import { ActionType, CityName, SortType } from '../helpers/enum';
-import { State, ActionsType } from '../types';
+import { CityName, SortType } from '../helpers/enum';
+import { Offer, Review, InferValueTypes } from '../types';
+import * as actions from './action';
+
+// Default state
+
+export type State = {
+  activeCity: CityName;
+  offers: Offer[];
+  sortType: SortType;
+  activeOffer: Offer | null;
+  reviews: Review[];
+};
 
 const initialState: State = {
   activeCity: CityName.PARIS,
@@ -8,6 +19,19 @@ const initialState: State = {
   activeOffer: null,
   reviews: [],
 };
+
+// Reducer
+
+// Automatically returns union of all actions that the app has. Used for typing reducer
+export type ActionsType = ReturnType<InferValueTypes<typeof actions>>;
+
+export enum ActionType {
+  SET_ACTIVE_CITY = 'main/setActiveCity',
+  SET_CITY_OFFERS = 'main/setCityOffers',
+  SET_SORT_TYPE = 'main/setSortType',
+  SET_ACTIVE_OFFER = 'main/setActiveOffer',
+  LOAD_REVIEWS = 'offer/loadReviews',
+}
 
 export function reducer(state = initialState, action: ActionsType): State {
   switch (action.type) {

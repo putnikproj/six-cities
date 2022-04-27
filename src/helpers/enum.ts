@@ -6,15 +6,6 @@ export enum AppRoute {
   OFFER = '/offer',
 }
 
-// Actions
-export enum ActionType {
-  SET_ACTIVE_CITY = 'main/setActiveCity',
-  SET_CITY_OFFERS = 'main/setCityOffers',
-  SET_SORT_TYPE = 'main/setSortType',
-  SET_ACTIVE_OFFER = 'main/setActiveOffer',
-  LOAD_REVIEWS = 'offer/loadReviews',
-}
-
 // Cities
 export enum CityName {
   PARIS = 'Paris',
@@ -44,10 +35,4 @@ export enum PlaceCardPrefix {
   MAIN = 'cities',
   FAVORITES = 'favorites',
   OFFER = 'near-places',
-}
-
-// Map component
-export enum PointerImage {
-  DEFAULT = 'img/pin.svg',
-  ACTIVE = 'img/pin-active.svg',
 }

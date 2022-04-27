@@ -1,5 +1,4 @@
-import { ActionType } from '../helpers/enum';
-import { State } from '../types';
+import { State, ActionType } from './reducer';
 
 export const setActiveCity = (cityName: State['activeCity']) =>
   ({

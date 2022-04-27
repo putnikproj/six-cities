@@ -1,12 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Icon, Marker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import useMap from '../../hooks/useMap';
-import { PointerImage } from '../../helpers/enum';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { offerToPoint } from '../../helpers/util';
-import { City, Point, State, Offer } from '../../types';
+import { City, Point, Offer } from '../../types';
+
+// Pointers
+enum PointerImage {
+  DEFAULT = 'img/pin.svg',
+  ACTIVE = 'img/pin-active.svg',
+}
 
 const defaultPointerIcon = new Icon({
   iconUrl: PointerImage.DEFAULT,
@@ -20,6 +25,7 @@ const activePointerIcon = new Icon({
   iconAnchor: [13.5, 39],
 });
 
+// Types
 type MarkerWithId = {
   instance: Marker<object>;
   id: Offer['id'];
@@ -30,6 +36,7 @@ type MapProps = {
   points: Point[];
 };
 
+// Component
 function Map({ city, points }: MapProps): JSX.Element {
   // Map references
   const mapRef = useRef(null);
@@ -37,7 +44,7 @@ function Map({ city, points }: MapProps): JSX.Element {
   // Map markers. Needs in the second effect, that changes marker's 'activePointerIcon'
   const [mapMarkers, setMapMarkers] = useState<MarkerWithId[]>([]);
   // Active point that is taken from global store
-  const activePoint = useSelector((state: State) =>
+  const activePoint = useTypedSelector((state) =>
     state.activeOffer ? offerToPoint(state.activeOffer) : state.activeOffer,
   );
 

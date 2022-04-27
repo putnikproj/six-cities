@@ -3,7 +3,5 @@ export * from './location';
 export * from './offer';
 export * from './point';
 export * from './review';
-export * from './state';
-export * from './store';
 export * from './user';
 export * from './util-types';
