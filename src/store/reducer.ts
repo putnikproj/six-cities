@@ -23,7 +23,7 @@ const initialState: State = {
 // Reducer
 
 // Automatically returns union of all actions that the app has. Used for typing reducer
-export type ActionsType = ReturnType<InferValueTypes<typeof actions>>;
+type Actions = ReturnType<InferValueTypes<typeof actions>>;
 
 export enum ActionType {
   SET_ACTIVE_CITY = 'main/setActiveCity',
@@ -33,7 +33,7 @@ export enum ActionType {
   LOAD_REVIEWS = 'offer/loadReviews',
 }
 
-export function reducer(state = initialState, action: ActionsType): State {
+export function reducer(state = initialState, action: Actions): State {
   switch (action.type) {
     case ActionType.SET_ACTIVE_CITY:
       return { ...state, activeCity: action.payload.cityName };
