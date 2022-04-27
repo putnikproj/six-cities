@@ -2,17 +2,18 @@ import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { Offer } from '../../types';
 import { sortOffers } from '../../helpers/sort-offers';
-import { PlaceCardType } from '../../helpers/enum';
+import { CityName, PlaceCardType } from '../../helpers/enum';
 import { setActiveOffer } from '../../store/action';
 
 import PlaceCard from '../place-card';
 import PlacesSorting from '../places-sorting';
 
 type CitiesPlaceListProps = {
+  activeCity: CityName;
   offers: Offer[];
 };
 
-function CitiesPlaceList({ offers }: CitiesPlaceListProps): JSX.Element {
+function CitiesPlaceList({ offers, activeCity }: CitiesPlaceListProps): JSX.Element {
   const sortType = useTypedSelector((state) => state.sortType);
   const dispatch = useTypedDispatch();
 
@@ -32,7 +33,7 @@ function CitiesPlaceList({ offers }: CitiesPlaceListProps): JSX.Element {
       {/* Title */}
       <h2 className="visually-hidden">Places</h2>
       <b className="places__found">
-        {`${offers.length} ${offers.length === 1 ? 'place' : 'places'}`} to stay in Amsterdam
+        {`${offers.length} ${offers.length === 1 ? 'place' : 'places'}`} to stay in {activeCity}
       </b>
 
       {/* Sorting */}

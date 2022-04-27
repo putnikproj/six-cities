@@ -7,6 +7,7 @@ import * as actions from './action';
 export type State = {
   activeCity: CityName;
   offers: Offer[];
+  areOffersLoaded: boolean;
   sortType: SortType;
   activeOffer: Offer | null;
   reviews: Review[];
@@ -15,6 +16,7 @@ export type State = {
 const initialState: State = {
   activeCity: CityName.PARIS,
   offers: [],
+  areOffersLoaded: false,
   sortType: SortType.DEFAULT,
   activeOffer: null,
   reviews: [],
@@ -23,22 +25,25 @@ const initialState: State = {
 // Reducer
 
 // Automatically returns union of all actions that the app has. Used for typing reducer
-type Actions = ReturnType<InferValueTypes<typeof actions>>;
+export type Actions = ReturnType<InferValueTypes<typeof actions>>;
 
 export enum ActionType {
   SET_ACTIVE_CITY = 'main/setActiveCity',
-  SET_CITY_OFFERS = 'main/setCityOffers',
+  SET_OFFERS = 'main/setCityOffers',
+  SET_ARE_OFFERS_LOADED = 'main/setAreOffersLoaded',
   SET_SORT_TYPE = 'main/setSortType',
   SET_ACTIVE_OFFER = 'main/setActiveOffer',
-  LOAD_REVIEWS = 'offer/loadReviews',
+  LOAD_REVIEWS = 'server/loadReviews',
 }
 
 export function reducer(state = initialState, action: Actions): State {
   switch (action.type) {
     case ActionType.SET_ACTIVE_CITY:
       return { ...state, activeCity: action.payload.cityName };
-    case ActionType.SET_CITY_OFFERS:
+    case ActionType.SET_OFFERS:
       return { ...state, offers: action.payload.offers };
+    case ActionType.SET_ARE_OFFERS_LOADED:
+      return { ...state, areOffersLoaded: action.payload.areOffersLoaded };
     case ActionType.SET_SORT_TYPE:
       return { ...state, sortType: action.payload.sortType };
     case ActionType.SET_ACTIVE_OFFER:

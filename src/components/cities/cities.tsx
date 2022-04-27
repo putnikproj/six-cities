@@ -1,3 +1,4 @@
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { city } from '../../mocks/city';
 import { CityName } from '../../helpers/enum';
 import { Offer } from '../../types';
@@ -5,6 +6,7 @@ import { offerToPoint } from '../../helpers/util';
 
 import CitiesPlaceList from '../cities-place-list';
 import Map from '../map';
+import Spinner from '../spinner';
 
 type CitiesProps = {
   offers: Offer[];
@@ -12,6 +14,19 @@ type CitiesProps = {
 };
 
 function Cities({ offers, activeCity }: CitiesProps) {
+  const areOffersLoaded = useTypedSelector((state) => state.areOffersLoaded);
+
+  if (!areOffersLoaded) {
+    return (
+      <div
+        className="cities"
+        style={{ width: '100%', display: 'flex', justifyContent: 'center', paddingTop: '50px' }}
+      >
+        <Spinner />
+      </div>
+    );
+  }
+
   if (offers.length === 0) {
     return (
       <div className="cities">
@@ -34,7 +49,7 @@ function Cities({ offers, activeCity }: CitiesProps) {
     <div className="cities">
       <div className="cities__places-container container">
         {/* left section */}
-        <CitiesPlaceList offers={offers} />
+        <CitiesPlaceList offers={offers} activeCity={activeCity} />
 
         {/* right section */}
         <div className="cities__right-section">

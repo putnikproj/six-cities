@@ -6,10 +6,16 @@ export const setActiveCity = (cityName: State['activeCity']) =>
     payload: { cityName },
   } as const);
 
-export const setCityOffers = (offers: State['offers']) =>
+export const setOffers = (offers: State['offers']) =>
   ({
-    type: ActionType.SET_CITY_OFFERS,
+    type: ActionType.SET_OFFERS,
     payload: { offers },
+  } as const);
+
+export const setAreOffersLoaded = (areOffersLoaded: State['areOffersLoaded']) =>
+  ({
+    type: ActionType.SET_ARE_OFFERS_LOADED,
+    payload: { areOffersLoaded },
   } as const);
 
 export const setSortType = (sortType: State['sortType']) =>

@@ -3,9 +3,9 @@ import classNames from 'classnames';
 
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
-import { setActiveCity, setActiveOffer, setCityOffers } from '../../store/action';
+import { setActiveCity, setActiveOffer } from '../../store/action';
 import { CityName } from '../../helpers/enum';
-import { offers as offersMoks } from '../../mocks/offers';
+import { loadOffers } from '../../store/api-actions';
 
 import Header from '../../components/header';
 import CitiesTabs from '../../components/cities-tabs';
@@ -18,11 +18,9 @@ function Main(): JSX.Element {
   const dispatch = useTypedDispatch();
 
   useEffect(() => {
-    //TODO. For now the logic of gettin cities in accordance to active city will be there
-    const cityOffers = offersMoks.filter((offer) => offer.city.name === activeCity);
-    dispatch(setCityOffers(cityOffers));
     dispatch(setActiveOffer(null));
-  }, [activeCity, dispatch]);
+    dispatch(loadOffers());
+  }, [dispatch]);
 
   const handleCityChange = (newActiveCity: CityName) => {
     dispatch(setActiveCity(newActiveCity));
@@ -38,7 +36,10 @@ function Main(): JSX.Element {
         })}
       >
         <CitiesTabs activeCity={activeCity} onCityChange={handleCityChange} />
-        <Cities activeCity={activeCity} offers={offers} />
+        <Cities
+          activeCity={activeCity}
+          offers={offers.filter((offer) => offer.city.name === activeCity)}
+        />
       </main>
     </div>
   );
