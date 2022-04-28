@@ -4,3 +4,7 @@ export type User = {
   isPro: boolean;
   name: string;
 };
+
+export type AuthUser = User & {
+  email: string;
+};

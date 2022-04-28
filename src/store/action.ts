@@ -36,6 +36,12 @@ export const setAuthStatus = (authStatus: State['authStatus']) =>
     payload: { authStatus },
   } as const);
 
+export const setAuthUser = (authUser: State['authUser']) =>
+  ({
+    type: ActionType.SET_AUTH_USER,
+    payload: { authUser },
+  } as const);
+
 export const loadReviews = (reviews: State['reviews']) =>
   ({
     type: ActionType.LOAD_REVIEWS,
