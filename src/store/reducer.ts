@@ -1,4 +1,4 @@
-import { CityName, SortType } from '../helpers/enum';
+import { AuthStatus, CityName, SortType } from '../helpers/enum';
 import { Offer, Review, InferValueTypes } from '../types';
 import * as actions from './action';
 
@@ -11,6 +11,7 @@ export type State = {
   sortType: SortType;
   activeOffer: Offer | null;
   reviews: Review[];
+  authStatus: AuthStatus;
 };
 
 const initialState: State = {
@@ -20,6 +21,7 @@ const initialState: State = {
   sortType: SortType.DEFAULT,
   activeOffer: null,
   reviews: [],
+  authStatus: AuthStatus.UNKNOWN,
 };
 
 // Reducer
@@ -33,6 +35,7 @@ export enum ActionType {
   SET_ARE_OFFERS_LOADED = 'main/setAreOffersLoaded',
   SET_SORT_TYPE = 'main/setSortType',
   SET_ACTIVE_OFFER = 'main/setActiveOffer',
+  SET_AUTH_STATUS = 'user/setAuthStatus',
   LOAD_REVIEWS = 'server/loadReviews',
 }
 
@@ -48,6 +51,8 @@ export function reducer(state = initialState, action: Actions): State {
       return { ...state, sortType: action.payload.sortType };
     case ActionType.SET_ACTIVE_OFFER:
       return { ...state, activeOffer: action.payload.activeOffer };
+    case ActionType.SET_AUTH_STATUS:
+      return { ...state, authStatus: action.payload.authStatus };
     case ActionType.LOAD_REVIEWS:
       return { ...state, reviews: action.payload.reviews };
     default:

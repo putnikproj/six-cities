@@ -1,15 +1,24 @@
 import { IS_AUTH } from '../../helpers/const';
+import { useEffect } from 'react';
 import { AppRoute } from '../../helpers/enum';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import PrivateRoute from '../private-route';
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { checkAuth } from '../../store/api-actions';
 
 import Main from '../../pages/main';
 import Offer from '../../pages/offer';
 import Login from '../../pages/login';
 import NotFound from '../../pages/not-found';
 import Favorites from '../../pages/favorites';
+import PrivateRoute from '../private-route';
 
 function App(): JSX.Element {
+  const dispatch = useTypedDispatch();
+
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
   return (
     <BrowserRouter>
       <Routes>

@@ -6,6 +6,24 @@ export enum AppRoute {
   OFFER = '/offer',
 }
 
+// Server
+export enum ServerRoutes {
+  OFFERS = '/hotels',
+  LOGIN = '/login',
+}
+
+export enum ResponseCodes {
+  OK = 200,
+  UNAUTHORIZED = 401,
+}
+
+// Auth
+export enum AuthStatus {
+  AUTH = 'auth',
+  UNAUTH = 'unauth',
+  UNKNOWN = 'unknown',
+}
+
 // Cities
 export enum CityName {
   PARIS = 'Paris',
