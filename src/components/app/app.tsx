@@ -1,4 +1,3 @@
-import { IS_AUTH } from '../../helpers/const';
 import { useEffect } from 'react';
 import { AppRoute } from '../../helpers/enum';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -27,7 +26,7 @@ function App(): JSX.Element {
         <Route
           path={AppRoute.FAVORITES}
           element={
-            <PrivateRoute isAuth={IS_AUTH}>
+            <PrivateRoute>
               <Favorites />
             </PrivateRoute>
           }

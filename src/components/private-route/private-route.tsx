@@ -1,14 +1,21 @@
-import { PropsWithChildren } from 'react';
+import { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { AppRoute } from '../../helpers/enum';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { AppRoute, AuthStatus } from '../../helpers/enum';
 
-type PrivateRouteProps = PropsWithChildren<{
-  isAuth: boolean;
-}>;
+type PrivateRouteProps = {
+  children?: ReactNode | undefined;
+};
 
-function PrivateRoute({ children, isAuth }: PrivateRouteProps): JSX.Element {
-  return isAuth ? <> {children} </> : <Navigate to={AppRoute.LOGIN} replace />;
+function PrivateRoute({ children }: PrivateRouteProps): JSX.Element {
+  const authStatus = useTypedSelector((state) => state.authStatus);
+
+  return authStatus === AuthStatus.AUTH ? (
+    <> {children} </>
+  ) : (
+    <Navigate to={AppRoute.LOGIN} replace />
+  );
 }
 
 export default PrivateRoute;

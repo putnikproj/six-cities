@@ -5,7 +5,6 @@ import { Offer } from '../types';
 import { AuthStatus, ResponseCodes, ServerRoutes } from '../helpers/enum';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-// import { AxiosError } from 'axios';
 
 export function loadOffers(): AppThunk {
   return async (dispatch, getState, api) => {
@@ -30,8 +29,6 @@ export function checkAuth(): AppThunk {
         }
 
         toast.error(e.message);
-      } else {
-        toast.error(`Unexpected error: ${e}`);
       }
     }
   };
