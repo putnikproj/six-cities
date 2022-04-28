@@ -1,3 +1,17 @@
+.spinner-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.spinner-container--center-x {
+  justify-content: center;
+}
+
+.spinner-container--center-y {
+  align-items: center;
+}
+
 .spinner {
   border: 10px solid #f3f3f3;
   border-top: 10px solid #3498db;

@@ -5,6 +5,7 @@ import { AppRoute, AuthStatus } from '../../helpers/enum';
 
 function Header() {
   const authStatus = useTypedSelector((state) => state.authStatus);
+  const user = useTypedSelector((state) => state.authUser);
 
   return (
     <header className="header">
@@ -26,13 +27,21 @@ function Header() {
               {authStatus === AuthStatus.AUTH ? (
                 <>
                   <li className="header__nav-item user">
-                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                    <Link
+                      className="header__nav-link header__nav-link--profile"
+                      to={AppRoute.FAVORITES}
+                    >
+                      <div
+                        className="header__avatar-wrapper user__avatar-wrapper"
+                        style={{ backgroundImage: user ? `url(${user.avatarUrl})` : undefined }}
+                      ></div>
+                      <span className="header__user-name user__name">{user?.email}</span>
+                    </Link>
                   </li>
                   <li className="header__nav-item">
-                    <a className="header__nav-link" href="#todo">
+                    <Link className="header__nav-link" to={AppRoute.LOGIN}>
                       <span className="header__signout">Sign out</span>
-                    </a>
+                    </Link>
                   </li>
                 </>
               ) : (

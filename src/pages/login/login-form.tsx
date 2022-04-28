@@ -1,8 +1,14 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
+// import { toast } from 'react-toastify';
+
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { login } from '../../store/api-actions';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const dispatch = useTypedDispatch();
 
   function handleLoginInputChange({ target }: ChangeEvent<HTMLInputElement>) {
     setEmail(target.value);
@@ -12,8 +18,13 @@ function LoginForm() {
     setPassword(target.value);
   }
 
+  function handleFormSubmit(evt: FormEvent<Element>) {
+    evt.preventDefault();
+    dispatch(login({ email, password }));
+  }
+
   return (
-    <form className="login__form form" action="#" method="post">
+    <form className="login__form form" action="#" method="post" onSubmit={handleFormSubmit}>
       <div className="login__input-wrapper form__input-wrapper">
         <label className="visually-hidden">E-mail</label>
         <input

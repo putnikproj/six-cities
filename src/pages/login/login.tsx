@@ -1,9 +1,37 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useLocation, Location } from 'react-router-dom';
+// import { toast } from 'react-toastify';
+
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { AppRoute, AuthStatus } from '../../helpers/enum';
 
 import Header from '../../components/header';
+import Spinner from '../../components/spinner';
 import LoginForm from './login-form';
 
+type LocationProps = Location & {
+  state: {
+    prevLocation: Location;
+  };
+};
+
 function Login(): JSX.Element {
+  const location = useLocation() as LocationProps;
+  const authStatus = useTypedSelector((state) => state.authStatus);
+
+  const fromPage = location.state?.prevLocation?.pathname || AppRoute.ROOT;
+
+  if (authStatus === AuthStatus.UNKNOWN) {
+    return (
+      <div style={{ height: '100vh' }}>
+        <Spinner centerX centerY />
+      </div>
+    );
+  }
+
+  if (authStatus === AuthStatus.AUTH) {
+    return <Navigate to={fromPage} replace />;
+  }
+
   return (
     <div className="page page--gray page--login">
       <Header />

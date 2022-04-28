@@ -18,11 +18,8 @@ function Cities({ offers, activeCity }: CitiesProps) {
 
   if (!areOffersLoaded) {
     return (
-      <div
-        className="cities"
-        style={{ width: '100%', display: 'flex', justifyContent: 'center', paddingTop: '50px' }}
-      >
-        <Spinner />
+      <div className="cities" style={{ paddingTop: '50px' }}>
+        <Spinner centerX />
       </div>
     );
   }

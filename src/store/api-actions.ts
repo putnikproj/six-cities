@@ -5,8 +5,8 @@ import { toast } from 'react-toastify';
 import { AppThunk } from '.';
 import { setAreOffersLoaded, setAuthStatus, setAuthUser, setOffers } from './action';
 import { AuthStatus, ResponseCodes, ServerRoutes } from '../helpers/enum';
-import { AuthUser, Offer } from '../types';
-import { setAuthToken, AuthToken } from '../helpers/auth-token';
+import { AuthUserWithToken, Offer, UserLogin } from '../types';
+import { setAuthToken } from '../helpers/auth-token';
 
 export function loadOffers(): AppThunk {
   return async (dispatch, getState, api) => {
@@ -20,8 +20,14 @@ export function loadOffers(): AppThunk {
 export function checkAuth(): AppThunk {
   return async (dispatch, getState, api) => {
     try {
-      await api.get(ServerRoutes.LOGIN);
+      const { data } = await api.get(ServerRoutes.LOGIN);
+
+      const { token, ...authUser } = camelcaseKeys<AuthUserWithToken>(data, {
+        deep: true,
+      });
+
       dispatch(setAuthStatus(AuthStatus.AUTH));
+      dispatch(setAuthUser(authUser));
     } catch (e) {
       if (axios.isAxiosError(e)) {
         if (e.response?.status === ResponseCodes.UNAUTHORIZED) {
@@ -36,23 +42,23 @@ export function checkAuth(): AppThunk {
   };
 }
 
-export function login(email: string, password: string): AppThunk {
+export function login({ email, password }: UserLogin): AppThunk {
   return async (dispatch, getState, api) => {
     try {
-      const { status, data } = await api.post(ServerRoutes.LOGIN, {
+      const { data } = await api.post(ServerRoutes.LOGIN, {
         email,
         password,
       });
 
-      if (status === ResponseCodes.OK) {
-        const { token, ...authUser } = camelcaseKeys<AuthUser & { token: AuthToken }>(data, {
-          deep: true,
-        });
+      const { token, ...authUser } = camelcaseKeys<AuthUserWithToken>(data, {
+        deep: true,
+      });
 
-        setAuthToken(token);
-        dispatch(setAuthStatus(AuthStatus.AUTH));
-        dispatch(setAuthUser(authUser));
-      }
+      setAuthToken(token);
+      dispatch(setAuthStatus(AuthStatus.AUTH));
+      dispatch(setAuthUser(authUser));
+
+      toast.success('You are authorized');
     } catch (e) {
       if (axios.isAxiosError(e)) {
         toast.error(e.message);

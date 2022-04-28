@@ -10,7 +10,7 @@ import App from './components/app';
 
 ReactDOM.render(
   <StrictMode>
-    <ToastContainer position="bottom-right" />
+    <ToastContainer position="bottom-right" autoClose={2000} newestOnTop />
     <Provider store={store}>
       <App />
     </Provider>
