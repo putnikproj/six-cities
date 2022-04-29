@@ -10,6 +10,7 @@ export enum AppRoute {
 export enum ServerRoutes {
   OFFERS = '/hotels',
   LOGIN = '/login',
+  LOGOUT = '/logout',
 }
 
 export enum ResponseCodes {

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
-import { setActiveCity, setActiveOffer } from '../../store/action';
+import { setActiveCity } from '../../store/action';
 import { CityName, LoadStatus } from '../../helpers/enum';
 import { loadOffers } from '../../store/api-actions';
 
@@ -19,8 +19,7 @@ function Main(): JSX.Element {
   const dispatch = useTypedDispatch();
 
   useEffect(() => {
-    dispatch(setActiveOffer(null));
-    if (loadStatus !== LoadStatus.LOADED) {
+    if (loadStatus === LoadStatus.UNLOADED) {
       dispatch(loadOffers());
     }
   }, [dispatch, loadStatus]);

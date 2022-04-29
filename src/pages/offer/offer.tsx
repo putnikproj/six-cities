@@ -7,6 +7,7 @@ import { offerToPoint } from '../../helpers/util';
 import { loadOffer } from '../../store/api-actions';
 import { offers as offersMoks } from '../../mocks/offers';
 import { LoadStatus } from '../../helpers/enum';
+import { setActiveOfferLoadStatus } from '../../store/action';
 
 import Map from '../../components/map';
 import Header from '../../components/header';
@@ -32,9 +33,13 @@ function Offer(): JSX.Element {
 
   useEffect(() => {
     dispatch(loadOffer(id || ''));
+
+    return () => {
+      dispatch(setActiveOfferLoadStatus(LoadStatus.UNLOADED));
+    };
   }, [dispatch, id]);
 
-  if (loadStatus === LoadStatus.LOADING) {
+  if (loadStatus === LoadStatus.LOADING || loadStatus === LoadStatus.UNLOADED) {
     return (
       <div style={{ height: '100vh' }}>
         <Spinner centerX centerY />

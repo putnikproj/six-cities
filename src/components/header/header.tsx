@@ -1,11 +1,18 @@
 import { Link } from 'react-router-dom';
 
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { AppRoute, AuthStatus } from '../../helpers/enum';
+import { logout } from '../../store/api-actions';
 
 function Header() {
   const authStatus = useTypedSelector((state) => state.authStatus);
   const user = useTypedSelector((state) => state.authUser);
+  const dispatch = useTypedDispatch();
+
+  function handleLogoutButtonCLick() {
+    dispatch(logout());
+  }
 
   return (
     <header className="header">
@@ -39,9 +46,13 @@ function Header() {
                     </Link>
                   </li>
                   <li className="header__nav-item">
-                    <Link className="header__nav-link" to={AppRoute.LOGIN}>
+                    <button
+                      onClick={handleLogoutButtonCLick}
+                      className="header__nav-link header__nav-link--profile"
+                      style={{ backgroundColor: 'inherit', border: 'none', cursor: 'pointer' }}
+                    >
                       <span className="header__signout">Sign out</span>
-                    </Link>
+                    </button>
                   </li>
                 </>
               ) : (
