@@ -5,13 +5,13 @@ import { toast } from 'react-toastify';
 import { AppThunk } from '.';
 import {
   setActiveOffer,
-  setAreOffersLoaded,
+  setActiveOfferLoadStatus,
   setAuthStatus,
   setAuthUser,
-  setIsActiveOfferLoaded,
   setOffers,
+  setOffersLoadStatus,
 } from './action';
-import { AuthStatus, ResponseCodes, ServerRoutes } from '../helpers/enum';
+import { AuthStatus, LoadStatus, ResponseCodes, ServerRoutes } from '../helpers/enum';
 import { AuthUserWithToken, Offer, UserLogin } from '../types';
 import { setAuthToken } from '../helpers/auth-token';
 
@@ -19,25 +19,25 @@ import { setAuthToken } from '../helpers/auth-token';
 
 export function loadOffers(): AppThunk {
   return async (dispatch, getState, api) => {
-    dispatch(setAreOffersLoaded(false));
+    dispatch(setOffersLoadStatus(LoadStatus.LOADING));
     const { data } = await api.get(ServerRoutes.OFFERS);
     const offers = camelcaseKeys<Offer[]>(data, { deep: true });
     dispatch(setOffers(offers));
-    dispatch(setAreOffersLoaded(true));
+    dispatch(setOffersLoadStatus(LoadStatus.LOADED));
   };
 }
 
 export function loadOffer(id: Offer['id']): AppThunk {
   return async (dispatch, getState, api) => {
+    dispatch(setActiveOfferLoadStatus(LoadStatus.LOADING));
     dispatch(setActiveOffer(null));
-    dispatch(setIsActiveOfferLoaded(false));
     try {
-      const { data } = await api.get(`${ServerRoutes.OFFERS}g/${id}`);
+      const { data } = await api.get(`${ServerRoutes.OFFERS}/${id}`);
       const offer = camelcaseKeys<Offer>(data, { deep: true });
       dispatch(setActiveOffer(offer));
-      dispatch(setIsActiveOfferLoaded(true));
+      dispatch(setActiveOfferLoadStatus(LoadStatus.LOADED));
     } catch (err) {
-      dispatch(setIsActiveOfferLoaded(true));
+      dispatch(setActiveOfferLoadStatus(LoadStatus.ERROR));
       if (axios.isAxiosError(err)) {
         toast.error(err.message);
       }

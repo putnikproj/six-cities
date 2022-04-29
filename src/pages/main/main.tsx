@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { setActiveCity, setActiveOffer } from '../../store/action';
-import { CityName } from '../../helpers/enum';
+import { CityName, LoadStatus } from '../../helpers/enum';
 import { loadOffers } from '../../store/api-actions';
 
 import Header from '../../components/header';
@@ -13,14 +13,17 @@ import Cities from '../../components/cities';
 
 function Main(): JSX.Element {
   const offers = useTypedSelector((state) => state.offers);
+  const loadStatus = useTypedSelector((state) => state.offersLoadStatus);
   const activeCity = useTypedSelector((state) => state.activeCity);
 
   const dispatch = useTypedDispatch();
 
   useEffect(() => {
     dispatch(setActiveOffer(null));
-    dispatch(loadOffers());
-  }, [dispatch]);
+    if (loadStatus !== LoadStatus.LOADED) {
+      dispatch(loadOffers());
+    }
+  }, [dispatch, loadStatus]);
 
   const handleCityChange = (newActiveCity: CityName) => {
     dispatch(setActiveCity(newActiveCity));

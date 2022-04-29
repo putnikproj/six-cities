@@ -1,5 +1,5 @@
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { CityName } from '../../helpers/enum';
+import { CityName, LoadStatus } from '../../helpers/enum';
 import { Offer } from '../../types';
 import { offerToPoint } from '../../helpers/util';
 
@@ -13,9 +13,9 @@ type CitiesProps = {
 };
 
 function Cities({ offers, activeCity }: CitiesProps) {
-  const areOffersLoaded = useTypedSelector((state) => state.areOffersLoaded);
+  const loadStatus = useTypedSelector((state) => state.offersLoadStatus);
 
-  if (!areOffersLoaded) {
+  if (loadStatus === LoadStatus.LOADING) {
     return (
       <div className="cities" style={{ paddingTop: '50px' }}>
         <Spinner centerX />

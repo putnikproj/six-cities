@@ -6,6 +6,7 @@ import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { offerToPoint } from '../../helpers/util';
 import { loadOffer } from '../../store/api-actions';
 import { offers as offersMoks } from '../../mocks/offers';
+import { LoadStatus } from '../../helpers/enum';
 
 import Map from '../../components/map';
 import Header from '../../components/header';
@@ -21,7 +22,7 @@ import OfferInformation from './offer-information';
 const MAX_OFFER_NEAR_PLACES = 3;
 
 function Offer(): JSX.Element {
-  const isActiveOfferLoaded = useTypedSelector((state) => state.isActiveOfferLoaded);
+  const loadStatus = useTypedSelector((state) => state.activeOfferLoadStatus);
   const offer = useTypedSelector((state) => state.activeOffer);
 
   const dispatch = useTypedDispatch();
@@ -33,7 +34,7 @@ function Offer(): JSX.Element {
     dispatch(loadOffer(id || ''));
   }, [dispatch, id]);
 
-  if (!isActiveOfferLoaded) {
+  if (loadStatus === LoadStatus.LOADING) {
     return (
       <div style={{ height: '100vh' }}>
         <Spinner centerX centerY />
@@ -41,7 +42,7 @@ function Offer(): JSX.Element {
     );
   }
 
-  if (!offer) {
+  if (loadStatus === LoadStatus.ERROR || !offer) {
     return <NotFound />;
   }
 

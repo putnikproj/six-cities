@@ -1,4 +1,4 @@
-import { AuthStatus, CityName, SortType } from '../helpers/enum';
+import { AuthStatus, CityName, LoadStatus, SortType } from '../helpers/enum';
 import { Offer, Review, InferValueTypes, AuthUser } from '../types';
 import * as actions from './action';
 
@@ -7,10 +7,10 @@ import * as actions from './action';
 export type State = {
   activeCity: CityName;
   offers: Offer[];
-  areOffersLoaded: boolean;
+  offersLoadStatus: LoadStatus;
   sortType: SortType;
   activeOffer: Offer | null;
-  isActiveOfferLoaded: boolean;
+  activeOfferLoadStatus: LoadStatus;
   reviews: Review[];
   authStatus: AuthStatus;
   authUser: AuthUser | null;
@@ -19,10 +19,10 @@ export type State = {
 const initialState: State = {
   activeCity: CityName.PARIS,
   offers: [],
-  areOffersLoaded: false,
+  offersLoadStatus: LoadStatus.UNLOADED,
   sortType: SortType.DEFAULT,
   activeOffer: null,
-  isActiveOfferLoaded: false,
+  activeOfferLoadStatus: LoadStatus.UNLOADED,
   reviews: [],
   authStatus: AuthStatus.UNKNOWN,
   authUser: null,
@@ -36,10 +36,10 @@ export type Actions = ReturnType<InferValueTypes<typeof actions>>;
 export enum ActionType {
   SET_ACTIVE_CITY = 'main/setActiveCity',
   SET_OFFERS = 'main/setOffers',
-  SET_ARE_OFFERS_LOADED = 'main/setAreOffersLoaded',
+  SET_OFFERS_LOAD_STATUS = 'main/setOffersLoadStatus',
   SET_SORT_TYPE = 'main/setSortType',
   SET_ACTIVE_OFFER = 'main/setActiveOffer',
-  SET_IS_ACTIVE_OFFER_LOADED = 'offer/setIsActiveOfferLoaded',
+  SET_ACTIVE_OFFER_LOAD_STATUS = 'offer/setActiveOfferLoadStatus',
   SET_AUTH_STATUS = 'user/setAuthStatus',
   SET_AUTH_USER = 'user/setAuthUser',
   LOAD_REVIEWS = 'server/loadReviews',
@@ -51,14 +51,14 @@ export function reducer(state = initialState, action: Actions): State {
       return { ...state, activeCity: action.payload.cityName };
     case ActionType.SET_OFFERS:
       return { ...state, offers: action.payload.offers };
-    case ActionType.SET_ARE_OFFERS_LOADED:
-      return { ...state, areOffersLoaded: action.payload.areOffersLoaded };
+    case ActionType.SET_OFFERS_LOAD_STATUS:
+      return { ...state, offersLoadStatus: action.payload.offersLoadStatus };
     case ActionType.SET_SORT_TYPE:
       return { ...state, sortType: action.payload.sortType };
     case ActionType.SET_ACTIVE_OFFER:
       return { ...state, activeOffer: action.payload.activeOffer };
-    case ActionType.SET_IS_ACTIVE_OFFER_LOADED:
-      return { ...state, isActiveOfferLoaded: action.payload.isActiveOfferLoaded };
+    case ActionType.SET_ACTIVE_OFFER_LOAD_STATUS:
+      return { ...state, activeOfferLoadStatus: action.payload.activeOfferLoadStatus };
     case ActionType.SET_AUTH_STATUS:
       return { ...state, authStatus: action.payload.authStatus };
     case ActionType.SET_AUTH_USER:

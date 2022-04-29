@@ -12,10 +12,10 @@ export const setOffers = (offers: State['offers']) =>
     payload: { offers },
   } as const);
 
-export const setAreOffersLoaded = (areOffersLoaded: State['areOffersLoaded']) =>
+export const setOffersLoadStatus = (offersLoadStatus: State['offersLoadStatus']) =>
   ({
-    type: ActionType.SET_ARE_OFFERS_LOADED,
-    payload: { areOffersLoaded },
+    type: ActionType.SET_OFFERS_LOAD_STATUS,
+    payload: { offersLoadStatus },
   } as const);
 
 export const setSortType = (sortType: State['sortType']) =>
@@ -30,10 +30,10 @@ export const setActiveOffer = (activeOffer: State['activeOffer']) =>
     payload: { activeOffer },
   } as const);
 
-export const setIsActiveOfferLoaded = (isActiveOfferLoaded: State['isActiveOfferLoaded']) =>
+export const setActiveOfferLoadStatus = (activeOfferLoadStatus: State['activeOfferLoadStatus']) =>
   ({
-    type: ActionType.SET_IS_ACTIVE_OFFER_LOADED,
-    payload: { isActiveOfferLoaded },
+    type: ActionType.SET_ACTIVE_OFFER_LOAD_STATUS,
+    payload: { activeOfferLoadStatus },
   } as const);
 
 export const setAuthStatus = (authStatus: State['authStatus']) =>
