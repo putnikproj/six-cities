@@ -50,7 +50,10 @@ function Cities({ offers, activeCity }: CitiesProps) {
         {/* right section */}
         <div className="cities__right-section">
           <section className="cities__map map">
-            <Map city={offers[0].city} points={offers.map((offer) => offerToPoint(offer))} />
+            <Map
+              location={offers[0].city.location}
+              points={offers.map((offer) => offerToPoint(offer))}
+            />
           </section>
         </div>
       </div>

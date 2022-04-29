@@ -87,7 +87,10 @@ function Offer(): JSX.Element {
           </div>
 
           <section className="property__map map">
-            <Map city={offer.city} points={nearbyOffers.map((item) => offerToPoint(item))} />
+            <Map
+              location={offer.location}
+              points={nearbyOffers.map((item) => offerToPoint(item))}
+            />
           </section>
         </section>
 

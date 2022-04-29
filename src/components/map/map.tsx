@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { offerToPoint } from '../../helpers/util';
-import { City, Point, Offer } from '../../types';
+import { Point, Offer, Location } from '../../types';
 
 // Pointers
 enum PointerImage {
@@ -32,15 +32,15 @@ type MarkerWithId = {
 };
 
 type MapProps = {
-  city: City;
+  location: Location;
   points: Point[];
 };
 
 // Component
-function Map({ city, points }: MapProps): JSX.Element {
+function Map({ location, points }: MapProps): JSX.Element {
   // Map references
   const mapRef = useRef(null);
-  const map = useMap(mapRef, city);
+  const map = useMap(mapRef, location);
   // Map markers. Needs in the second effect, that changes marker's 'activePointerIcon'
   const [mapMarkers, setMapMarkers] = useState<MarkerWithId[]>([]);
   // Active point that is taken from global store
