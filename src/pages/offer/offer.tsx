@@ -4,12 +4,12 @@ import { useParams } from 'react-router-dom';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { offerToPoint } from '../../helpers/util';
-import { city } from '../../mocks/city';
-import { reviews } from '../../mocks/reviews';
-import { loadReviews, setActiveOffer } from '../../store/action';
+import { loadOffer } from '../../store/api-actions';
+import { offers as offersMoks } from '../../mocks/offers';
 
 import Map from '../../components/map';
 import Header from '../../components/header';
+import Spinner from '../../components/spinner';
 import Gallery from './gallery';
 import NotFound from '../not-found';
 import MeetTheHost from './meet-the-host';
@@ -21,17 +21,25 @@ import OfferInformation from './offer-information';
 const MAX_OFFER_NEAR_PLACES = 3;
 
 function Offer(): JSX.Element {
-  const offers = useTypedSelector((state) => state.offers);
+  const isActiveOfferLoaded = useTypedSelector((state) => state.isActiveOfferLoaded);
+  const offer = useTypedSelector((state) => state.activeOffer);
+
   const dispatch = useTypedDispatch();
 
   const { id } = useParams();
-  const offer = offers.find((elem) => elem.id === Number(id));
-  const offersNearby = offers.slice(0, MAX_OFFER_NEAR_PLACES);
+  const offersNearby = offersMoks.slice(0, MAX_OFFER_NEAR_PLACES);
 
   useEffect(() => {
-    dispatch(setActiveOffer(offer || null));
-    dispatch(loadReviews(reviews));
-  }, [dispatch, offer]);
+    dispatch(loadOffer(id || ''));
+  }, [dispatch, id]);
+
+  if (!isActiveOfferLoaded) {
+    return (
+      <div style={{ height: '100vh' }}>
+        <Spinner centerX centerY />
+      </div>
+    );
+  }
 
   if (!offer) {
     return <NotFound />;
@@ -57,7 +65,7 @@ function Offer(): JSX.Element {
           </div>
 
           <section className="property__map map">
-            <Map city={city} points={offersNearby.map((item) => offerToPoint(item))} />
+            <Map city={offer.city} points={offersNearby.map((item) => offerToPoint(item))} />
           </section>
         </section>
 

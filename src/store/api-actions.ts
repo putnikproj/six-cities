@@ -3,19 +3,49 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 import { AppThunk } from '.';
-import { setAreOffersLoaded, setAuthStatus, setAuthUser, setOffers } from './action';
+import {
+  setActiveOffer,
+  setAreOffersLoaded,
+  setAuthStatus,
+  setAuthUser,
+  setIsActiveOfferLoaded,
+  setOffers,
+} from './action';
 import { AuthStatus, ResponseCodes, ServerRoutes } from '../helpers/enum';
 import { AuthUserWithToken, Offer, UserLogin } from '../types';
 import { setAuthToken } from '../helpers/auth-token';
 
+// Offers
+
 export function loadOffers(): AppThunk {
   return async (dispatch, getState, api) => {
+    dispatch(setAreOffersLoaded(false));
     const { data } = await api.get(ServerRoutes.OFFERS);
     const offers = camelcaseKeys<Offer[]>(data, { deep: true });
     dispatch(setOffers(offers));
     dispatch(setAreOffersLoaded(true));
   };
 }
+
+export function loadOffer(id: Offer['id']): AppThunk {
+  return async (dispatch, getState, api) => {
+    dispatch(setActiveOffer(null));
+    dispatch(setIsActiveOfferLoaded(false));
+    try {
+      const { data } = await api.get(`${ServerRoutes.OFFERS}g/${id}`);
+      const offer = camelcaseKeys<Offer>(data, { deep: true });
+      dispatch(setActiveOffer(offer));
+      dispatch(setIsActiveOfferLoaded(true));
+    } catch (err) {
+      dispatch(setIsActiveOfferLoaded(true));
+      if (axios.isAxiosError(err)) {
+        toast.error(err.message);
+      }
+    }
+  };
+}
+
+// Auth
 
 export function checkAuth(): AppThunk {
   return async (dispatch, getState, api) => {
@@ -28,15 +58,15 @@ export function checkAuth(): AppThunk {
 
       dispatch(setAuthStatus(AuthStatus.AUTH));
       dispatch(setAuthUser(authUser));
-    } catch (e) {
-      if (axios.isAxiosError(e)) {
-        if (e.response?.status === ResponseCodes.UNAUTHORIZED) {
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        if (err.response?.status === ResponseCodes.UNAUTHORIZED) {
           toast.warn('You are not authorised');
           dispatch(setAuthStatus(AuthStatus.UNAUTH));
           return;
         }
 
-        toast.error(e.message);
+        toast.error(err.message);
       }
     }
   };
@@ -59,9 +89,9 @@ export function login({ email, password }: UserLogin): AppThunk {
       dispatch(setAuthUser(authUser));
 
       toast.success('You are authorized');
-    } catch (e) {
-      if (axios.isAxiosError(e)) {
-        toast.error(e.message);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        toast.error(err.message);
       }
     }
   };

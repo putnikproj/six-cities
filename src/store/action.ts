@@ -30,6 +30,12 @@ export const setActiveOffer = (activeOffer: State['activeOffer']) =>
     payload: { activeOffer },
   } as const);
 
+export const setIsActiveOfferLoaded = (isActiveOfferLoaded: State['isActiveOfferLoaded']) =>
+  ({
+    type: ActionType.SET_IS_ACTIVE_OFFER_LOADED,
+    payload: { isActiveOfferLoaded },
+  } as const);
+
 export const setAuthStatus = (authStatus: State['authStatus']) =>
   ({
     type: ActionType.SET_AUTH_STATUS,

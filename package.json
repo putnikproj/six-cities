@@ -33,7 +33,8 @@
       "htmlacademy/react-typescript"
     ],
     "rules": {
-      "react/jsx-closing-tag-location": "off"
+      "react/jsx-closing-tag-location": "off",
+      "comma-dangle": "off"
     }
   },
   "browserslist": {

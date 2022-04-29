@@ -15,6 +15,7 @@ export enum ServerRoutes {
 export enum ResponseCodes {
   OK = 200,
   UNAUTHORIZED = 401,
+  NOT_FOUND = 404,
 }
 
 // Auth
