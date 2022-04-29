@@ -8,11 +8,15 @@ import {
   setActiveOfferLoadStatus,
   setAuthStatus,
   setAuthUser,
+  setNearbyOffers,
+  setNearbyOffersLoadStatus,
   setOffers,
   setOffersLoadStatus,
+  setReviews,
+  setReviewsLoadStatus,
 } from './action';
 import { AuthStatus, LoadStatus, ResponseCodes, ServerRoutes } from '../helpers/enum';
-import { AuthUserWithToken, Offer, UserLogin } from '../types';
+import { AuthUserWithToken, Offer, Review, UserLogin } from '../types';
 import { clearAuthToken, setAuthToken } from '../helpers/auth-token';
 
 // Offers
@@ -44,6 +48,40 @@ export function loadOffer(id: Offer['id']): AppThunk {
       dispatch(setActiveOfferLoadStatus(LoadStatus.LOADED));
     } catch (err) {
       dispatch(setActiveOfferLoadStatus(LoadStatus.ERROR));
+      if (axios.isAxiosError(err)) {
+        toast.error(err.message);
+      }
+    }
+  };
+}
+
+export function loadNearbyOffers(id: Offer['id']): AppThunk {
+  return async (dispatch, getState, api) => {
+    dispatch(setNearbyOffersLoadStatus(LoadStatus.LOADING));
+    try {
+      const { data } = await api.get(`${ServerRoutes.OFFERS}/${id}/nearby`);
+      const offers = camelcaseKeys<Offer[]>(data, { deep: true });
+      dispatch(setNearbyOffers(offers));
+      dispatch(setNearbyOffersLoadStatus(LoadStatus.LOADED));
+    } catch (err) {
+      dispatch(setNearbyOffersLoadStatus(LoadStatus.ERROR));
+      if (axios.isAxiosError(err)) {
+        toast.error(err.message);
+      }
+    }
+  };
+}
+
+export function loadReviews(id: Offer['id']): AppThunk {
+  return async (dispatch, getState, api) => {
+    dispatch(setReviewsLoadStatus(LoadStatus.LOADING));
+    try {
+      const { data } = await api.get(`${ServerRoutes.REVIEWS}/${id}`);
+      const reviews = camelcaseKeys<Review[]>(data, { deep: true });
+      dispatch(setReviews(reviews));
+      dispatch(setReviewsLoadStatus(LoadStatus.LOADED));
+    } catch (err) {
+      dispatch(setReviewsLoadStatus(LoadStatus.ERROR));
       if (axios.isAxiosError(err)) {
         toast.error(err.message);
       }

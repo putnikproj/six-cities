@@ -36,6 +36,20 @@ export const setActiveOfferLoadStatus = (activeOfferLoadStatus: State['activeOff
     payload: { activeOfferLoadStatus },
   } as const);
 
+export const setNearbyOffers = (nearbyOffers: State['nearbyOffers']) =>
+  ({
+    type: ActionType.SET_NEARBY_OFFERS,
+    payload: { nearbyOffers },
+  } as const);
+
+export const setNearbyOffersLoadStatus = (
+  nearbyOffersLoadStatus: State['nearbyOffersLoadStatus'],
+) =>
+  ({
+    type: ActionType.SET_NEARBY_OFFERS_LOAD_STATUS,
+    payload: { nearbyOffersLoadStatus },
+  } as const);
+
 export const setAuthStatus = (authStatus: State['authStatus']) =>
   ({
     type: ActionType.SET_AUTH_STATUS,
@@ -48,8 +62,14 @@ export const setAuthUser = (authUser: State['authUser']) =>
     payload: { authUser },
   } as const);
 
-export const loadReviews = (reviews: State['reviews']) =>
+export const setReviews = (reviews: State['reviews']) =>
   ({
-    type: ActionType.LOAD_REVIEWS,
+    type: ActionType.SET_REVIEWS,
     payload: { reviews },
+  } as const);
+
+export const setReviewsLoadStatus = (reviewsLoadStatus: State['reviewsLoadStatus']) =>
+  ({
+    type: ActionType.SET_REVIEWS_LOAD_STATUS,
+    payload: { reviewsLoadStatus },
   } as const);

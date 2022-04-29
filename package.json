@@ -34,7 +34,8 @@
     ],
     "rules": {
       "react/jsx-closing-tag-location": "off",
-      "comma-dangle": "off"
+      "comma-dangle": "off",
+      "indent": "off"
     }
   },
   "browserslist": {

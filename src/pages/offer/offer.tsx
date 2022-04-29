@@ -4,10 +4,13 @@ import { useParams } from 'react-router-dom';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { offerToPoint } from '../../helpers/util';
-import { loadOffer } from '../../store/api-actions';
-import { offers as offersMoks } from '../../mocks/offers';
-import { LoadStatus } from '../../helpers/enum';
-import { setActiveOfferLoadStatus } from '../../store/action';
+import { loadNearbyOffers, loadOffer, loadReviews } from '../../store/api-actions';
+import { AuthStatus, LoadStatus } from '../../helpers/enum';
+import {
+  setActiveOfferLoadStatus,
+  setNearbyOffersLoadStatus,
+  setReviewsLoadStatus,
+} from '../../store/action';
 
 import Map from '../../components/map';
 import Header from '../../components/header';
@@ -23,23 +26,36 @@ import OfferInformation from './offer-information';
 const MAX_OFFER_NEAR_PLACES = 3;
 
 function Offer(): JSX.Element {
-  const loadStatus = useTypedSelector((state) => state.activeOfferLoadStatus);
+  const activeOfferLoadStatus = useTypedSelector((state) => state.activeOfferLoadStatus);
+  const authStatus = useTypedSelector((state) => state.authStatus);
   const offer = useTypedSelector((state) => state.activeOffer);
+  const nearbyOffers = useTypedSelector((state) => state.nearbyOffers).slice(
+    0,
+    MAX_OFFER_NEAR_PLACES,
+  );
 
   const dispatch = useTypedDispatch();
 
   const { id } = useParams();
-  const offersNearby = offersMoks.slice(0, MAX_OFFER_NEAR_PLACES);
 
   useEffect(() => {
-    dispatch(loadOffer(id || ''));
+    const offerId = id || '';
+
+    dispatch(loadOffer(offerId));
+    dispatch(loadNearbyOffers(offerId));
+    dispatch(loadReviews(offerId));
 
     return () => {
       dispatch(setActiveOfferLoadStatus(LoadStatus.UNLOADED));
+      dispatch(setNearbyOffersLoadStatus(LoadStatus.UNLOADED));
+      dispatch(setReviewsLoadStatus(LoadStatus.UNLOADED));
     };
   }, [dispatch, id]);
 
-  if (loadStatus === LoadStatus.LOADING || loadStatus === LoadStatus.UNLOADED) {
+  if (
+    activeOfferLoadStatus === LoadStatus.LOADING ||
+    activeOfferLoadStatus === LoadStatus.UNLOADED
+  ) {
     return (
       <div style={{ height: '100vh' }}>
         <Spinner centerX centerY />
@@ -47,7 +63,7 @@ function Offer(): JSX.Element {
     );
   }
 
-  if (loadStatus === LoadStatus.ERROR || !offer) {
+  if (activeOfferLoadStatus === LoadStatus.ERROR || !offer) {
     return <NotFound />;
   }
 
@@ -65,20 +81,20 @@ function Offer(): JSX.Element {
               <MeetTheHost host={offer.host} description={offer.description} />
               <section className="property__reviews reviews">
                 <ReviewsList />
-                <AddReviewForm />
+                {authStatus === AuthStatus.AUTH && <AddReviewForm />}
               </section>
             </div>
           </div>
 
           <section className="property__map map">
-            <Map city={offer.city} points={offersNearby.map((item) => offerToPoint(item))} />
+            <Map city={offer.city} points={nearbyOffers.map((item) => offerToPoint(item))} />
           </section>
         </section>
 
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <OfferPlaceList offers={offersNearby} />
+            <OfferPlaceList offers={nearbyOffers} />
           </section>
         </div>
       </main>

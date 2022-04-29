@@ -9,6 +9,7 @@ export enum AppRoute {
 // Server
 export enum ServerRoutes {
   OFFERS = '/hotels',
+  REVIEWS = '/comments',
   LOGIN = '/login',
   LOGOUT = '/logout',
 }
