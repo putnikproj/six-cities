@@ -9,16 +9,27 @@ import Spinner from '../../components/spinner';
 import LoginForm from './login-form';
 
 type LocationProps = Location & {
-  state: {
-    prevLocation: Location;
-  };
+  state:
+    | {
+        prevLocation: Location;
+      }
+    | undefined;
 };
+
+function getPrevUrl(location: LocationProps): string {
+  if (location.state?.prevLocation) {
+    const { pathname, search, hash } = location.state.prevLocation;
+    return `${pathname}${search}${hash}`;
+  }
+
+  return '';
+}
 
 function Login(): JSX.Element {
   const location = useLocation() as LocationProps;
   const authStatus = useTypedSelector((state) => state.authStatus);
 
-  const fromPage = location.state?.prevLocation?.pathname || AppRoute.ROOT;
+  const fromPage = getPrevUrl(location) || AppRoute.ROOT;
 
   if (authStatus === AuthStatus.UNKNOWN) {
     return (

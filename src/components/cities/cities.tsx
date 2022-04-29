@@ -1,5 +1,4 @@
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { city } from '../../mocks/city';
 import { CityName } from '../../helpers/enum';
 import { Offer } from '../../types';
 import { offerToPoint } from '../../helpers/util';
@@ -51,7 +50,7 @@ function Cities({ offers, activeCity }: CitiesProps) {
         {/* right section */}
         <div className="cities__right-section">
           <section className="cities__map map">
-            <Map city={city} points={offers.map((offer) => offerToPoint(offer))} />
+            <Map city={offers[0].city} points={offers.map((offer) => offerToPoint(offer))} />
           </section>
         </div>
       </div>
