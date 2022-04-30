@@ -1,44 +1,42 @@
 import { Link } from 'react-router-dom';
-import { PlaceCardType } from '../../helpers/enum';
-import { useTypedSelector } from '../../hooks/useTypedSelector';
+
+import { CityName, PlaceCardType } from '../../helpers/enum';
+import { Offer } from '../../types';
 
 import PlaceCard from '../place-card';
 
-function FavoritesPlaceList(): JSX.Element {
-  const offers = useTypedSelector((state) => state.offers);
+type FavoritesPlaceListProps = {
+  offers: Offer[];
+};
 
-  // This is needed to group cards by city.
-  // This is a dictionary, where key is name of city and value is an array, where we push cards.
-  type LocationItems = {
-    [city: string]: JSX.Element[];
-  };
-  const locationItems: LocationItems = {};
-
-  offers.forEach((offer) => {
-    if (!locationItems[offer.city.name]) {
-      locationItems[offer.city.name] = [];
-    }
-
-    locationItems[offer.city.name].push(
-      <PlaceCard key={offer.id} offer={offer} type={PlaceCardType.FAVORITES} />,
-    );
-  });
-
+function FavoritesPlaceList({ offers }: FavoritesPlaceListProps): JSX.Element {
   return (
     <ul className="favorites__list">
-      {Object.entries(locationItems).map(([city, cityOffers]) => (
-        <li key={city} className="favorites__locations-items">
-          <div className="favorites__locations locations locations--current">
-            <div className="locations__item">
-              <Link className="locations__item-link" to="/">
-                <span>{city}</span>
-              </Link>
-            </div>
-          </div>
+      {Object.values(CityName).map((city) => {
+        const cityOffers = offers.filter((offer) => offer.city.name === city);
 
-          <div className="favorites__places">{cityOffers}</div>
-        </li>
-      ))}
+        if (cityOffers.length === 0) {
+          return null;
+        }
+
+        return (
+          <li key={city} className="favorites__locations-items">
+            <div className="favorites__locations locations locations--current">
+              <div className="locations__item">
+                <Link className="locations__item-link" to="/">
+                  <span>{city}</span>
+                </Link>
+              </div>
+            </div>
+
+            <div className="favorites__places">
+              {cityOffers.map((offer) => (
+                <PlaceCard key={offer.id} offer={offer} type={PlaceCardType.FAVORITES} />
+              ))}
+            </div>
+          </li>
+        );
+      })}
     </ul>
   );
 }
