@@ -16,8 +16,10 @@ import {
   setReviewsLoadStatus,
 } from './action';
 import { AuthStatus, LoadStatus, ResponseCodes, ServerRoutes } from '../helpers/enum';
-import { AuthUserWithToken, Offer, Review, UserLogin } from '../types';
+import { AuthUserWithToken, NewReview, Offer, Review, UserLogin } from '../types';
 import { clearAuthToken, setAuthToken } from '../helpers/auth-token';
+
+// To test: await new Promise((resolve) => setTimeout(resolve, 5000));
 
 // Offers
 
@@ -72,6 +74,8 @@ export function loadNearbyOffers(id: Offer['id']): AppThunk {
   };
 }
 
+// Offer reviews
+
 export function loadReviews(id: Offer['id']): AppThunk {
   return async (dispatch, getState, api) => {
     dispatch(setReviewsLoadStatus(LoadStatus.LOADING));
@@ -86,6 +90,14 @@ export function loadReviews(id: Offer['id']): AppThunk {
         toast.error(err.message);
       }
     }
+  };
+}
+
+export function uploadReview(id: Offer['id'], review: NewReview): AppThunk {
+  return async (dispatch, getState, api) => {
+    const { data } = await api.post(`${ServerRoutes.REVIEWS}/${id}`, review);
+    const reviews = camelcaseKeys<Review[]>(data, { deep: true });
+    dispatch(setReviews(reviews));
   };
 }
 

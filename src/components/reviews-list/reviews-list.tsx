@@ -1,10 +1,14 @@
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { LoadStatus } from '../../helpers/enum';
+import { Review as ReviewType } from '../../types';
 
 import Review from '../review';
 import Spinner from '../spinner';
 
 const MAX_OFFER_REVIEWS = 10;
+
+const sortReviewsByNewestDate = (reviews: ReviewType[]) =>
+  [...reviews].sort((prev, next) => Date.parse(next.date) - Date.parse(prev.date));
 
 function ReviewsList(): JSX.Element {
   const reviews = useTypedSelector((state) => state.reviews);
@@ -20,7 +24,7 @@ function ReviewsList(): JSX.Element {
         <Spinner centerX centerY />
       ) : (
         <ul className="reviews__list">
-          {reviews.map(
+          {sortReviewsByNewestDate(reviews).map(
             (review, index) =>
               index < MAX_OFFER_REVIEWS && <Review key={review.id} review={review} />,
           )}

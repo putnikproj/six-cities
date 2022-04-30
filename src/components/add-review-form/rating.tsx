@@ -2,10 +2,11 @@ import { ChangeEvent, Fragment } from 'react';
 
 type RatingProps = {
   score: number;
+  disabled?: boolean;
   onChange: ({ target }: ChangeEvent<HTMLInputElement>) => void;
 };
 
-function Rating({ score, onChange }: RatingProps) {
+function Rating({ score, disabled = false, onChange }: RatingProps) {
   type star = {
     value: number;
     title: string;
@@ -30,6 +31,7 @@ function Rating({ score, onChange }: RatingProps) {
             type="radio"
             checked={score === value}
             onChange={onChange}
+            disabled={disabled}
           />
           <label
             htmlFor={`${value}-stars`}

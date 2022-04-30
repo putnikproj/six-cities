@@ -37,10 +37,9 @@ function Offer(): JSX.Element {
   const dispatch = useTypedDispatch();
 
   const { id } = useParams();
+  const offerId = id || '';
 
   useEffect(() => {
-    const offerId = id || '';
-
     dispatch(loadOffer(offerId));
     dispatch(loadNearbyOffers(offerId));
     dispatch(loadReviews(offerId));
@@ -50,7 +49,7 @@ function Offer(): JSX.Element {
       dispatch(setNearbyOffersLoadStatus(LoadStatus.UNLOADED));
       dispatch(setReviewsLoadStatus(LoadStatus.UNLOADED));
     };
-  }, [dispatch, id]);
+  }, [dispatch, offerId]);
 
   if (
     activeOfferLoadStatus === LoadStatus.LOADING ||
@@ -81,7 +80,7 @@ function Offer(): JSX.Element {
               <MeetTheHost host={offer.host} description={offer.description} />
               <section className="property__reviews reviews">
                 <ReviewsList />
-                {authStatus === AuthStatus.AUTH && <AddReviewForm />}
+                {authStatus === AuthStatus.AUTH && <AddReviewForm id={offerId} />}
               </section>
             </div>
           </div>

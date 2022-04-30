@@ -7,3 +7,5 @@ export type Review = {
   rating: number;
   user: User;
 };
+
+export type NewReview = Pick<Review, 'comment' | 'rating'>;
