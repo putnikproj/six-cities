@@ -2,8 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Icon, Marker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import useMap from '../../hooks/useMap';
-import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useMap, useTypedSelector } from '../../hooks';
 import { offerToPoint } from '../../helpers/util';
 import { Point, Offer, Location } from '../../types';
 

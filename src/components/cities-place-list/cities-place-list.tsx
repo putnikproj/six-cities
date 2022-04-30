@@ -1,5 +1,4 @@
-import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { useTypedSelector, useTypedDispatch } from '../../hooks';
 import { Offer } from '../../types';
 import { sortOffers } from '../../helpers/sort-offers';
 import { CityName, PlaceCardType } from '../../helpers/enum';

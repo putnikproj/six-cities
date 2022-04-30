@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
-import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useTypedSelector } from '../../hooks';
 import { AppRoute, AuthStatus } from '../../helpers/enum';
 
 import Spinner from '../spinner';

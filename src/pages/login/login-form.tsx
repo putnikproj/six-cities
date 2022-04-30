@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 // import { toast } from 'react-toastify';
 
-import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { useTypedDispatch } from '../../hooks';
 import { login } from '../../store/api-actions';
 
 function LoginForm() {

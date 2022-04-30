@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { useTypedSelector, useTypedDispatch } from '../../hooks';
 import { offerToPoint } from '../../helpers/util';
 import { loadNearbyOffers, loadOffer, loadReviews } from '../../store/api-actions';
 import { AuthStatus, LoadStatus } from '../../helpers/enum';

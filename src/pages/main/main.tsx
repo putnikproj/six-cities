@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import classNames from 'classnames';
 
-import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { useTypedSelector, useTypedDispatch } from '../../hooks';
 import { setActiveCity } from '../../store/action';
 import { CityName, LoadStatus } from '../../helpers/enum';
 import { loadOffers } from '../../store/api-actions';

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useTypedSelector } from '../../hooks';
 import { AppRoute, AuthStatus } from '../../helpers/enum';
 
 import HeaderAuth from './header-auth';

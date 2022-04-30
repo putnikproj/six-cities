@@ -2,7 +2,7 @@ import { ChangeEvent, useState, useEffect, FormEvent } from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { useTypedDispatch } from '../../hooks';
 import { uploadReview } from '../../store/api-actions';
 import { Offer } from '../../types';
 

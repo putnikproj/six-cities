@@ -1,4 +1,4 @@
-import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useTypedSelector } from '../../hooks';
 import { LoadStatus } from '../../helpers/enum';
 import { Review as ReviewType } from '../../types';
 

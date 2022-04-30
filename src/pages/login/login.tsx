@@ -1,7 +1,7 @@
 import { Link, Navigate, useLocation, Location } from 'react-router-dom';
 // import { toast } from 'react-toastify';
 
-import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useTypedSelector } from '../../hooks';
 import { AppRoute, AuthStatus } from '../../helpers/enum';
 
 import Header from '../../components/header';

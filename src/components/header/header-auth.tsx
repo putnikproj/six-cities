@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-import { useTypedDispatch } from '../../hooks/useTypedDispatch';
-import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useTypedDispatch, useTypedSelector } from '../../hooks';
 import { logout } from '../../store/api-actions';
 import { AppRoute } from '../../helpers/enum';
 

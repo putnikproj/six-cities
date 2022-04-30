@@ -10,7 +10,10 @@ const ATTRIBUTION = `&copy;
   </a> contributors &copy;
   <a href="https://carto.com/attributions">CARTO</a>`;
 
-function useMap(mapRef: MutableRefObject<HTMLElement | null>, location: Location): Map | null {
+export function useMap(
+  mapRef: MutableRefObject<HTMLElement | null>,
+  location: Location,
+): Map | null {
   const [map, setMap] = useState<Map | null>(null);
 
   // Create map, if it doesn't exist
@@ -51,5 +54,3 @@ function useMap(mapRef: MutableRefObject<HTMLElement | null>, location: Location
 
   return map;
 }
-
-export default useMap;

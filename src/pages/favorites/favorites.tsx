@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useTypedSelector } from '../../hooks';
 
 import Header from '../../components/header';
 import Footer from '../../components/footer';

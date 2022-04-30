@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { AppRoute } from '../../helpers/enum';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { useTypedDispatch } from '../../hooks';
 import { checkAuth } from '../../store/api-actions';
 
 import Main from '../../pages/main';

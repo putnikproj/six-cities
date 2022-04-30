@@ -1,4 +1,4 @@
-import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useTypedSelector } from '../../hooks';
 import { Offer } from '../../types';
 import { LoadStatus, PlaceCardType } from '../../helpers/enum';
 

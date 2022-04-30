@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import classNames from 'classnames';
 
-import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { useTypedDispatch } from '../../hooks';
 import { SortType } from '../../helpers/enum';
 import { setSortType } from '../../store/action';
 
