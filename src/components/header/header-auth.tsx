@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -10,14 +9,10 @@ import { AppRoute } from '../../helpers/enum';
 const SUCCESS_LOGOUT_TEXT = 'You have successfully logged out';
 
 function HeaderAuth() {
-  const [isLoading, setIsLoading] = useState(false);
-
   const dispatch = useTypedDispatch();
   const user = useTypedSelector((state) => state.authUser);
 
   async function handleLogoutButtonCLick() {
-    setIsLoading(true);
-
     try {
       await dispatch(logout());
       toast.success(SUCCESS_LOGOUT_TEXT);
@@ -26,11 +21,9 @@ function HeaderAuth() {
         toast.error(err.message);
       }
     }
-
-    setIsLoading(false);
   }
 
-  if (isLoading) {
+  if (!user) {
     return <div>Loading...</div>;
   }
 
@@ -40,9 +33,9 @@ function HeaderAuth() {
         <Link className="header__nav-link header__nav-link--profile" to={AppRoute.FAVORITES}>
           <div
             className="header__avatar-wrapper user__avatar-wrapper"
-            style={{ backgroundImage: user ? `url(${user.avatarUrl})` : undefined }}
+            style={{ backgroundImage: `url(${user.avatarUrl})` }}
           ></div>
-          <span className="header__user-name user__name">{user?.email}</span>
+          <span className="header__user-name user__name">{user.email}</span>
         </Link>
       </li>
       <li className="header__nav-item">

@@ -8,6 +8,7 @@ import {
   setActiveOfferLoadStatus,
   setAuthStatus,
   setAuthUser,
+  setFavoriteOffers,
   setNearbyOffers,
   setNearbyOffersLoadStatus,
   setOffers,
@@ -71,6 +72,14 @@ export function loadNearbyOffers(id: Offer['id']): AppThunk {
         toast.error(err.message);
       }
     }
+  };
+}
+
+export function loadFavoriteOffers(): AppThunk {
+  return async (dispatch, getState, api) => {
+    const { data } = await api.get(ServerRoutes.FAVORITE);
+    const offers = camelcaseKeys<Offer[]>(data, { deep: true });
+    dispatch(setFavoriteOffers(offers));
   };
 }
 

@@ -50,6 +50,12 @@ export const setNearbyOffersLoadStatus = (
     payload: { nearbyOffersLoadStatus },
   } as const);
 
+export const setFavoriteOffers = (favoriteOffers: State['favoriteOffers']) =>
+  ({
+    type: ActionType.SET_FAVORITE_OFFERS,
+    payload: { favoriteOffers },
+  } as const);
+
 export const setAuthStatus = (authStatus: State['authStatus']) =>
   ({
     type: ActionType.SET_AUTH_STATUS,

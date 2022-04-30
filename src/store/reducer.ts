@@ -15,6 +15,7 @@ export type State = {
   nearbyOffersLoadStatus: LoadStatus;
   reviews: Review[];
   reviewsLoadStatus: LoadStatus;
+  favoriteOffers: Offer[];
   authStatus: AuthStatus;
   authUser: AuthUser | null;
 };
@@ -30,6 +31,7 @@ const initialState: State = {
   nearbyOffersLoadStatus: LoadStatus.UNLOADED,
   reviews: [],
   reviewsLoadStatus: LoadStatus.UNLOADED,
+  favoriteOffers: [],
   authStatus: AuthStatus.UNKNOWN,
   authUser: null,
 };
@@ -50,6 +52,7 @@ export enum ActionType {
   SET_NEARBY_OFFERS_LOAD_STATUS = 'offer/setNearbyOffersLoadStatus',
   SET_REVIEWS = 'offer/setReviews',
   SET_REVIEWS_LOAD_STATUS = 'offer/setReviewsLoadStatus',
+  SET_FAVORITE_OFFERS = 'favorites/setFavoriteOffers',
   SET_AUTH_STATUS = 'user/setAuthStatus',
   SET_AUTH_USER = 'user/setAuthUser',
 }
@@ -70,6 +73,8 @@ export function reducer(state = initialState, action: Actions): State {
       return { ...state, activeOfferLoadStatus: action.payload.activeOfferLoadStatus };
     case ActionType.SET_NEARBY_OFFERS:
       return { ...state, nearbyOffers: action.payload.nearbyOffers };
+    case ActionType.SET_FAVORITE_OFFERS:
+      return { ...state, favoriteOffers: action.payload.favoriteOffers };
     case ActionType.SET_NEARBY_OFFERS_LOAD_STATUS:
       return { ...state, nearbyOffersLoadStatus: action.payload.nearbyOffersLoadStatus };
     case ActionType.SET_AUTH_STATUS:

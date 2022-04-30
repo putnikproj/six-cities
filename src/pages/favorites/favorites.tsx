@@ -1,14 +1,61 @@
+import { useEffect, useState } from 'react';
 import classNames from 'classnames';
+import axios, { AxiosError } from 'axios';
 
-import { useTypedSelector } from '../../hooks';
+import { useTypedDispatch, useTypedSelector } from '../../hooks';
+import { loadFavoriteOffers } from '../../store/api-actions';
 
 import Header from '../../components/header';
 import Footer from '../../components/footer';
+import Spinner from '../../components/spinner';
 import FavoritesEmpty from './favorites-empty';
 import FavoritesPlaceList from '../../components/favorites-place-list';
 
 function Favorites(): JSX.Element {
-  const offers = useTypedSelector((state) => state.offers);
+  const dispatch = useTypedDispatch();
+  const offers = useTypedSelector((state) => state.favoriteOffers);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<AxiosError | null>(null);
+
+  function handleError(err: unknown) {
+    if (axios.isAxiosError(err)) {
+      setError(err);
+    }
+  }
+
+  useEffect(() => {
+    const loadOffers = async () => {
+      setIsLoading(true);
+
+      try {
+        await dispatch(loadFavoriteOffers());
+      } catch (err) {
+        handleError(err);
+      }
+
+      setIsLoading(false);
+    };
+
+    loadOffers();
+  }, [dispatch]);
+
+  function getMainContent() {
+    if (isLoading) {
+      return <Spinner centerX centerY />;
+    } else if (error) {
+      return <FavoritesEmpty error={error} />;
+    } else if (offers.length === 0) {
+      return <FavoritesEmpty />;
+    }
+
+    return (
+      <section className="favorites">
+        <h1 className="favorites__title">Saved listing</h1>
+        <FavoritesPlaceList offers={offers} />
+      </section>
+    );
+  }
 
   return (
     <div className={classNames('page', { 'page--favorites-empty': offers.length === 0 })}>
@@ -19,16 +66,7 @@ function Favorites(): JSX.Element {
           'page__main--favorites-empty': offers.length === 0,
         })}
       >
-        {offers.length === 0 ? (
-          <FavoritesEmpty />
-        ) : (
-          <div className="page__favorites-container container">
-            <section className="favorites">
-              <h1 className="favorites__title">Saved listing</h1>
-              <FavoritesPlaceList offers={offers} />
-            </section>
-          </div>
-        )}
+        <div className="page__favorites-container container">{getMainContent()}</div>
       </main>
 
       <Footer />
