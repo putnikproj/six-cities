@@ -16,17 +16,17 @@ function PrivateRoute({ children }: PrivateRouteProps): JSX.Element {
   const authStatus = useTypedSelector((state) => state.authStatus);
 
   switch (authStatus) {
-    case AuthStatus.UNKNOWN:
+    case AuthStatus.AUTH:
+      return <> {children} </>;
+    case AuthStatus.UNAUTH:
+      toast.error('You should log in to view this page');
+      return <Navigate to={AppRoute.LOGIN} state={{ prevLocation: location }} replace />;
+    default:
       return (
         <div style={{ height: '100vh' }}>
           <Spinner centerX centerY />
         </div>
       );
-    case AuthStatus.UNAUTH:
-      toast.error('You should log in to view this page');
-      return <Navigate to={AppRoute.LOGIN} state={{ prevLocation: location }} replace />;
-    default:
-      return <> {children} </>;
   }
 }
 

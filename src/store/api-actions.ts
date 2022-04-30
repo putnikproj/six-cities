@@ -155,18 +155,10 @@ export function login({ email, password }: UserLogin): AppThunk {
 
 export function logout(): AppThunk {
   return async (dispatch, getState, api) => {
-    try {
-      await api.delete(ServerRoutes.LOGOUT);
+    await api.delete(ServerRoutes.LOGOUT);
 
-      clearAuthToken();
-      dispatch(setAuthStatus(AuthStatus.UNAUTH));
-      dispatch(setAuthUser(null));
-
-      toast.success('You are logged out');
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        toast.error(err.message);
-      }
-    }
+    clearAuthToken();
+    dispatch(setAuthStatus(AuthStatus.UNAUTH));
+    dispatch(setAuthUser(null));
   };
 }

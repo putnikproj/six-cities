@@ -1,17 +1,23 @@
 import { Link } from 'react-router-dom';
 
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { AppRoute, AuthStatus } from '../../helpers/enum';
-import { logout } from '../../store/api-actions';
+
+import HeaderAuth from './header-auth';
+import HeaderUnauth from './header-unauth';
 
 function Header() {
   const authStatus = useTypedSelector((state) => state.authStatus);
-  const user = useTypedSelector((state) => state.authUser);
-  const dispatch = useTypedDispatch();
 
-  function handleLogoutButtonCLick() {
-    dispatch(logout());
+  function getHeaderNavList() {
+    switch (authStatus) {
+      case AuthStatus.AUTH:
+        return <HeaderAuth />;
+      case AuthStatus.UNAUTH:
+        return <HeaderUnauth />;
+      default:
+        return <div>Loading...</div>;
+    }
   }
 
   return (
@@ -29,42 +35,7 @@ function Header() {
               />
             </Link>
           </div>
-          <nav className="header__nav">
-            <ul className="header__nav-list">
-              {authStatus === AuthStatus.AUTH ? (
-                <>
-                  <li className="header__nav-item user">
-                    <Link
-                      className="header__nav-link header__nav-link--profile"
-                      to={AppRoute.FAVORITES}
-                    >
-                      <div
-                        className="header__avatar-wrapper user__avatar-wrapper"
-                        style={{ backgroundImage: user ? `url(${user.avatarUrl})` : undefined }}
-                      ></div>
-                      <span className="header__user-name user__name">{user?.email}</span>
-                    </Link>
-                  </li>
-                  <li className="header__nav-item">
-                    <button
-                      onClick={handleLogoutButtonCLick}
-                      className="header__nav-link header__nav-link--profile"
-                      style={{ backgroundColor: 'inherit', border: 'none', cursor: 'pointer' }}
-                    >
-                      <span className="header__signout">Sign out</span>
-                    </button>
-                  </li>
-                </>
-              ) : (
-                <li className="header__nav-item user">
-                  <Link className="header__nav-link header__nav-link--profile" to={AppRoute.LOGIN}>
-                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                    <span className="header__login">Sign in</span>
-                  </Link>
-                </li>
-              )}
-            </ul>
-          </nav>
+          <nav className="header__nav">{getHeaderNavList()}</nav>
         </div>
       </div>
     </header>
