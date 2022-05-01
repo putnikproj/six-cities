@@ -1,13 +1,14 @@
 import axios from 'axios';
+import camelcaseKeys from 'camelcase-keys';
 import { getAuthToken } from './auth-token';
 
-const URL = 'https://8.react.pages.academy/six-cities';
+const BASE_SERVER_URL = 'https://8.react.pages.academy/six-cities';
 const HEADER_TOKEN_KEY = 'x-token';
 const TIMEOUT = 5000;
 
 export function createAPI() {
   const api = axios.create({
-    baseURL: URL,
+    baseURL: BASE_SERVER_URL,
     timeout: TIMEOUT,
   });
 
@@ -21,6 +22,12 @@ export function createAPI() {
 
     return config;
   });
+
+  // Interceptor which adapts data from server from snake_case_keys to camelCaseKeys
+  api.interceptors.response.use((response) => ({
+    ...response,
+    data: camelcaseKeys(response.data, { deep: true }),
+  }));
 
   return api;
 }

@@ -1,4 +1,3 @@
-import camelcaseKeys from 'camelcase-keys';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -28,9 +27,9 @@ export function loadOffers(): AppThunk {
   return async (dispatch, getState, api) => {
     dispatch(setOffersLoadStatus(LoadStatus.LOADING));
     try {
-      const { data } = await api.get(ServerRoutes.OFFERS);
-      const offers = camelcaseKeys<Offer[]>(data, { deep: true });
-      dispatch(setOffers(offers));
+      const { data: allOffers } = await api.get<Offer[]>(ServerRoutes.OFFERS);
+
+      dispatch(setOffers(allOffers));
       dispatch(setOffersLoadStatus(LoadStatus.LOADED));
     } catch (err) {
       dispatch(setOffersLoadStatus(LoadStatus.ERROR));
@@ -45,8 +44,8 @@ export function loadOffer(id: Offer['id']): AppThunk {
   return async (dispatch, getState, api) => {
     dispatch(setActiveOfferLoadStatus(LoadStatus.LOADING));
     try {
-      const { data } = await api.get(`${ServerRoutes.OFFERS}/${id}`);
-      const offer = camelcaseKeys<Offer>(data, { deep: true });
+      const { data: offer } = await api.get<Offer>(`${ServerRoutes.OFFERS}/${id}`);
+
       dispatch(setActiveOffer(offer));
       dispatch(setActiveOfferLoadStatus(LoadStatus.LOADED));
     } catch (err) {
@@ -62,9 +61,9 @@ export function loadNearbyOffers(id: Offer['id']): AppThunk {
   return async (dispatch, getState, api) => {
     dispatch(setNearbyOffersLoadStatus(LoadStatus.LOADING));
     try {
-      const { data } = await api.get(`${ServerRoutes.OFFERS}/${id}/nearby`);
-      const offers = camelcaseKeys<Offer[]>(data, { deep: true });
-      dispatch(setNearbyOffers(offers));
+      const { data: nearbyOffers } = await api.get<Offer[]>(`${ServerRoutes.OFFERS}/${id}/nearby`);
+
+      dispatch(setNearbyOffers(nearbyOffers));
       dispatch(setNearbyOffersLoadStatus(LoadStatus.LOADED));
     } catch (err) {
       dispatch(setNearbyOffersLoadStatus(LoadStatus.ERROR));
@@ -77,8 +76,7 @@ export function loadNearbyOffers(id: Offer['id']): AppThunk {
 
 export function loadFavoriteOffers(): AppThunk {
   return async (dispatch, getState, api) => {
-    const { data } = await api.get(ServerRoutes.FAVORITE);
-    const offers = camelcaseKeys<Offer[]>(data, { deep: true });
+    const { data: offers } = await api.get<Offer[]>(ServerRoutes.FAVORITE);
 
     dispatch(setFavoriteOffers(offers));
   };
@@ -90,8 +88,8 @@ export function loadReviews(id: Offer['id']): AppThunk {
   return async (dispatch, getState, api) => {
     dispatch(setReviewsLoadStatus(LoadStatus.LOADING));
     try {
-      const { data } = await api.get(`${ServerRoutes.REVIEWS}/${id}`);
-      const reviews = camelcaseKeys<Review[]>(data, { deep: true });
+      const { data: reviews } = await api.get<Review[]>(`${ServerRoutes.REVIEWS}/${id}`);
+
       dispatch(setReviews(reviews));
       dispatch(setReviewsLoadStatus(LoadStatus.LOADED));
     } catch (err) {
@@ -105,9 +103,12 @@ export function loadReviews(id: Offer['id']): AppThunk {
 
 export function uploadReview(id: Offer['id'], review: NewReview): AppThunk {
   return async (dispatch, getState, api) => {
-    const { data } = await api.post(`${ServerRoutes.REVIEWS}/${id}`, review);
-    const reviews = camelcaseKeys<Review[]>(data, { deep: true });
-    dispatch(setReviews(reviews));
+    const { data: offerReviews } = await api.post<Review[]>(
+      `${ServerRoutes.REVIEWS}/${id}`,
+      review,
+    );
+
+    dispatch(setReviews(offerReviews));
   };
 }
 
@@ -116,8 +117,9 @@ export function uploadReview(id: Offer['id'], review: NewReview): AppThunk {
 export function checkAuth(): AppThunk {
   return async (dispatch, getState, api) => {
     try {
-      const { data } = await api.get(ServerRoutes.LOGIN);
-      const { token, ...authUser } = camelcaseKeys<AuthUserWithToken>(data, { deep: true });
+      const {
+        data: { token, ...authUser },
+      } = await api.get<AuthUserWithToken>(ServerRoutes.LOGIN);
 
       dispatch(setAuthStatus(AuthStatus.AUTH));
       dispatch(setAuthUser(authUser));
@@ -141,8 +143,9 @@ export function checkAuth(): AppThunk {
 
 export function login({ email, password }: UserLogin): AppThunk {
   return async (dispatch, getState, api) => {
-    const { data } = await api.post(ServerRoutes.LOGIN, { email, password });
-    const { token, ...authUser } = camelcaseKeys<AuthUserWithToken>(data, { deep: true });
+    const {
+      data: { token, ...authUser },
+    } = await api.post<AuthUserWithToken>(ServerRoutes.LOGIN, { email, password });
 
     setAuthToken(token);
     dispatch(setAuthStatus(AuthStatus.AUTH));
