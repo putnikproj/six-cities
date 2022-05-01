@@ -1,5 +1,4 @@
 import { Link, Navigate, useLocation, Location } from 'react-router-dom';
-// import { toast } from 'react-toastify';
 
 import { useTypedSelector } from '../../hooks';
 import { AppRoute, AuthStatus } from '../../helpers/enum';
@@ -9,11 +8,9 @@ import Spinner from '../../components/spinner';
 import LoginForm from './login-form';
 
 type LocationProps = Location & {
-  state:
-    | {
-        prevLocation: Location;
-      }
-    | undefined;
+  state?: {
+    prevLocation: Location;
+  };
 };
 
 function getPrevUrl(location: LocationProps): string {
