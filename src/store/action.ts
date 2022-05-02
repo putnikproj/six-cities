@@ -12,12 +12,6 @@ export const setOffers = (offers: State['offers']) =>
     payload: { offers },
   } as const);
 
-export const setOffersLoadStatus = (offersLoadStatus: State['offersLoadStatus']) =>
-  ({
-    type: ActionType.SET_OFFERS_LOAD_STATUS,
-    payload: { offersLoadStatus },
-  } as const);
-
 export const setSortType = (sortType: State['sortType']) =>
   ({
     type: ActionType.SET_SORT_TYPE,

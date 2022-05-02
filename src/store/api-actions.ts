@@ -10,7 +10,6 @@ import {
   setNearbyOffers,
   setNearbyOffersLoadStatus,
   setOffers,
-  setOffersLoadStatus,
   setReviews,
   setReviewsLoadStatus,
 } from './action';
@@ -23,18 +22,11 @@ import { handleAPIError } from '../helpers/api';
 
 // Offers
 
-export function loadOffers(): AppThunk {
+export function loadAllOffers(): AppThunk {
   return async (dispatch, getState, api) => {
-    dispatch(setOffersLoadStatus(LoadStatus.LOADING));
-    try {
-      const { data: allOffers } = await api.get<Offer[]>(ServerRoutes.OFFERS);
+    const { data: allOffers } = await api.get<Offer[]>(ServerRoutes.OFFERS);
 
-      dispatch(setOffers(allOffers));
-      dispatch(setOffersLoadStatus(LoadStatus.LOADED));
-    } catch (err) {
-      dispatch(setOffersLoadStatus(LoadStatus.ERROR));
-      handleAPIError(err);
-    }
+    dispatch(setOffers(allOffers));
   };
 }
 

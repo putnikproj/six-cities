@@ -6,8 +6,7 @@ import * as actions from './action';
 
 export type State = {
   activeCity: CityName;
-  offers: Offer[];
-  offersLoadStatus: LoadStatus;
+  offers: Offer[] | null;
   sortType: SortType;
   activeOffer: Offer | null;
   activeOfferLoadStatus: LoadStatus;
@@ -22,8 +21,7 @@ export type State = {
 
 const initialState: State = {
   activeCity: CityName.PARIS,
-  offers: [],
-  offersLoadStatus: LoadStatus.UNLOADED,
+  offers: null,
   sortType: SortType.DEFAULT,
   activeOffer: null,
   activeOfferLoadStatus: LoadStatus.UNLOADED,
@@ -43,7 +41,6 @@ export type Actions = ReturnType<InferValueTypes<typeof actions>>;
 
 export enum ActionType {
   SET_OFFERS = 'main/setOffers',
-  SET_OFFERS_LOAD_STATUS = 'main/setOffersLoadStatus',
   SET_SORT_TYPE = 'main/setSortType',
   SET_ACTIVE_OFFER = 'main/setActiveOffer',
   SET_ACTIVE_CITY = 'offer/setActiveCity',
@@ -63,8 +60,6 @@ export function reducer(state = initialState, action: Actions): State {
       return { ...state, activeCity: action.payload.cityName };
     case ActionType.SET_OFFERS:
       return { ...state, offers: action.payload.offers };
-    case ActionType.SET_OFFERS_LOAD_STATUS:
-      return { ...state, offersLoadStatus: action.payload.offersLoadStatus };
     case ActionType.SET_SORT_TYPE:
       return { ...state, sortType: action.payload.sortType };
     case ActionType.SET_ACTIVE_OFFER:

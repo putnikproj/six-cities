@@ -1,27 +1,38 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { AxiosError } from 'axios';
 import classNames from 'classnames';
 
 import { useTypedSelector, useTypedDispatch } from '../../hooks';
 import { setActiveCity } from '../../store/action';
-import { CityName, LoadStatus } from '../../helpers/enum';
-import { loadOffers } from '../../store/api-actions';
+import { CityName } from '../../helpers/enum';
+import { handleAPIError } from '../../helpers/api';
+import { loadAllOffers } from '../../store/api-actions';
 
 import Header from '../../components/header';
-import CitiesTabs from '../../components/cities-tabs';
 import Cities from '../../components/cities';
+import CitiesTabs from '../../components/cities-tabs';
 
 function Main(): JSX.Element {
+  const [loadError, setLoadError] = useState<AxiosError | undefined>(undefined);
+
   const offers = useTypedSelector((state) => state.offers);
-  const loadStatus = useTypedSelector((state) => state.offersLoadStatus);
   const activeCity = useTypedSelector((state) => state.activeCity);
 
   const dispatch = useTypedDispatch();
 
   useEffect(() => {
-    if (loadStatus === LoadStatus.UNLOADED) {
-      dispatch(loadOffers());
+    const loadOffers = async () => {
+      try {
+        await dispatch(loadAllOffers());
+      } catch (err) {
+        handleAPIError(err, (error) => setLoadError(error));
+      }
+    };
+
+    if (!offers) {
+      loadOffers();
     }
-  }, [dispatch, loadStatus]);
+  }, [dispatch, offers]);
 
   const handleCityChange = (newActiveCity: CityName) => {
     dispatch(setActiveCity(newActiveCity));
@@ -33,13 +44,14 @@ function Main(): JSX.Element {
 
       <main
         className={classNames('page__main', 'page__main--index', {
-          'page__main--index-empty': offers.length === 0,
+          'page__main--index-empty': !offers || offers.length === 0,
         })}
       >
         <CitiesTabs activeCity={activeCity} onCityChange={handleCityChange} />
         <Cities
           activeCity={activeCity}
-          offers={offers.filter((offer) => offer.city.name === activeCity)}
+          offers={offers ? offers.filter((offer) => offer.city.name === activeCity) : null}
+          error={loadError}
         />
       </main>
     </div>
