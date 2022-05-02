@@ -21,13 +21,6 @@ export enum ResponseCodes {
   NOT_FOUND = 404,
 }
 
-export enum LoadStatus {
-  UNLOADED = 'unloaded',
-  LOADING = 'loading',
-  LOADED = 'loaded',
-  ERROR = 'error',
-}
-
 // Auth
 export enum AuthStatus {
   AUTH = 'auth',

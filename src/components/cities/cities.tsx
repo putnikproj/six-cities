@@ -18,7 +18,8 @@ type CitiesProps = {
 function Cities({ offers, activeCity, error }: CitiesProps) {
   function getCitiesContent() {
     if (error) {
-      const message = error.response?.statusText || error.message;
+      const { response } = error;
+      const message = response ? `${response.status}: ${response.statusText}` : error.message;
       return (
         <div className="cities__places-container cities__places-container--empty container">
           <h1>Can&apos;t load offers ({message}). Try to reload page.</h1>

@@ -1,20 +1,15 @@
-import { useTypedSelector } from '../../hooks';
 import { Offer } from '../../types';
-import { LoadStatus, PlaceCardType } from '../../helpers/enum';
+import { PlaceCardType } from '../../helpers/enum';
 
 import PlaceCard from '../place-card';
 import Spinner from '../spinner';
 
 type OfferPlaceListProps = {
   offers: Offer[];
+  isLoading: boolean;
 };
-function OfferPlaceList({ offers }: OfferPlaceListProps): JSX.Element {
-  const nearbyOffersLoadStatus = useTypedSelector((state) => state.nearbyOffersLoadStatus);
-
-  if (
-    nearbyOffersLoadStatus === LoadStatus.LOADING ||
-    nearbyOffersLoadStatus === LoadStatus.UNLOADED
-  ) {
+function OfferPlaceList({ offers, isLoading }: OfferPlaceListProps): JSX.Element {
+  if (isLoading) {
     return <Spinner centerX centerY />;
   }
 

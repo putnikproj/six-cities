@@ -24,24 +24,10 @@ export const setActiveOffer = (activeOffer: State['activeOffer']) =>
     payload: { activeOffer },
   } as const);
 
-export const setActiveOfferLoadStatus = (activeOfferLoadStatus: State['activeOfferLoadStatus']) =>
-  ({
-    type: ActionType.SET_ACTIVE_OFFER_LOAD_STATUS,
-    payload: { activeOfferLoadStatus },
-  } as const);
-
 export const setNearbyOffers = (nearbyOffers: State['nearbyOffers']) =>
   ({
     type: ActionType.SET_NEARBY_OFFERS,
     payload: { nearbyOffers },
-  } as const);
-
-export const setNearbyOffersLoadStatus = (
-  nearbyOffersLoadStatus: State['nearbyOffersLoadStatus'],
-) =>
-  ({
-    type: ActionType.SET_NEARBY_OFFERS_LOAD_STATUS,
-    payload: { nearbyOffersLoadStatus },
   } as const);
 
 export const setFavoriteOffers = (favoriteOffers: State['favoriteOffers']) =>
@@ -66,10 +52,4 @@ export const setReviews = (reviews: State['reviews']) =>
   ({
     type: ActionType.SET_REVIEWS,
     payload: { reviews },
-  } as const);
-
-export const setReviewsLoadStatus = (reviewsLoadStatus: State['reviewsLoadStatus']) =>
-  ({
-    type: ActionType.SET_REVIEWS_LOAD_STATUS,
-    payload: { reviewsLoadStatus },
   } as const);

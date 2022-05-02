@@ -3,17 +3,14 @@ import { toast } from 'react-toastify';
 import { AppThunk } from '.';
 import {
   setActiveOffer,
-  setActiveOfferLoadStatus,
   setAuthStatus,
   setAuthUser,
   setFavoriteOffers,
   setNearbyOffers,
-  setNearbyOffersLoadStatus,
   setOffers,
   setReviews,
-  setReviewsLoadStatus,
 } from './action';
-import { AuthStatus, LoadStatus, ResponseCodes, ServerRoutes } from '../helpers/enum';
+import { AuthStatus, ResponseCodes, ServerRoutes } from '../helpers/enum';
 import { AuthUserWithToken, NewReview, Offer, Review, UserLogin } from '../types';
 import { clearAuthToken, setAuthToken } from '../helpers/auth-token';
 import { handleAPIError } from '../helpers/api';
@@ -25,45 +22,27 @@ import { handleAPIError } from '../helpers/api';
 export function loadAllOffers(): AppThunk {
   return async (dispatch, getState, api) => {
     const { data: allOffers } = await api.get<Offer[]>(ServerRoutes.OFFERS);
-
     dispatch(setOffers(allOffers));
   };
 }
 
 export function loadOffer(id: Offer['id']): AppThunk {
   return async (dispatch, getState, api) => {
-    dispatch(setActiveOfferLoadStatus(LoadStatus.LOADING));
-    try {
-      const { data: offer } = await api.get<Offer>(`${ServerRoutes.OFFERS}/${id}`);
-
-      dispatch(setActiveOffer(offer));
-      dispatch(setActiveOfferLoadStatus(LoadStatus.LOADED));
-    } catch (err) {
-      dispatch(setActiveOfferLoadStatus(LoadStatus.ERROR));
-      handleAPIError(err);
-    }
+    const { data: offer } = await api.get<Offer>(`${ServerRoutes.OFFERS}/${id}`);
+    dispatch(setActiveOffer(offer));
   };
 }
 
 export function loadNearbyOffers(id: Offer['id']): AppThunk {
   return async (dispatch, getState, api) => {
-    dispatch(setNearbyOffersLoadStatus(LoadStatus.LOADING));
-    try {
-      const { data: nearbyOffers } = await api.get<Offer[]>(`${ServerRoutes.OFFERS}/${id}/nearby`);
-
-      dispatch(setNearbyOffers(nearbyOffers));
-      dispatch(setNearbyOffersLoadStatus(LoadStatus.LOADED));
-    } catch (err) {
-      dispatch(setNearbyOffersLoadStatus(LoadStatus.ERROR));
-      handleAPIError(err);
-    }
+    const { data: nearbyOffers } = await api.get<Offer[]>(`${ServerRoutes.OFFERS}/${id}/nearby`);
+    dispatch(setNearbyOffers(nearbyOffers));
   };
 }
 
 export function loadFavoriteOffers(): AppThunk {
   return async (dispatch, getState, api) => {
     const { data: offers } = await api.get<Offer[]>(ServerRoutes.FAVORITE);
-
     dispatch(setFavoriteOffers(offers));
   };
 }
@@ -72,16 +51,8 @@ export function loadFavoriteOffers(): AppThunk {
 
 export function loadReviews(id: Offer['id']): AppThunk {
   return async (dispatch, getState, api) => {
-    dispatch(setReviewsLoadStatus(LoadStatus.LOADING));
-    try {
-      const { data: reviews } = await api.get<Review[]>(`${ServerRoutes.REVIEWS}/${id}`);
-
-      dispatch(setReviews(reviews));
-      dispatch(setReviewsLoadStatus(LoadStatus.LOADED));
-    } catch (err) {
-      dispatch(setReviewsLoadStatus(LoadStatus.ERROR));
-      handleAPIError(err);
-    }
+    const { data: reviews } = await api.get<Review[]>(`${ServerRoutes.REVIEWS}/${id}`);
+    dispatch(setReviews(reviews));
   };
 }
 

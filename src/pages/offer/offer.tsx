@@ -1,15 +1,13 @@
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
+import { toast } from 'react-toastify';
 
 import { useTypedSelector, useTypedDispatch } from '../../hooks';
 import { offerToPoint } from '../../helpers/util';
 import { loadNearbyOffers, loadOffer, loadReviews } from '../../store/api-actions';
-import { AuthStatus, LoadStatus } from '../../helpers/enum';
-import {
-  setActiveOfferLoadStatus,
-  setNearbyOffersLoadStatus,
-  setReviewsLoadStatus,
-} from '../../store/action';
+import { AuthStatus, ResponseCodes } from '../../helpers/enum';
+import { handleAPIError } from '../../helpers/api';
 
 import Map from '../../components/map';
 import Header from '../../components/header';
@@ -25,35 +23,70 @@ import OfferInformation from './offer-information';
 const MAX_OFFER_NEAR_PLACES = 3;
 
 function Offer(): JSX.Element {
-  const activeOfferLoadStatus = useTypedSelector((state) => state.activeOfferLoadStatus);
   const authStatus = useTypedSelector((state) => state.authStatus);
+
+  // Offer
+  const [isOfferLoading, setIsOfferLoading] = useState(true);
+  const [loadingError, setLoadingError] = useState<AxiosError | undefined>(undefined);
   const offer = useTypedSelector((state) => state.activeOffer);
+
+  // Nearby offers
+  const [areNearbyOffersLoading, setAreNearbyOffersLoading] = useState(true);
   const nearbyOffers = useTypedSelector((state) => state.nearbyOffers).slice(
     0,
     MAX_OFFER_NEAR_PLACES,
   );
 
+  // Reviews
+  const [isReviewsLoading, setIsReviewsLoading] = useState(true);
+
   const dispatch = useTypedDispatch();
 
+  const navigate = useNavigate();
   const { id } = useParams();
   const offerId = id || '';
 
   useEffect(() => {
-    dispatch(loadOffer(offerId));
-    dispatch(loadNearbyOffers(offerId));
-    dispatch(loadReviews(offerId));
+    const makeOfferRequest = async () => {
+      try {
+        await dispatch(loadOffer(offerId));
+      } catch (err) {
+        handleAPIError(err, (error) => {
+          if (error.response?.status !== ResponseCodes.NOT_FOUND) {
+            toast.error(error.message);
+          }
 
-    return () => {
-      dispatch(setActiveOfferLoadStatus(LoadStatus.UNLOADED));
-      dispatch(setNearbyOffersLoadStatus(LoadStatus.UNLOADED));
-      dispatch(setReviewsLoadStatus(LoadStatus.UNLOADED));
+          setLoadingError(error);
+        });
+      }
+      setIsOfferLoading(false);
     };
-  }, [dispatch, offerId]);
 
-  if (
-    activeOfferLoadStatus === LoadStatus.LOADING ||
-    activeOfferLoadStatus === LoadStatus.UNLOADED
-  ) {
+    const makeNearbyOffersRequest = async () => {
+      try {
+        await dispatch(loadNearbyOffers(offerId));
+      } catch (err) {
+        handleAPIError(err, () => undefined);
+      }
+      setAreNearbyOffersLoading(false);
+    };
+
+    const makeReviewsRequest = async () => {
+      try {
+        await dispatch(loadReviews(offerId));
+      } catch (err) {
+        handleAPIError(err, () => undefined);
+      }
+      setIsReviewsLoading(false);
+    };
+
+    // Parallel requests
+    makeOfferRequest();
+    makeNearbyOffersRequest();
+    makeReviewsRequest();
+  }, [dispatch, navigate, offerId]);
+
+  if (isOfferLoading) {
     return (
       <div style={{ height: '100vh' }}>
         <Spinner centerX centerY />
@@ -61,7 +94,7 @@ function Offer(): JSX.Element {
     );
   }
 
-  if (activeOfferLoadStatus === LoadStatus.ERROR || !offer) {
+  if (loadingError || !offer) {
     return <NotFound />;
   }
 
@@ -78,7 +111,7 @@ function Offer(): JSX.Element {
               <OfferInformation offer={offer} />
               <MeetTheHost host={offer.host} description={offer.description} />
               <section className="property__reviews reviews">
-                <ReviewsList />
+                <ReviewsList isLoading={isReviewsLoading} />
                 {authStatus === AuthStatus.AUTH && <AddReviewForm id={offerId} />}
               </section>
             </div>
@@ -95,7 +128,7 @@ function Offer(): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <OfferPlaceList offers={nearbyOffers} />
+            <OfferPlaceList offers={nearbyOffers} isLoading={areNearbyOffersLoading} />
           </section>
         </div>
       </main>
