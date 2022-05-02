@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 
 import { useTypedDispatch, useTypedSelector } from '../../hooks';
 import { logout } from '../../store/api-actions';
 import { AppRoute } from '../../helpers/enum';
+import { handleAPIError } from '../../helpers/api';
 
 const SUCCESS_LOGOUT_TEXT = 'You have successfully logged out';
 
@@ -17,9 +17,7 @@ function HeaderAuth() {
       await dispatch(logout());
       toast.success(SUCCESS_LOGOUT_TEXT);
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        toast.error(err.message);
-      }
+      handleAPIError(err);
     }
   }
 

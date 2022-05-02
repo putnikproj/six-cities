@@ -1,9 +1,9 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 
 import { useTypedDispatch } from '../../hooks';
 import { login } from '../../store/api-actions';
+import { handleAPIError } from '../../helpers/api';
 
 const SUCCESS_LOGIN_MESSAGE = 'You have successfully logged in';
 
@@ -29,9 +29,8 @@ function LoginForm() {
       await dispatch(login({ email, password }));
       toast.success(SUCCESS_LOGIN_MESSAGE);
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        toast.error(err.message);
-      }
+      setIsLoading(false);
+      handleAPIError(err);
     }
     // Then AuthStatus changes, login rerenders and redirects to necessary page
   }

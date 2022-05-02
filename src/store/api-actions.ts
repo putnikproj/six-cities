@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { toast } from 'react-toastify';
 
 import { AppThunk } from '.';
@@ -18,6 +17,7 @@ import {
 import { AuthStatus, LoadStatus, ResponseCodes, ServerRoutes } from '../helpers/enum';
 import { AuthUserWithToken, NewReview, Offer, Review, UserLogin } from '../types';
 import { clearAuthToken, setAuthToken } from '../helpers/auth-token';
+import { handleAPIError } from '../helpers/api';
 
 // To test: await new Promise((resolve) => setTimeout(resolve, 5000));
 
@@ -33,9 +33,7 @@ export function loadOffers(): AppThunk {
       dispatch(setOffersLoadStatus(LoadStatus.LOADED));
     } catch (err) {
       dispatch(setOffersLoadStatus(LoadStatus.ERROR));
-      if (axios.isAxiosError(err)) {
-        toast.error(err.message);
-      }
+      handleAPIError(err);
     }
   };
 }
@@ -50,9 +48,7 @@ export function loadOffer(id: Offer['id']): AppThunk {
       dispatch(setActiveOfferLoadStatus(LoadStatus.LOADED));
     } catch (err) {
       dispatch(setActiveOfferLoadStatus(LoadStatus.ERROR));
-      if (axios.isAxiosError(err)) {
-        toast.error(err.message);
-      }
+      handleAPIError(err);
     }
   };
 }
@@ -67,9 +63,7 @@ export function loadNearbyOffers(id: Offer['id']): AppThunk {
       dispatch(setNearbyOffersLoadStatus(LoadStatus.LOADED));
     } catch (err) {
       dispatch(setNearbyOffersLoadStatus(LoadStatus.ERROR));
-      if (axios.isAxiosError(err)) {
-        toast.error(err.message);
-      }
+      handleAPIError(err);
     }
   };
 }
@@ -94,9 +88,7 @@ export function loadReviews(id: Offer['id']): AppThunk {
       dispatch(setReviewsLoadStatus(LoadStatus.LOADED));
     } catch (err) {
       dispatch(setReviewsLoadStatus(LoadStatus.ERROR));
-      if (axios.isAxiosError(err)) {
-        toast.error(err.message);
-      }
+      handleAPIError(err);
     }
   };
 }
@@ -125,18 +117,15 @@ export function checkAuth(): AppThunk {
       dispatch(setAuthUser(authUser));
     } catch (err) {
       dispatch(setAuthStatus(AuthStatus.UNAUTH));
-
-      if (!axios.isAxiosError(err)) {
-        return;
-      }
-
-      switch (err.response?.status) {
-        case ResponseCodes.UNAUTHORIZED:
-          toast.warn('You are not authorised');
-          return;
-        default:
-          toast.error(err.message);
-      }
+      handleAPIError(err, (axiosError) => {
+        switch (axiosError.response?.status) {
+          case ResponseCodes.UNAUTHORIZED:
+            toast.warn('You are not authorised');
+            return;
+          default:
+            toast.error(axiosError.message);
+        }
+      });
     }
   };
 }
