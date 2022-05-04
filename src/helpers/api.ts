@@ -8,7 +8,7 @@ const BASE_SERVER_URL = 'https://8.react.pages.academy/six-cities';
 const HEADER_TOKEN_KEY = 'x-token';
 const TIMEOUT = 5000;
 
-export function createAPI() {
+function createAPI() {
   const api = axios.create({
     baseURL: BASE_SERVER_URL,
     timeout: TIMEOUT,
@@ -33,6 +33,8 @@ export function createAPI() {
 
   return api;
 }
+
+export const api = createAPI();
 
 // Errors handling
 

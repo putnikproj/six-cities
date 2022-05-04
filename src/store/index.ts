@@ -1,23 +1,17 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, Action } from 'redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
 import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { AxiosInstance } from 'axios';
 
-import { createAPI } from '../helpers/api';
-import { Actions, reducer } from './reducer';
+import rootReducer from './slices';
 
-const api = createAPI();
-
-export const store = createStore(
-  reducer,
-  composeWithDevTools(applyMiddleware(thunk.withExtraArgument(api))),
-);
+export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = ThunkDispatch<RootState, AxiosInstance, Actions>;
+export type AppDispatch = ThunkDispatch<RootState, AxiosInstance, Action>;
 export type AppThunk<ReturnType = Promise<void>> = ThunkAction<
   ReturnType,
   RootState,
   AxiosInstance,
-  Actions
+  Action
 >;
