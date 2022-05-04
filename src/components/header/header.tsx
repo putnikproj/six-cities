@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useTypedSelector } from '../../hooks';
@@ -43,4 +44,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default memo(Header);

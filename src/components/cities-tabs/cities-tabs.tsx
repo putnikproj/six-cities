@@ -1,17 +1,20 @@
-import { SyntheticEvent } from 'react';
+import { memo, SyntheticEvent } from 'react';
 import classNames from 'classnames';
 
 import { CityName } from '../../helpers/enum';
+import { useTypedDispatch } from '../../hooks';
+import { activeCityChanged } from '../../store/slices/offers';
 
 type CitiesTabsProps = {
   activeCity: CityName;
-  onCityChange: (city: CityName) => void;
 };
 
-function CitiesTabs({ activeCity, onCityChange }: CitiesTabsProps) {
+function CitiesTabs({ activeCity }: CitiesTabsProps) {
+  const dispatch = useTypedDispatch();
+
   const handleLinkClick = (city: CityName) => (evt: SyntheticEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
-    onCityChange(city);
+    dispatch(activeCityChanged(city));
   };
 
   return (
@@ -40,4 +43,4 @@ function CitiesTabs({ activeCity, onCityChange }: CitiesTabsProps) {
   );
 }
 
-export default CitiesTabs;
+export default memo(CitiesTabs);

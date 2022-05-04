@@ -1,9 +1,7 @@
-import { useTypedSelector, useTypedDispatch } from '../../hooks';
+import { useTypedDispatch } from '../../hooks';
 import { Offer } from '../../types';
-import { sortOffers } from '../../helpers/sort-offers';
 import { CityName, PlaceCardType } from '../../helpers/enum';
 import { setActiveOffer } from '../../store/slices/active-offer';
-import { sortTypeSelector } from '../../store/slices/offers';
 
 import PlaceCard from '../place-card';
 import PlacesSorting from '../places-sorting';
@@ -14,19 +12,9 @@ type CitiesPlaceListProps = {
 };
 
 function CitiesPlaceList({ offers, activeCity }: CitiesPlaceListProps): JSX.Element {
-  const sortType = useTypedSelector(sortTypeSelector);
   const dispatch = useTypedDispatch();
 
-  function handleMouseEnterLeave(offer?: Offer | undefined) {
-    return () => {
-      if (!offer) {
-        dispatch(setActiveOffer(null));
-        return;
-      }
-
-      dispatch(setActiveOffer(offer));
-    };
-  }
+  const handleMouseEnterLeave = (offer: Offer | null) => () => dispatch(setActiveOffer(offer));
 
   return (
     <section className="cities__places places">
@@ -37,15 +25,15 @@ function CitiesPlaceList({ offers, activeCity }: CitiesPlaceListProps): JSX.Elem
       </b>
 
       {/* Sorting */}
-      <PlacesSorting sortType={sortType} />
+      <PlacesSorting />
 
       {/* Places (offers) */}
       <div className="cities__places-list places__list tabs__content">
-        {sortOffers(offers, sortType).map((offer) => (
+        {offers.map((offer) => (
           <div
             key={offer.id}
             onMouseEnter={handleMouseEnterLeave(offer)}
-            onMouseLeave={handleMouseEnterLeave()}
+            onMouseLeave={handleMouseEnterLeave(null)}
           >
             <PlaceCard offer={offer} type={PlaceCardType.MAIN} />
           </div>

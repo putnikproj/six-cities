@@ -20,9 +20,9 @@ const initialState: ActiveOfferState = {
 // Reducer
 
 enum ActionType {
-  SET_ACTIVE_OFFER = 'main/setActiveOffer',
-  SET_NEARBY_OFFERS = 'offer/setNearbyOffers',
-  SET_REVIEWS = 'offer/setReviews',
+  SET_ACTIVE_OFFER = 'activeOffer/setActiveOffer',
+  SET_NEARBY_OFFERS = 'activeOffer/setNearbyOffers',
+  SET_REVIEWS = 'activeOffer/setReviews',
 }
 
 export default function activeOfferReducer(

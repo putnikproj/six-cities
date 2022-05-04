@@ -1,46 +1,33 @@
-import { useEffect, useState } from 'react';
-import { AxiosError } from 'axios';
+import { useEffect } from 'react';
 import classNames from 'classnames';
 
 import { useTypedSelector, useTypedDispatch } from '../../hooks';
 import {
-  setActiveCity,
   loadAllOffers,
-  offersSelector,
+  offersLoadingStatusSelector,
   activeCitySelector,
+  sortedActiveCityOffersSelector,
+  offersLoadingErrorSelector,
 } from '../../store/slices/offers';
-import { CityName } from '../../helpers/enum';
-import { handleAPIError } from '../../helpers/api';
+import { LoadingStatus } from '../../helpers/enum';
 
 import Header from '../../components/header';
 import Cities from '../../components/cities';
 import CitiesTabs from '../../components/cities-tabs';
 
 function Main(): JSX.Element {
-  const [loadError, setLoadError] = useState<AxiosError | undefined>(undefined);
-
-  const offers = useTypedSelector(offersSelector);
+  const loadingStatus = useTypedSelector(offersLoadingStatusSelector);
+  const error = useTypedSelector(offersLoadingErrorSelector);
+  const offers = useTypedSelector(sortedActiveCityOffersSelector);
   const activeCity = useTypedSelector(activeCitySelector);
 
   const dispatch = useTypedDispatch();
 
   useEffect(() => {
-    const loadOffers = async () => {
-      try {
-        await dispatch(loadAllOffers());
-      } catch (err) {
-        handleAPIError(err, (error) => setLoadError(error));
-      }
-    };
-
-    if (!offers) {
-      loadOffers();
+    if (loadingStatus === LoadingStatus.IDLE) {
+      dispatch(loadAllOffers());
     }
-  }, [dispatch, offers]);
-
-  const handleCityChange = (newActiveCity: CityName) => {
-    dispatch(setActiveCity(newActiveCity));
-  };
+  }, [dispatch, loadingStatus]);
 
   return (
     <div className="page page--gray page--main">
@@ -48,14 +35,15 @@ function Main(): JSX.Element {
 
       <main
         className={classNames('page__main', 'page__main--index', {
-          'page__main--index-empty': !offers || offers.length === 0,
+          'page__main--index-empty': offers.length === 0,
         })}
       >
-        <CitiesTabs activeCity={activeCity} onCityChange={handleCityChange} />
+        <CitiesTabs activeCity={activeCity} />
         <Cities
           activeCity={activeCity}
-          offers={offers ? offers.filter((offer) => offer.city.name === activeCity) : null}
-          error={loadError}
+          offers={offers}
+          loadingStatus={loadingStatus}
+          error={error}
         />
       </main>
     </div>

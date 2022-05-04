@@ -1,18 +1,25 @@
+import { createSelector } from 'reselect';
+
 import { AppThunk, RootState } from '..';
-import { api } from '../../helpers/api';
-import { CityName, ServerRoutes, SortType } from '../../helpers/enum';
+import { api, handleAPIError } from '../../helpers/api';
+import { CityName, LoadingStatus, ServerRoutes, SortType } from '../../helpers/enum';
+import { sortOffers } from '../../helpers/sort-offers';
 import { Offer } from '../../types';
 
 // State
 
 type OffersState = {
-  offers: Offer[] | null;
+  offers: Offer[];
+  loadingStatus: LoadingStatus;
+  error: string | undefined;
   activeCity: CityName;
   sortType: SortType;
 };
 
 const initialState: OffersState = {
-  offers: null,
+  offers: [],
+  loadingStatus: LoadingStatus.IDLE,
+  error: undefined,
   activeCity: CityName.PARIS,
   sortType: SortType.DEFAULT,
 };
@@ -20,19 +27,25 @@ const initialState: OffersState = {
 // Reducer
 
 enum ActionType {
-  SET_OFFERS = 'main/setOffers',
-  SET_ACTIVE_CITY = 'main/setActiveCity',
-  SET_SORT_TYPE = 'main/setSortType',
+  OFFERS_LOADING = 'main/offersLoading',
+  OFFERS_LOADING_FAILED = 'main/offersLoadingFailed',
+  OFFERS_LOADING_SUCCEESSED = 'main/offersLoadingSucceessed',
+  ACTIVE_CITY_CHANGED = 'main/activeCityChanged',
+  SORT_TYPE_CHANGED = 'main/sortTypeChanged',
 }
 
 export default function offersReducer(state = initialState, action: OfferActions): OffersState {
   switch (action.type) {
-    case ActionType.SET_OFFERS:
-      return { ...state, offers: action.payload.offers };
-    case ActionType.SET_ACTIVE_CITY:
-      return { ...state, activeCity: action.payload.cityName };
-    case ActionType.SET_SORT_TYPE:
-      return { ...state, sortType: action.payload.sortType };
+    case ActionType.OFFERS_LOADING:
+      return { ...state, loadingStatus: LoadingStatus.LOADING };
+    case ActionType.OFFERS_LOADING_FAILED:
+      return { ...state, loadingStatus: LoadingStatus.FAILED, error: action.payload };
+    case ActionType.OFFERS_LOADING_SUCCEESSED:
+      return { ...state, loadingStatus: LoadingStatus.SUCCEEDED, offers: action.payload };
+    case ActionType.ACTIVE_CITY_CHANGED:
+      return { ...state, activeCity: action.payload };
+    case ActionType.SORT_TYPE_CHANGED:
+      return { ...state, sortType: action.payload };
     default:
       return state;
   }
@@ -40,40 +53,60 @@ export default function offersReducer(state = initialState, action: OfferActions
 
 // Actions
 
-export const setOffers = (offers: OffersState['offers']) =>
-  ({
-    type: ActionType.SET_OFFERS,
-    payload: { offers },
-  } as const);
+export const offersLoading = () => ({ type: ActionType.OFFERS_LOADING } as const);
+export const offersLoadingFailed = (error: OffersState['error']) =>
+  ({ type: ActionType.OFFERS_LOADING_FAILED, payload: error } as const);
+export const offersLoadingSucceessed = (offers: OffersState['offers']) =>
+  ({ type: ActionType.OFFERS_LOADING_SUCCEESSED, payload: offers } as const);
 
-export const setActiveCity = (cityName: OffersState['activeCity']) =>
-  ({
-    type: ActionType.SET_ACTIVE_CITY,
-    payload: { cityName },
-  } as const);
+export const activeCityChanged = (cityName: OffersState['activeCity']) =>
+  ({ type: ActionType.ACTIVE_CITY_CHANGED, payload: cityName } as const);
 
-export const setSortType = (sortType: OffersState['sortType']) =>
-  ({
-    type: ActionType.SET_SORT_TYPE,
-    payload: { sortType },
-  } as const);
+export const sortTypeChanged = (sortType: OffersState['sortType']) =>
+  ({ type: ActionType.SORT_TYPE_CHANGED, payload: sortType } as const);
 
 type OfferActions =
-  | ReturnType<typeof setOffers>
-  | ReturnType<typeof setActiveCity>
-  | ReturnType<typeof setSortType>;
+  | ReturnType<typeof offersLoading>
+  | ReturnType<typeof offersLoadingFailed>
+  | ReturnType<typeof offersLoadingSucceessed>
+  | ReturnType<typeof activeCityChanged>
+  | ReturnType<typeof sortTypeChanged>;
 
 // Async actions
 
 export function loadAllOffers(): AppThunk {
   return async (dispatch) => {
-    const { data: allOffers } = await api.get<Offer[]>(ServerRoutes.OFFERS);
-    dispatch(setOffers(allOffers));
+    dispatch(offersLoading());
+    try {
+      const { data: allOffers } = await api.get<Offer[]>(ServerRoutes.OFFERS);
+      dispatch(offersLoadingSucceessed(allOffers));
+    } catch (err) {
+      handleAPIError(err, (axiosError) => {
+        const { response } = axiosError;
+        const message = response
+          ? `${response.status}: ${response.statusText}`
+          : axiosError.message;
+        dispatch(offersLoadingFailed(message));
+      });
+    }
   };
 }
 
 // Selectors
 
-export const offersSelector = (state: RootState) => state.offers.offers;
+export const allOffersSelector = (state: RootState) => state.offers.offers;
 export const activeCitySelector = (state: RootState) => state.offers.activeCity;
 export const sortTypeSelector = (state: RootState) => state.offers.sortType;
+
+export const offersLoadingStatusSelector = (state: RootState) => state.offers.loadingStatus;
+export const offersLoadingErrorSelector = (state: RootState) => state.offers.error;
+
+export const activeCityOffersSelector = createSelector(
+  [allOffersSelector, activeCitySelector],
+  (allOffers, activeCity) => allOffers.filter((offer) => offer.city.name === activeCity),
+);
+
+export const sortedActiveCityOffersSelector = createSelector(
+  [activeCityOffersSelector, sortTypeSelector],
+  (offers, sortType) => sortOffers(offers, sortType),
+);

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import classNames from 'classnames';
 
-import { useTypedDispatch } from '../../hooks';
+import { useTypedDispatch, useTypedSelector } from '../../hooks';
 import { SortType } from '../../helpers/enum';
-import { setSortType } from '../../store/slices/offers';
+import { sortTypeChanged, sortTypeSelector } from '../../store/slices/offers';
 
 const options: Record<SortType, string> = {
   [SortType.DEFAULT]: 'Popular',
@@ -12,11 +12,8 @@ const options: Record<SortType, string> = {
   [SortType.RATING_HIGH_TO_LOW]: 'Top rated first',
 };
 
-type PlacesSoringProps = {
-  sortType: SortType;
-};
-
-function PlacesSorting({ sortType }: PlacesSoringProps): JSX.Element {
+function PlacesSorting(): JSX.Element {
+  const sortType = useTypedSelector(sortTypeSelector);
   const dispatch = useTypedDispatch();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -29,7 +26,7 @@ function PlacesSorting({ sortType }: PlacesSoringProps): JSX.Element {
       return;
     }
 
-    dispatch(setSortType(newSortType));
+    dispatch(sortTypeChanged(newSortType));
   };
 
   return (
