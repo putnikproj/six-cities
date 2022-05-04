@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import axios, { AxiosError } from 'axios';
 
 import { useTypedDispatch, useTypedSelector } from '../../hooks';
-import { loadFavoriteOffers } from '../../store/api-actions';
+import { favoriteOffersSelector, loadFavoriteOffers } from '../../store/slices/favorites';
 
 import Header from '../../components/header';
 import Footer from '../../components/footer';
@@ -13,7 +13,7 @@ import FavoritesPlaceList from '../../components/favorites-place-list';
 
 function Favorites(): JSX.Element {
   const dispatch = useTypedDispatch();
-  const offers = useTypedSelector((state) => state.favoriteOffers);
+  const offers = useTypedSelector(favoriteOffersSelector);
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<AxiosError | null>(null);

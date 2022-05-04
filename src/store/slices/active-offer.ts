@@ -1,4 +1,4 @@
-import { AppThunk } from '..';
+import { AppThunk, RootState } from '..';
 import { api } from '../../helpers/api';
 import { ServerRoutes } from '../../helpers/enum';
 import { NewReview, Offer, Review } from '../../types';
@@ -7,14 +7,14 @@ import { NewReview, Offer, Review } from '../../types';
 
 type ActiveOfferState = {
   activeOffer: Offer | null;
-  nearbyOffers: Offer[] | null;
-  reviews: Review[] | null;
+  nearbyOffers: Offer[];
+  reviews: Review[];
 };
 
 const initialState: ActiveOfferState = {
   activeOffer: null,
-  nearbyOffers: null,
-  reviews: null,
+  nearbyOffers: [],
+  reviews: [],
 };
 
 // Reducer
@@ -101,3 +101,7 @@ export function uploadReview(id: Offer['id'], review: NewReview): AppThunk {
 }
 
 // Selectors
+
+export const activeOfferSelector = (state: RootState) => state.activeOffer.activeOffer;
+export const reviewsSelector = (state: RootState) => state.activeOffer.reviews;
+export const nearbyOffersSelector = (state: RootState) => state.activeOffer.nearbyOffers;

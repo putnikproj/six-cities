@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { AppRoute } from '../../helpers/enum';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useTypedDispatch } from '../../hooks';
-import { checkAuth } from '../../store/api-actions';
+import { checkAuth } from '../../store/slices/user';
 
 import Main from '../../pages/main';
 import Offer from '../../pages/offer';

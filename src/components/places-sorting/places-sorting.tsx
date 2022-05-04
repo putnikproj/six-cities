@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { useTypedDispatch } from '../../hooks';
 import { SortType } from '../../helpers/enum';
-import { setSortType } from '../../store/action';
+import { setSortType } from '../../store/slices/offers';
 
 const options: Record<SortType, string> = {
   [SortType.DEFAULT]: 'Popular',

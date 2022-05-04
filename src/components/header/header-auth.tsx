@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { useTypedDispatch, useTypedSelector } from '../../hooks';
-import { logout } from '../../store/api-actions';
+import { authUserSelector, logout } from '../../store/slices/user';
 import { AppRoute } from '../../helpers/enum';
 import { handleAPIError } from '../../helpers/api';
 
@@ -10,7 +10,7 @@ const SUCCESS_LOGOUT_TEXT = 'You have successfully logged out';
 
 function HeaderAuth() {
   const dispatch = useTypedDispatch();
-  const user = useTypedSelector((state) => state.authUser);
+  const user = useTypedSelector(authUserSelector);
 
   async function handleLogoutButtonCLick() {
     try {

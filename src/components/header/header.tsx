@@ -2,12 +2,13 @@ import { Link } from 'react-router-dom';
 
 import { useTypedSelector } from '../../hooks';
 import { AppRoute, AuthStatus } from '../../helpers/enum';
+import { authStatusSelector } from '../../store/slices/user';
 
 import HeaderAuth from './header-auth';
 import HeaderUnauth from './header-unauth';
 
 function Header() {
-  const authStatus = useTypedSelector((state) => state.authStatus);
+  const authStatus = useTypedSelector(authStatusSelector);
 
   function getHeaderNavList() {
     switch (authStatus) {

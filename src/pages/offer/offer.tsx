@@ -5,7 +5,14 @@ import { toast } from 'react-toastify';
 
 import { useTypedSelector, useTypedDispatch } from '../../hooks';
 import { offerToPoint } from '../../helpers/util';
-import { loadNearbyOffers, loadOffer, loadReviews } from '../../store/api-actions';
+import {
+  activeOfferSelector,
+  loadNearbyOffers,
+  loadOffer,
+  loadReviews,
+  nearbyOffersSelector,
+} from '../../store/slices/active-offer';
+import { authStatusSelector } from '../../store/slices/user';
 import { AuthStatus, ResponseCodes } from '../../helpers/enum';
 import { handleAPIError } from '../../helpers/api';
 
@@ -23,19 +30,16 @@ import OfferInformation from './offer-information';
 const MAX_OFFER_NEAR_PLACES = 3;
 
 function Offer(): JSX.Element {
-  const authStatus = useTypedSelector((state) => state.authStatus);
+  const authStatus = useTypedSelector(authStatusSelector);
 
   // Offer
   const [isOfferLoading, setIsOfferLoading] = useState(true);
   const [loadingError, setLoadingError] = useState<AxiosError | undefined>(undefined);
-  const offer = useTypedSelector((state) => state.activeOffer);
+  const offer = useTypedSelector(activeOfferSelector);
 
   // Nearby offers
   const [areNearbyOffersLoading, setAreNearbyOffersLoading] = useState(true);
-  const nearbyOffers = useTypedSelector((state) => state.nearbyOffers).slice(
-    0,
-    MAX_OFFER_NEAR_PLACES,
-  );
+  const nearbyOffers = useTypedSelector(nearbyOffersSelector).slice(0, MAX_OFFER_NEAR_PLACES);
 
   // Reviews
   const [isReviewsLoading, setIsReviewsLoading] = useState(true);

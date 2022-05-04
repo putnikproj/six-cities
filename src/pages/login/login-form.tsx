@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { useTypedDispatch } from '../../hooks';
-import { login } from '../../store/api-actions';
+import { login } from '../../store/slices/user';
 import { handleAPIError } from '../../helpers/api';
 
 const SUCCESS_LOGIN_MESSAGE = 'You have successfully logged in';

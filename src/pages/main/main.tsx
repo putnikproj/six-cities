@@ -3,10 +3,14 @@ import { AxiosError } from 'axios';
 import classNames from 'classnames';
 
 import { useTypedSelector, useTypedDispatch } from '../../hooks';
-import { setActiveCity } from '../../store/action';
+import {
+  setActiveCity,
+  loadAllOffers,
+  offersSelector,
+  activeCitySelector,
+} from '../../store/slices/offers';
 import { CityName } from '../../helpers/enum';
 import { handleAPIError } from '../../helpers/api';
-import { loadAllOffers } from '../../store/api-actions';
 
 import Header from '../../components/header';
 import Cities from '../../components/cities';
@@ -15,8 +19,8 @@ import CitiesTabs from '../../components/cities-tabs';
 function Main(): JSX.Element {
   const [loadError, setLoadError] = useState<AxiosError | undefined>(undefined);
 
-  const offers = useTypedSelector((state) => state.offers);
-  const activeCity = useTypedSelector((state) => state.activeCity);
+  const offers = useTypedSelector(offersSelector);
+  const activeCity = useTypedSelector(activeCitySelector);
 
   const dispatch = useTypedDispatch();
 

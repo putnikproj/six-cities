@@ -4,6 +4,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 import { useTypedSelector } from '../../hooks';
 import { AppRoute, AuthStatus } from '../../helpers/enum';
+import { authStatusSelector } from '../../store/slices/user';
 
 import Spinner from '../spinner';
 
@@ -13,7 +14,7 @@ type PrivateRouteProps = {
 
 function PrivateRoute({ children }: PrivateRouteProps): JSX.Element {
   const location = useLocation();
-  const authStatus = useTypedSelector((state) => state.authStatus);
+  const authStatus = useTypedSelector(authStatusSelector);
 
   switch (authStatus) {
     case AuthStatus.AUTH:

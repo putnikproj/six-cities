@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 
 import { useTypedDispatch } from '../../hooks';
-import { uploadReview } from '../../store/api-actions';
+import { uploadReview } from '../../store/slices/active-offer';
 import { Offer } from '../../types';
 
 import Rating from './rating';

@@ -1,4 +1,4 @@
-import { AppThunk } from '..';
+import { AppThunk, RootState } from '..';
 import { api } from '../../helpers/api';
 import { ServerRoutes } from '../../helpers/enum';
 import { Offer } from '../../types';
@@ -51,3 +51,5 @@ export function loadFavoriteOffers(): AppThunk {
 }
 
 // Selectors
+
+export const favoriteOffersSelector = (state: RootState) => state.favorites.favoriteOffers;

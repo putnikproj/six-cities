@@ -2,7 +2,8 @@ import { useTypedSelector, useTypedDispatch } from '../../hooks';
 import { Offer } from '../../types';
 import { sortOffers } from '../../helpers/sort-offers';
 import { CityName, PlaceCardType } from '../../helpers/enum';
-import { setActiveOffer } from '../../store/action';
+import { setActiveOffer } from '../../store/slices/active-offer';
+import { sortTypeSelector } from '../../store/slices/offers';
 
 import PlaceCard from '../place-card';
 import PlacesSorting from '../places-sorting';
@@ -13,7 +14,7 @@ type CitiesPlaceListProps = {
 };
 
 function CitiesPlaceList({ offers, activeCity }: CitiesPlaceListProps): JSX.Element {
-  const sortType = useTypedSelector((state) => state.sortType);
+  const sortType = useTypedSelector(sortTypeSelector);
   const dispatch = useTypedDispatch();
 
   function handleMouseEnterLeave(offer?: Offer | undefined) {

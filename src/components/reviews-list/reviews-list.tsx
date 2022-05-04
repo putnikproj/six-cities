@@ -1,4 +1,5 @@
 import { useTypedSelector } from '../../hooks';
+import { reviewsSelector } from '../../store/slices/active-offer';
 import { Review as ReviewType } from '../../types';
 
 import Review from '../review';
@@ -14,7 +15,7 @@ type ReviewsListProps = {
 };
 
 function ReviewsList({ isLoading }: ReviewsListProps): JSX.Element {
-  const reviews = useTypedSelector((state) => state.reviews);
+  const reviews = useTypedSelector(reviewsSelector);
 
   return (
     <>

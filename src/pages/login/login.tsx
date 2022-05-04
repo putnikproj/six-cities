@@ -6,6 +6,7 @@ import { AppRoute, AuthStatus } from '../../helpers/enum';
 import Header from '../../components/header';
 import Spinner from '../../components/spinner';
 import LoginForm from './login-form';
+import { authStatusSelector } from '../../store/slices/user';
 
 type LocationProps = Location & {
   state?: {
@@ -24,7 +25,7 @@ function getPrevUrl(location: LocationProps): string {
 
 function Login(): JSX.Element {
   const location = useLocation() as LocationProps;
-  const authStatus = useTypedSelector((state) => state.authStatus);
+  const authStatus = useTypedSelector(authStatusSelector);
 
   const fromPage = getPrevUrl(location) || AppRoute.ROOT;
 

@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 
-import { AppThunk } from '..';
+import { AppThunk, RootState } from '..';
 import { api, handleAPIError } from '../../helpers/api';
 import { clearAuthToken, setAuthToken } from '../../helpers/auth-token';
 import { AuthStatus, ResponseCodes, ServerRoutes } from '../../helpers/enum';
@@ -101,3 +101,6 @@ export function logout(): AppThunk {
 }
 
 // Selectors
+
+export const authStatusSelector = (state: RootState) => state.user.authStatus;
+export const authUserSelector = (state: RootState) => state.user.authUser;

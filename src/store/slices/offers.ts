@@ -1,4 +1,4 @@
-import { AppThunk } from '..';
+import { AppThunk, RootState } from '..';
 import { api } from '../../helpers/api';
 import { CityName, ServerRoutes, SortType } from '../../helpers/enum';
 import { Offer } from '../../types';
@@ -73,3 +73,7 @@ export function loadAllOffers(): AppThunk {
 }
 
 // Selectors
+
+export const offersSelector = (state: RootState) => state.offers.offers;
+export const activeCitySelector = (state: RootState) => state.offers.activeCity;
+export const sortTypeSelector = (state: RootState) => state.offers.sortType;
