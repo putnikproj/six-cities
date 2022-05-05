@@ -3,23 +3,19 @@ import classNames from 'classnames';
 
 import { useTypedSelector, useTypedDispatch } from '../../hooks';
 import {
+  areZeroOffersSelector,
   loadAllOffers,
   offersLoadingStatusSelector,
-  activeCitySelector,
-  sortedActiveCityOffersSelector,
-  offersLoadingErrorSelector,
 } from '../../store/slices/offers';
 import { LoadingStatus } from '../../helpers/enum';
 
 import Header from '../../components/header';
-import Cities from '../../components/cities';
+import CityPlaces from '../../components/city-places';
 import CitiesTabs from '../../components/cities-tabs';
 
 function Main(): JSX.Element {
+  const areZeroOffers = useTypedSelector(areZeroOffersSelector);
   const loadingStatus = useTypedSelector(offersLoadingStatusSelector);
-  const error = useTypedSelector(offersLoadingErrorSelector);
-  const offers = useTypedSelector(sortedActiveCityOffersSelector);
-  const activeCity = useTypedSelector(activeCitySelector);
 
   const dispatch = useTypedDispatch();
 
@@ -35,16 +31,11 @@ function Main(): JSX.Element {
 
       <main
         className={classNames('page__main', 'page__main--index', {
-          'page__main--index-empty': offers.length === 0,
+          'page__main--index-empty': areZeroOffers,
         })}
       >
-        <CitiesTabs activeCity={activeCity} />
-        <Cities
-          activeCity={activeCity}
-          offers={offers}
-          loadingStatus={loadingStatus}
-          error={error}
-        />
+        <CitiesTabs />
+        <CityPlaces loadingStatus={loadingStatus} />
       </main>
     </div>
   );

@@ -4,6 +4,7 @@ import { AppThunk, RootState } from '..';
 import { api, handleAPIError } from '../../helpers/api';
 import { CityName, LoadingStatus, ServerRoutes, SortType } from '../../helpers/enum';
 import { sortOffers } from '../../helpers/sort-offers';
+import { offerToPoint } from '../../helpers/util';
 import { Offer } from '../../types';
 
 // State
@@ -95,6 +96,7 @@ export function loadAllOffers(): AppThunk {
 // Selectors
 
 export const allOffersSelector = (state: RootState) => state.offers.offers;
+export const areZeroOffersSelector = (state: RootState) => state.offers.offers.length === 0;
 export const activeCitySelector = (state: RootState) => state.offers.activeCity;
 export const sortTypeSelector = (state: RootState) => state.offers.sortType;
 
@@ -109,4 +111,8 @@ export const activeCityOffersSelector = createSelector(
 export const sortedActiveCityOffersSelector = createSelector(
   [activeCityOffersSelector, sortTypeSelector],
   (offers, sortType) => sortOffers(offers, sortType),
+);
+
+export const activeCityMapPointsSelector = createSelector([activeCityOffersSelector], (offers) =>
+  offers.map((offer) => offerToPoint(offer)),
 );

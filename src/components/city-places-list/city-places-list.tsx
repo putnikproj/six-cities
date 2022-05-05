@@ -6,12 +6,12 @@ import { setActiveOffer } from '../../store/slices/active-offer';
 import PlaceCard from '../place-card';
 import PlacesSorting from '../places-sorting';
 
-type CitiesPlaceListProps = {
+type CityPlacesListProps = {
   activeCity: CityName;
   offers: Offer[];
 };
 
-function CitiesPlaceList({ offers, activeCity }: CitiesPlaceListProps): JSX.Element {
+function CityPlacesList({ offers, activeCity }: CityPlacesListProps): JSX.Element {
   const dispatch = useTypedDispatch();
 
   const handleMouseEnterLeave = (offer: Offer | null) => () => dispatch(setActiveOffer(offer));
@@ -27,20 +27,19 @@ function CitiesPlaceList({ offers, activeCity }: CitiesPlaceListProps): JSX.Elem
       {/* Sorting */}
       <PlacesSorting />
 
-      {/* Places (offers) */}
+      {/* Offers */}
       <div className="cities__places-list places__list tabs__content">
         {offers.map((offer) => (
-          <div
+          <PlaceCard
             key={offer.id}
-            onMouseEnter={handleMouseEnterLeave(offer)}
-            onMouseLeave={handleMouseEnterLeave(null)}
-          >
-            <PlaceCard offer={offer} type={PlaceCardType.MAIN} />
-          </div>
+            offer={offer}
+            type={PlaceCardType.MAIN}
+            onMouseEnterLeave={handleMouseEnterLeave}
+          />
         ))}
       </div>
     </section>
   );
 }
 
-export default CitiesPlaceList;
+export default CityPlacesList;
