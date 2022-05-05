@@ -1,17 +1,15 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { toast } from 'react-toastify';
 
-import { useTypedDispatch } from '../../hooks';
-import { login } from '../../store/slices/user';
-import { handleAPIError } from '../../helpers/api';
-
-const SUCCESS_LOGIN_MESSAGE = 'You have successfully logged in';
+import { useTypedDispatch, useTypedSelector } from '../../hooks';
+import { authStatusSelector, login } from '../../store/slices/user';
+import { AuthStatus } from '../../helpers/enum';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
+  const authLoadingStatus = useTypedSelector(authStatusSelector);
+  const isLoading = authLoadingStatus === AuthStatus.LOADING;
   const dispatch = useTypedDispatch();
 
   function handleLoginInputChange({ target }: ChangeEvent<HTMLInputElement>) {
@@ -22,17 +20,10 @@ function LoginForm() {
     setPassword(target.value);
   }
 
-  async function handleFormSubmit(evt: FormEvent<Element>) {
+  function handleFormSubmit(evt: FormEvent<Element>) {
     evt.preventDefault();
-    setIsLoading(true);
-    try {
-      await dispatch(login({ email, password }));
-      toast.success(SUCCESS_LOGIN_MESSAGE);
-    } catch (err) {
-      setIsLoading(false);
-      handleAPIError(err);
-    }
-    // Then AuthStatus changes, login rerenders and redirects to necessary page
+
+    dispatch(login({ email, password }));
   }
 
   return (

@@ -30,6 +30,8 @@ export enum LoadingStatus {
 
 // Auth
 export enum AuthStatus {
+  IDLE = 'idle',
+  LOADING = 'loading',
   AUTH = 'auth',
   UNAUTH = 'unauth',
   UNKNOWN = 'unknown',
