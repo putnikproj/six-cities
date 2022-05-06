@@ -12,9 +12,10 @@ const ATTRIBUTION = `&copy;
 
 export function useMap(
   mapRef: MutableRefObject<HTMLElement | null>,
-  location: Location,
+  newLocation: Location,
 ): Map | null {
   const [map, setMap] = useState<Map | null>(null);
+  const [location, setlocation] = useState(newLocation);
 
   // Create map, if it doesn't exist
   useEffect(() => {
@@ -43,14 +44,20 @@ export function useMap(
       return;
     }
 
-    if (map.getCenter().lat === location.latitude && map.getCenter().lng === location.longitude) {
+    const hasLocationChanged =
+      newLocation.latitude !== location.latitude ||
+      newLocation.longitude !== location.longitude ||
+      newLocation.zoom !== location.zoom;
+
+    if (!hasLocationChanged) {
       return;
     }
 
-    map.flyTo({ lat: location.latitude, lng: location.longitude }, location.zoom, {
+    setlocation(newLocation);
+    map.flyTo({ lat: newLocation.latitude, lng: newLocation.longitude }, newLocation.zoom, {
       duration: 3.5,
     });
-  }, [location, map]);
+  }, [location, map, newLocation]);
 
   return map;
 }

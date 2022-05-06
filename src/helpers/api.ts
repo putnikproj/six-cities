@@ -18,7 +18,7 @@ function createAPI() {
   api.interceptors.request.use((config) => {
     const token = getAuthToken();
 
-    if (token !== '') {
+    if (token !== '' && config.headers) {
       config.headers[HEADER_TOKEN_KEY] = token;
     }
 
