@@ -1,43 +1,41 @@
 import { Link } from 'react-router-dom';
 
-import { CityName, PlaceCardType } from '../../helpers/enum';
-import { Offer } from '../../types';
+import { PlaceCardType } from '../../helpers/enum';
+import { useTypedSelector } from '../../hooks';
+import { groupedFavoriteOffersSelector } from '../../store/slices/favorites';
 
 import PlaceCard from '../place-card';
 
-type FavoritesPlaceListProps = {
-  offers: Offer[];
-};
+function FavoritesPlaceList(): JSX.Element {
+  const groupedOffers = useTypedSelector(groupedFavoriteOffersSelector);
 
-function FavoritesPlaceList({ offers }: FavoritesPlaceListProps): JSX.Element {
   return (
-    <ul className="favorites__list">
-      {Object.values(CityName).map((city) => {
-        const cityOffers = offers.filter((offer) => offer.city.name === city);
+    <section className="favorites">
+      <h1 className="favorites__title">Saved listing</h1>
+      <ul className="favorites__list">
+        {Object.values(groupedOffers).map((cityOffers) => {
+          const cityName = cityOffers[0].city.name;
 
-        if (cityOffers.length === 0) {
-          return null;
-        }
-
-        return (
-          <li key={city} className="favorites__locations-items">
-            <div className="favorites__locations locations locations--current">
-              <div className="locations__item">
-                <Link className="locations__item-link" to="/">
-                  <span>{city}</span>
-                </Link>
+          return (
+            <li key={cityName} className="favorites__locations-items">
+              <div className="favorites__locations locations locations--current">
+                <div className="locations__item">
+                  <Link className="locations__item-link" to="/">
+                    <span>{cityName}</span>
+                  </Link>
+                </div>
               </div>
-            </div>
 
-            <div className="favorites__places">
-              {cityOffers.map((offer) => (
-                <PlaceCard key={offer.id} offer={offer} type={PlaceCardType.FAVORITES} />
-              ))}
-            </div>
-          </li>
-        );
-      })}
-    </ul>
+              <div className="favorites__places">
+                {cityOffers.map((offer) => (
+                  <PlaceCard key={offer.id} offer={offer} type={PlaceCardType.FAVORITES} />
+                ))}
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }
 

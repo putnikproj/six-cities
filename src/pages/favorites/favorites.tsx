@@ -1,9 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import classNames from 'classnames';
-import axios, { AxiosError } from 'axios';
 
 import { useTypedDispatch, useTypedSelector } from '../../hooks';
-import { favoriteOffersSelector, loadFavoriteOffers } from '../../store/slices/favorites';
+import { LoadingStatus } from '../../helpers/enum';
+import {
+  areZeroFavoriteOffersSelector,
+  favoriteOffersLoadingErrorSelector,
+  favoriteOffersLoadingSelector,
+  favoritesUnmounted,
+  loadFavoriteOffers,
+} from '../../store/slices/favorites';
 
 import Header from '../../components/header';
 import Footer from '../../components/footer';
@@ -13,57 +19,36 @@ import FavoritesPlaceList from '../../components/favorites-place-list';
 
 function Favorites(): JSX.Element {
   const dispatch = useTypedDispatch();
-  const offers = useTypedSelector(favoriteOffersSelector);
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<AxiosError | null>(null);
-
-  function handleError(err: unknown) {
-    if (axios.isAxiosError(err)) {
-      setError(err);
-    }
-  }
+  const zeroOffers = useTypedSelector(areZeroFavoriteOffersSelector);
+  const loadingStatus = useTypedSelector(favoriteOffersLoadingSelector);
+  const error = useTypedSelector(favoriteOffersLoadingErrorSelector);
 
   useEffect(() => {
-    const loadOffers = async () => {
-      setIsLoading(true);
-
-      try {
-        await dispatch(loadFavoriteOffers());
-      } catch (err) {
-        handleError(err);
-      }
-
-      setIsLoading(false);
+    dispatch(loadFavoriteOffers());
+    return () => {
+      dispatch(favoritesUnmounted());
     };
-
-    loadOffers();
   }, [dispatch]);
 
   function getMainContent() {
-    if (isLoading) {
+    if (loadingStatus === LoadingStatus.IDLE || loadingStatus === LoadingStatus.LOADING) {
       return <Spinner centerX centerY />;
     } else if (error) {
       return <FavoritesEmpty error={error} />;
-    } else if (offers.length === 0) {
+    } else if (zeroOffers) {
       return <FavoritesEmpty />;
     }
 
-    return (
-      <section className="favorites">
-        <h1 className="favorites__title">Saved listing</h1>
-        <FavoritesPlaceList offers={offers} />
-      </section>
-    );
+    return <FavoritesPlaceList />;
   }
 
   return (
-    <div className={classNames('page', { 'page--favorites-empty': offers.length === 0 })}>
+    <div className={classNames('page', { 'page--favorites-empty': zeroOffers })}>
       <Header />
 
       <main
         className={classNames('page__main', 'page__main--favorites', {
-          'page__main--favorites-empty': offers.length === 0,
+          'page__main--favorites-empty': zeroOffers,
         })}
       >
         <div className="page__favorites-container container">{getMainContent()}</div>

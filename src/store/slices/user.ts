@@ -1,7 +1,8 @@
+import axios from 'axios';
 import { toast } from 'react-toastify';
 
 import { AppThunk, RootState } from '..';
-import { api, handleAPIError } from '../../helpers/api';
+import { api, getErrorMessage } from '../../helpers/api';
 import { clearAuthToken, setAuthToken } from '../../helpers/auth-token';
 import { AuthStatus, ResponseCodes, ServerRoutes } from '../../helpers/enum';
 import { AuthUser, AuthUserWithToken, UserLogin } from '../../types';
@@ -73,18 +74,16 @@ export function checkAuth(): AppThunk {
         data: { token, ...authUser },
       } = await api.get<AuthUserWithToken>(ServerRoutes.LOGIN);
       dispatch(userAuthorized(authUser));
-    } catch (err) {
-      handleAPIError(err, (axiosError) => {
-        switch (axiosError.response?.status) {
-          case ResponseCodes.UNAUTHORIZED:
-            dispatch(userUnauthorized());
-            toast.warn('You are not authorised');
-            return;
-          default:
-            dispatch(authLoadingFailed());
-            toast.error(axiosError.message);
-        }
-      });
+    } catch (error) {
+      const isUnathorizedError =
+        axios.isAxiosError(error) && error.response?.status === ResponseCodes.UNAUTHORIZED;
+      if (isUnathorizedError) {
+        dispatch(userUnauthorized());
+        toast.warn('You are not authorised');
+        return;
+      }
+      dispatch(authLoadingFailed());
+      toast.error(getErrorMessage(error));
     }
   };
 }
@@ -102,9 +101,9 @@ export function login({ email, password }: UserLogin): AppThunk {
       setAuthToken(token);
       dispatch(userAuthorized(authUser));
       toast.success(SUCCESS_LOGIN_MESSAGE);
-    } catch (err) {
+    } catch (error) {
       dispatch(authLoadingFailed());
-      handleAPIError(err);
+      toast.error(getErrorMessage(error));
     }
   };
 }
@@ -120,9 +119,9 @@ export function logout(): AppThunk {
       clearAuthToken();
       dispatch(userUnauthorized());
       toast.success(SUCCESS_LOGOUT_TEXT);
-    } catch (err) {
+    } catch (error) {
       dispatch(logoutFailed());
-      handleAPIError(err);
+      toast.error(getErrorMessage(error));
     }
   };
 }

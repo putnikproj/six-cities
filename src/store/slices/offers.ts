@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { AppThunk, RootState } from '..';
-import { api, handleAPIError } from '../../helpers/api';
+import { api, getErrorMessage } from '../../helpers/api';
 import { CityName, LoadingStatus, ServerRoutes, SortType } from '../../helpers/enum';
 import { sortOffers } from '../../helpers/sort-offers';
 import { offerToPoint } from '../../helpers/util';
@@ -81,14 +81,8 @@ export function loadAllOffers(): AppThunk {
     try {
       const { data: allOffers } = await api.get<Offer[]>(ServerRoutes.OFFERS);
       dispatch(offersLoadingSucceessed(allOffers));
-    } catch (err) {
-      handleAPIError(err, (axiosError) => {
-        const { response } = axiosError;
-        const message = response
-          ? `${response.status}: ${response.statusText}`
-          : axiosError.message;
-        dispatch(offersLoadingFailed(message));
-      });
+    } catch (error) {
+      dispatch(offersLoadingFailed(getErrorMessage(error)));
     }
   };
 }

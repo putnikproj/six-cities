@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 import { useTypedSelector, useTypedDispatch } from '../../hooks';
 import { offerToPoint } from '../../helpers/util';
@@ -14,7 +14,7 @@ import {
 } from '../../store/slices/active-offer';
 import { authStatusSelector } from '../../store/slices/user';
 import { AuthStatus, ResponseCodes } from '../../helpers/enum';
-import { handleAPIError } from '../../helpers/api';
+import { getErrorMessage } from '../../helpers/api';
 
 import Map from '../../components/map';
 import Header from '../../components/header';
@@ -34,7 +34,7 @@ function Offer(): JSX.Element {
 
   // Offer
   const [isOfferLoading, setIsOfferLoading] = useState(true);
-  const [loadingError, setLoadingError] = useState<AxiosError | undefined>(undefined);
+  const [loadingError, setLoadingError] = useState<string | undefined>(undefined);
   const offer = useTypedSelector(activeOfferSelector);
 
   // Nearby offers
@@ -54,14 +54,14 @@ function Offer(): JSX.Element {
     const makeOfferRequest = async () => {
       try {
         await dispatch(loadOffer(offerId));
-      } catch (err) {
-        handleAPIError(err, (error) => {
-          if (error.response?.status !== ResponseCodes.NOT_FOUND) {
-            toast.error(error.message);
-          }
+      } catch (error) {
+        const notNotFoundError =
+          axios.isAxiosError(error) && error.response?.status !== ResponseCodes.NOT_FOUND;
+        if (notNotFoundError) {
+          toast.error(error.message);
+        }
 
-          setLoadingError(error);
-        });
+        setLoadingError(getErrorMessage(error));
       }
       setIsOfferLoading(false);
     };
@@ -69,19 +69,17 @@ function Offer(): JSX.Element {
     const makeNearbyOffersRequest = async () => {
       try {
         await dispatch(loadNearbyOffers(offerId));
-      } catch (err) {
-        handleAPIError(err, () => undefined);
+      } finally {
+        setAreNearbyOffersLoading(false);
       }
-      setAreNearbyOffersLoading(false);
     };
 
     const makeReviewsRequest = async () => {
       try {
         await dispatch(loadReviews(offerId));
-      } catch (err) {
-        handleAPIError(err, () => undefined);
+      } finally {
+        setIsReviewsLoading(false);
       }
-      setIsReviewsLoading(false);
     };
 
     // Parallel requests
