@@ -2,7 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 import { AppThunk, RootState } from '..';
-import { api, getErrorMessage } from '../../helpers/api';
+import { api, serializeAPIError } from '../../helpers/api';
 import { clearAuthToken, setAuthToken } from '../../helpers/auth-token';
 import { AuthStatus, ResponseCodes, ServerRoutes } from '../../helpers/enum';
 import { AuthUser, AuthUserWithToken, UserLogin } from '../../types';
@@ -83,7 +83,7 @@ export function checkAuth(): AppThunk {
         return;
       }
       dispatch(authLoadingFailed());
-      toast.error(getErrorMessage(error));
+      toast.error(serializeAPIError(error).message);
     }
   };
 }
@@ -103,7 +103,7 @@ export function login({ email, password }: UserLogin): AppThunk {
       toast.success(SUCCESS_LOGIN_MESSAGE);
     } catch (error) {
       dispatch(authLoadingFailed());
-      toast.error(getErrorMessage(error));
+      toast.error(serializeAPIError(error).message);
     }
   };
 }
@@ -121,7 +121,7 @@ export function logout(): AppThunk {
       toast.success(SUCCESS_LOGOUT_TEXT);
     } catch (error) {
       dispatch(logoutFailed());
-      toast.error(getErrorMessage(error));
+      toast.error(serializeAPIError(error).message);
     }
   };
 }

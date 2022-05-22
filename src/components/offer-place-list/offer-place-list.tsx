@@ -1,21 +1,24 @@
-import { Offer } from '../../types';
-import { PlaceCardType } from '../../helpers/enum';
+import { LoadingStatus, PlaceCardType } from '../../helpers/enum';
+import {
+  nearbyOffersLoadingStatusSelector,
+  nearbyOffersSelector,
+} from '../../store/slices/active-offer';
+import { useTypedSelector } from '../../hooks';
 
 import PlaceCard from '../place-card';
 import Spinner from '../spinner';
 
-type OfferPlaceListProps = {
-  offers: Offer[];
-  isLoading: boolean;
-};
-function OfferPlaceList({ offers, isLoading }: OfferPlaceListProps): JSX.Element {
-  if (isLoading) {
+function OfferPlaceList(): JSX.Element {
+  const nearbyOffers = useTypedSelector(nearbyOffersSelector);
+  const loadingStatus = useTypedSelector(nearbyOffersLoadingStatusSelector);
+
+  if (loadingStatus === LoadingStatus.LOADING) {
     return <Spinner centerX centerY />;
   }
 
   return (
     <div className="near-places__list places__list">
-      {offers.map((offer) => (
+      {nearbyOffers.map((offer) => (
         <PlaceCard key={offer.id} offer={offer} type={PlaceCardType.OFFER} />
       ))}
     </div>

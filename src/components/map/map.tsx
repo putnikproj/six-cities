@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import { useMap, useTypedSelector } from '../../hooks';
 import { offerToPoint } from '../../helpers/util';
 import { Point, Offer, Location } from '../../types';
-import { activeOfferSelector } from '../../store/slices/active-offer';
+import { mapActiveOfferSelector } from '../../store/slices/active-offer';
 
 // Pointers
 enum PointerImage {
@@ -44,7 +44,7 @@ function Map({ location, points }: MapProps): JSX.Element {
   // Map markers. Needs in the second effect, that changes marker's 'activePointerIcon'
   const [mapMarkers, setMapMarkers] = useState<MarkerWithId[]>([]);
   // Active point that is taken from global store
-  const activeOffer = useTypedSelector(activeOfferSelector);
+  const activeOffer = useTypedSelector(mapActiveOfferSelector);
   const activePoint = activeOffer ? offerToPoint(activeOffer) : null;
 
   // Merges points and activePoint in one array if needed

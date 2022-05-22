@@ -1,107 +1,195 @@
-import { AppThunk, RootState } from '..';
-import { api } from '../../helpers/api';
-import { ServerRoutes } from '../../helpers/enum';
+import { createAction, createAsyncThunk, createReducer, createSelector } from '@reduxjs/toolkit';
+
+import { RootState } from '..';
+import { api, APIData, APIError, serializeAPIError } from '../../helpers/api';
+import { LoadingStatus, ServerRoutes } from '../../helpers/enum';
+import { sortReviewsByNewestDate } from '../../helpers/sort';
+import { offerToPoint } from '../../helpers/util';
 import { NewReview, Offer, Review } from '../../types';
+
+const MAX_NEARBY_OFFERS = 3;
+const MAX_REVIEWS = 10;
 
 // State
 
 type ActiveOfferState = {
-  activeOffer: Offer | null;
-  nearbyOffers: Offer[];
-  reviews: Review[];
+  activeOffer: APIData<Offer | null>;
+  mapActiveOffer: Offer | null;
+  nearbyOffers: APIData<Offer[]>;
+  reviews: APIData<Review[]>;
 };
 
 const initialState: ActiveOfferState = {
-  activeOffer: null,
-  nearbyOffers: [],
-  reviews: [],
+  activeOffer: {
+    loadingStatus: LoadingStatus.IDLE,
+    data: null,
+  },
+  mapActiveOffer: null,
+  nearbyOffers: {
+    loadingStatus: LoadingStatus.IDLE,
+    data: [],
+  },
+  reviews: {
+    loadingStatus: LoadingStatus.IDLE,
+    data: [],
+  },
 };
 
 // Reducer
 
 enum ActionType {
-  SET_ACTIVE_OFFER = 'activeOffer/setActiveOffer',
-  SET_NEARBY_OFFERS = 'activeOffer/setNearbyOffers',
-  SET_REVIEWS = 'activeOffer/setReviews',
+  LOAD_OFFER = 'activeOffer/loadOffer',
+  LOAD_NEARBY_OFFERS = 'activeOffer/loadNearbyOffers',
+  LOAD_REVIEWS = 'activeOffer/loadReviews',
+  UPLOAD_REVIEW = 'activeOffer/uploadReview',
+  ACTIVE_OFFER_OUTDATED = 'activeOffer/outdated',
+  MAP_ACTIVE_OFFER_CHANGED = 'map/activeOfferChanged',
 }
-
-export default function activeOfferReducer(
-  state = initialState,
-  action: activeOfferActions,
-): ActiveOfferState {
-  switch (action.type) {
-    case ActionType.SET_ACTIVE_OFFER:
-      return { ...state, activeOffer: action.payload.activeOffer };
-    case ActionType.SET_NEARBY_OFFERS:
-      return { ...state, nearbyOffers: action.payload.nearbyOffers };
-    case ActionType.SET_REVIEWS:
-      return { ...state, reviews: action.payload.reviews };
-    default:
-      return state;
-  }
-}
-
-// Actions
-
-export const setNearbyOffers = (nearbyOffers: ActiveOfferState['nearbyOffers']) =>
-  ({
-    type: ActionType.SET_NEARBY_OFFERS,
-    payload: { nearbyOffers },
-  } as const);
-
-export const setActiveOffer = (activeOffer: ActiveOfferState['activeOffer']) =>
-  ({
-    type: ActionType.SET_ACTIVE_OFFER,
-    payload: { activeOffer },
-  } as const);
-
-export const setReviews = (reviews: ActiveOfferState['reviews']) =>
-  ({
-    type: ActionType.SET_REVIEWS,
-    payload: { reviews },
-  } as const);
-
-type activeOfferActions =
-  | ReturnType<typeof setNearbyOffers>
-  | ReturnType<typeof setActiveOffer>
-  | ReturnType<typeof setReviews>;
 
 // Async actions
 
-export function loadOffer(id: Offer['id']): AppThunk {
-  return async (dispatch) => {
-    const { data: offer } = await api.get<Offer>(`${ServerRoutes.OFFERS}/${id}`);
-    dispatch(setActiveOffer(offer));
-  };
-}
+export const loadOffer = createAsyncThunk<Offer, Offer['id'], { serializedErrorType: APIError }>(
+  ActionType.LOAD_OFFER,
+  async (id, thunkAPI) => {
+    thunkAPI.dispatch(loadNeabyOffers(id));
+    thunkAPI.dispatch(loadReviews(id));
 
-export function loadNearbyOffers(id: Offer['id']): AppThunk {
-  return async (dispatch) => {
-    const { data: nearbyOffers } = await api.get<Offer[]>(`${ServerRoutes.OFFERS}/${id}/nearby`);
-    dispatch(setNearbyOffers(nearbyOffers));
-  };
-}
+    const { data: offer } = await api.get<Offer>(`${ServerRoutes.OFFERS}/${id}`, {
+      signal: thunkAPI.signal,
+    });
+    thunkAPI.dispatch(mapActiveOfferChanged(offer));
+    return offer;
+  },
+  { serializeError: serializeAPIError },
+);
 
-export function loadReviews(id: Offer['id']): AppThunk {
-  return async (dispatch) => {
-    const { data: reviews } = await api.get<Review[]>(`${ServerRoutes.REVIEWS}/${id}`);
-    dispatch(setReviews(reviews));
-  };
-}
+export const loadNeabyOffers = createAsyncThunk<
+  Offer[],
+  Offer['id'],
+  { serializedErrorType: APIError }
+>(
+  ActionType.LOAD_NEARBY_OFFERS,
+  async (id, thunkAPI) => {
+    const { data: nearbyOffers } = await api.get<Offer[]>(`${ServerRoutes.OFFERS}/${id}/nearby`, {
+      signal: thunkAPI.signal,
+    });
+    return nearbyOffers;
+  },
+  { serializeError: serializeAPIError },
+);
 
-export function uploadReview(id: Offer['id'], review: NewReview): AppThunk {
-  return async (dispatch) => {
+export const loadReviews = createAsyncThunk<
+  Review[],
+  Offer['id'],
+  { serializedErrorType: APIError }
+>(
+  ActionType.LOAD_REVIEWS,
+  async (id, thunkAPI) => {
+    const { data: reviews } = await api.get<Review[]>(`${ServerRoutes.REVIEWS}/${id}`, {
+      signal: thunkAPI.signal,
+    });
+    return reviews;
+  },
+  { serializeError: serializeAPIError },
+);
+
+export const uploadReview = createAsyncThunk<
+  Review[],
+  { id: Offer['id']; review: NewReview },
+  { serializedErrorType: APIError }
+>(
+  ActionType.UPLOAD_REVIEW,
+  async ({ id, review }) => {
     const { data: offerReviews } = await api.post<Review[]>(
       `${ServerRoutes.REVIEWS}/${id}`,
       review,
     );
+    return offerReviews;
+  },
+  { serializeError: serializeAPIError },
+);
 
-    dispatch(setReviews(offerReviews));
-  };
-}
+// Actions
+
+export const mapActiveOfferChanged = createAction<ActiveOfferState['mapActiveOffer']>(
+  ActionType.MAP_ACTIVE_OFFER_CHANGED,
+);
+export const activeOfferOutdated = createAction(ActionType.ACTIVE_OFFER_OUTDATED);
+
+const activeOfferReducer = createReducer(initialState, (builder) => {
+  builder
+    // loadOffer
+    .addCase(loadOffer.pending, (state) => {
+      state.activeOffer.loadingStatus = LoadingStatus.LOADING;
+    })
+    .addCase(loadOffer.fulfilled, (state, action) => {
+      state.activeOffer.loadingStatus = LoadingStatus.SUCCEEDED;
+      state.activeOffer.data = action.payload;
+    })
+    .addCase(loadOffer.rejected, (state, action) => {
+      state.activeOffer.loadingStatus = LoadingStatus.FAILED;
+      state.activeOffer.error = action.error;
+    })
+    .addCase(activeOfferOutdated, (state) => {
+      state.activeOffer.loadingStatus = LoadingStatus.IDLE;
+      state.nearbyOffers.loadingStatus = LoadingStatus.IDLE;
+      state.reviews.loadingStatus = LoadingStatus.IDLE;
+      state.mapActiveOffer = null;
+    })
+    // map
+    .addCase(mapActiveOfferChanged, (state, action) => {
+      state.mapActiveOffer = action.payload;
+    })
+    // nearbyOffers
+    .addCase(loadNeabyOffers.pending, (state) => {
+      state.nearbyOffers.loadingStatus = LoadingStatus.LOADING;
+    })
+    .addCase(loadNeabyOffers.fulfilled, (state, action) => {
+      state.nearbyOffers.loadingStatus = LoadingStatus.SUCCEEDED;
+      state.nearbyOffers.data = action.payload;
+    })
+    .addCase(loadNeabyOffers.rejected, (state) => {
+      state.nearbyOffers.loadingStatus = LoadingStatus.FAILED;
+    })
+    // reviews
+    .addCase(loadReviews.pending, (state) => {
+      state.reviews.loadingStatus = LoadingStatus.LOADING;
+    })
+    .addCase(loadReviews.fulfilled, (state, action) => {
+      state.reviews.loadingStatus = LoadingStatus.SUCCEEDED;
+      state.reviews.data = action.payload;
+    })
+    .addCase(loadReviews.rejected, (state) => {
+      state.reviews.loadingStatus = LoadingStatus.FAILED;
+    })
+    .addCase(uploadReview.fulfilled, (state, action) => {
+      state.reviews.data = action.payload;
+    });
+});
+
+export default activeOfferReducer;
 
 // Selectors
 
-export const activeOfferSelector = (state: RootState) => state.activeOffer.activeOffer;
-export const reviewsSelector = (state: RootState) => state.activeOffer.reviews;
-export const nearbyOffersSelector = (state: RootState) => state.activeOffer.nearbyOffers;
+export const activeOfferSelector = (state: RootState) => state.activeOffer.activeOffer.data;
+export const activeOfferLoadingStatusSelector = (state: RootState) =>
+  state.activeOffer.activeOffer.loadingStatus;
+export const activeOfferErrorSelector = (state: RootState) => state.activeOffer.activeOffer.error;
+
+export const reviewsSelector = (state: RootState) =>
+  state.activeOffer.reviews.data.slice(0, MAX_REVIEWS);
+export const reviewsLoadingStatusSelector = (state: RootState) =>
+  state.activeOffer.reviews.loadingStatus;
+export const sortedReviewsSelector = createSelector([reviewsSelector], (reviews) =>
+  sortReviewsByNewestDate(reviews),
+);
+
+export const nearbyOffersSelector = (state: RootState) =>
+  state.activeOffer.nearbyOffers.data.slice(0, MAX_NEARBY_OFFERS);
+export const nearbyOffersLoadingStatusSelector = (state: RootState) =>
+  state.activeOffer.nearbyOffers.loadingStatus;
+
+export const mapActiveOfferSelector = (state: RootState) => state.activeOffer.mapActiveOffer;
+export const mapPointsSelector = createSelector([nearbyOffersSelector], (offers) =>
+  offers.map((item) => offerToPoint(item)),
+);

@@ -1,5 +1,7 @@
+import { APIError } from '../../helpers/api';
+
 type FavoritesEmptyProps = {
-  error?: string | undefined;
+  error?: APIError;
 };
 
 function FavoritesEmpty({ error }: FavoritesEmptyProps) {
@@ -9,7 +11,9 @@ function FavoritesEmpty({ error }: FavoritesEmptyProps) {
       <div className="favorites__status-wrapper">
         <b className="favorites__status">{error ? 'Error' : 'Nothing yet saved.'}</b>
         <p className="favorites__status-description">
-          {error ? error : 'Save properties to narrow down search or plan your future trips.'}
+          {error
+            ? error.message
+            : 'Save properties to narrow down search or plan your future trips.'}
         </p>
       </div>
     </section>

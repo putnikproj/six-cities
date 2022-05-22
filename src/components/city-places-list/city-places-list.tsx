@@ -1,7 +1,7 @@
 import { useTypedDispatch } from '../../hooks';
 import { Offer } from '../../types';
 import { CityName, PlaceCardType } from '../../helpers/enum';
-import { setActiveOffer } from '../../store/slices/active-offer';
+import { mapActiveOfferChanged } from '../../store/slices/active-offer';
 
 import PlaceCard from '../place-card';
 import PlacesSorting from '../places-sorting';
@@ -14,7 +14,8 @@ type CityPlacesListProps = {
 function CityPlacesList({ offers, activeCity }: CityPlacesListProps): JSX.Element {
   const dispatch = useTypedDispatch();
 
-  const handleMouseEnterLeave = (offer: Offer | null) => () => dispatch(setActiveOffer(offer));
+  const handleMouseEnterLeave = (offer: Offer | null) => () =>
+    dispatch(mapActiveOfferChanged(offer));
 
   return (
     <section className="cities__places places">

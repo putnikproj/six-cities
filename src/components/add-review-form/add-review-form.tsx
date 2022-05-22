@@ -1,10 +1,10 @@
 import { ChangeEvent, useState, useEffect, FormEvent } from 'react';
-import { toast } from 'react-toastify';
-import axios from 'axios';
+import { toast, ToastContentProps } from 'react-toastify';
 
 import { useTypedDispatch } from '../../hooks';
 import { uploadReview } from '../../store/slices/active-offer';
 import { Offer } from '../../types';
+import { APIError } from '../../helpers/api';
 
 import Rating from './rating';
 
@@ -13,7 +13,11 @@ const REVIEW_TEXT_RANGE = {
   max: 300,
 } as const;
 
-const SUCCESS_UPLOAD_TEXT = 'The comment was successfully uploaded';
+enum UploadText {
+  PENDING = 'The comment is uploading...',
+  SUCCESS = 'The comment was successfully uploaded',
+  ERROR_FALLBACK = 'Something went wrong in uploading',
+}
 
 type AddReviewFormProps = {
   id: Offer['id'];
@@ -51,32 +55,32 @@ function AddReviewForm({ id }: AddReviewFormProps) {
     setScore(Number(target.value));
   }
 
-  // Form submit, also loading, error handling
-  function handleError(err: unknown) {
-    if (axios.isAxiosError(err)) {
-      toast.error(err.message);
-    }
-  }
-
   async function handleFormSubmit(evt: FormEvent) {
     evt.preventDefault();
     setIsLoading(true);
 
-    try {
-      await dispatch(
-        uploadReview(id, {
+    const uploadPromise = dispatch(
+      uploadReview({
+        id,
+        review: {
           comment: reviewText,
           rating: score,
-        }),
-      );
-    } catch (err) {
-      handleError(err);
-    }
+        },
+      }),
+    ).unwrap();
+
+    toast.promise(uploadPromise, {
+      pending: UploadText.PENDING,
+      success: UploadText.SUCCESS,
+      error: {
+        render: ({ data }: ToastContentProps<APIError>) =>
+          data ? `Can't upload review. ${data.message}` : UploadText.SUCCESS,
+      },
+    });
 
     setIsLoading(false);
     setScore(0);
     setReviewText('');
-    toast.success(SUCCESS_UPLOAD_TEXT);
   }
 
   return (

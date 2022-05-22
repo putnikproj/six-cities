@@ -1,9 +1,9 @@
 import { createSelector } from 'reselect';
 
 import { AppThunk, RootState } from '..';
-import { api, getErrorMessage } from '../../helpers/api';
+import { api, APIError, serializeAPIError } from '../../helpers/api';
 import { CityName, LoadingStatus, ServerRoutes, SortType } from '../../helpers/enum';
-import { sortOffers } from '../../helpers/sort-offers';
+import { sortOffers } from '../../helpers/sort';
 import { offerToPoint } from '../../helpers/util';
 import { Offer } from '../../types';
 
@@ -12,7 +12,7 @@ import { Offer } from '../../types';
 type OffersState = {
   offers: Offer[];
   loadingStatus: LoadingStatus;
-  error: string | undefined;
+  error: APIError | undefined;
   activeCity: CityName;
   sortType: SortType;
 };
@@ -82,7 +82,7 @@ export function loadAllOffers(): AppThunk {
       const { data: allOffers } = await api.get<Offer[]>(ServerRoutes.OFFERS);
       dispatch(offersLoadingSucceessed(allOffers));
     } catch (error) {
-      dispatch(offersLoadingFailed(getErrorMessage(error)));
+      dispatch(offersLoadingFailed(serializeAPIError(error)));
     }
   };
 }

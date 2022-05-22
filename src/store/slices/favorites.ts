@@ -1,5 +1,5 @@
 import { AppThunk, RootState } from '..';
-import { api, getErrorMessage } from '../../helpers/api';
+import { api, APIError, serializeAPIError } from '../../helpers/api';
 import { LoadingStatus, ServerRoutes } from '../../helpers/enum';
 import { Offer } from '../../types';
 
@@ -19,7 +19,7 @@ const groupOffersByCity = (offers: Offer[]) =>
 type FavoritesState = {
   favoriteOffers: Offer[];
   loadingStatus: LoadingStatus;
-  error: string | undefined;
+  error: APIError | undefined;
 };
 
 const initialState: FavoritesState = {
@@ -79,7 +79,7 @@ export function loadFavoriteOffers(): AppThunk {
       const { data: offers } = await api.get<Offer[]>(ServerRoutes.FAVORITE);
       dispatch(favoriteOffersLoadingSucceessed(offers));
     } catch (error) {
-      dispatch(favoriteOffersLoadingFailed(getErrorMessage(error)));
+      dispatch(favoriteOffersLoadingFailed(serializeAPIError(error)));
     }
   };
 }

@@ -1,5 +1,5 @@
 import { SortType } from './enum';
-import { Offer } from '../types';
+import { Offer, Review } from '../types';
 
 export function sortOffers(offers: Offer[], sortType: SortType): Offer[] {
   switch (sortType) {
@@ -15,3 +15,6 @@ export function sortOffers(offers: Offer[], sortType: SortType): Offer[] {
       return offers;
   }
 }
+
+export const sortReviewsByNewestDate = (reviews: Review[]): Review[] =>
+  [...reviews].sort((prev, next) => Date.parse(next.date) - Date.parse(prev.date));
