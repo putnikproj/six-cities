@@ -14,7 +14,6 @@ const MAX_REVIEWS = 10;
 
 type ActiveOfferState = {
   activeOffer: APIData<Offer | null>;
-  mapActiveOffer: Offer | null;
   nearbyOffers: APIData<Offer[]>;
   reviews: APIData<Review[]>;
 };
@@ -24,7 +23,6 @@ const initialState: ActiveOfferState = {
     loadingStatus: LoadingStatus.IDLE,
     data: null,
   },
-  mapActiveOffer: null,
   nearbyOffers: {
     loadingStatus: LoadingStatus.IDLE,
     data: [],
@@ -57,7 +55,6 @@ export const loadOffer = createAsyncThunk<Offer, Offer['id'], { serializedErrorT
     const { data: offer } = await api.get<Offer>(`${ServerRoutes.OFFERS}/${id}`, {
       signal: thunkAPI.signal,
     });
-    thunkAPI.dispatch(mapActiveOfferChanged(offer));
     return offer;
   },
   { serializeError: serializeAPIError },
@@ -111,9 +108,6 @@ export const uploadReview = createAsyncThunk<
 
 // Actions
 
-export const mapActiveOfferChanged = createAction<ActiveOfferState['mapActiveOffer']>(
-  ActionType.MAP_ACTIVE_OFFER_CHANGED,
-);
 export const activeOfferOutdated = createAction(ActionType.ACTIVE_OFFER_OUTDATED);
 
 const activeOfferReducer = createReducer(initialState, (builder) => {
@@ -134,11 +128,6 @@ const activeOfferReducer = createReducer(initialState, (builder) => {
       state.activeOffer.loadingStatus = LoadingStatus.IDLE;
       state.nearbyOffers.loadingStatus = LoadingStatus.IDLE;
       state.reviews.loadingStatus = LoadingStatus.IDLE;
-      state.mapActiveOffer = null;
-    })
-    // map
-    .addCase(mapActiveOfferChanged, (state, action) => {
-      state.mapActiveOffer = action.payload;
     })
     // nearbyOffers
     .addCase(loadNeabyOffers.pending, (state) => {
@@ -189,7 +178,9 @@ export const nearbyOffersSelector = (state: RootState) =>
 export const nearbyOffersLoadingStatusSelector = (state: RootState) =>
   state.activeOffer.nearbyOffers.loadingStatus;
 
-export const mapActiveOfferSelector = (state: RootState) => state.activeOffer.mapActiveOffer;
+export const mapActivePointSelector = createSelector([activeOfferSelector], (offer) =>
+  offer ? offerToPoint(offer) : undefined,
+);
 export const mapPointsSelector = createSelector([nearbyOffersSelector], (offers) =>
   offers.map((item) => offerToPoint(item)),
 );

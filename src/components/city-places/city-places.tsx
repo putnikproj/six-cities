@@ -1,16 +1,15 @@
 import { LoadingStatus } from '../../helpers/enum';
 import { useTypedSelector } from '../../hooks';
 import {
-  activeCityMapPointsSelector,
   activeCitySelector,
   offersLoadingErrorSelector,
   sortedActiveCityOffersSelector,
 } from '../../store/slices/offers';
 
-import Map from '../map';
 import Spinner from '../spinner';
 import CityPlacesEmpty from './city-places-empty';
-import CitiesPlaceList from '../city-places-list';
+import CityPlaceList from '../city-places-list';
+import CityMap from '../city-map';
 
 type CityPlacesProps = {
   loadingStatus: LoadingStatus;
@@ -20,7 +19,6 @@ function CityPlaces({ loadingStatus }: CityPlacesProps) {
   const error = useTypedSelector(offersLoadingErrorSelector);
   const offers = useTypedSelector(sortedActiveCityOffersSelector);
   const activeCity = useTypedSelector(activeCitySelector);
-  const mapPoints = useTypedSelector(activeCityMapPointsSelector);
 
   function getContent() {
     if (error) {
@@ -42,14 +40,10 @@ function CityPlaces({ loadingStatus }: CityPlacesProps) {
     return (
       <div className="cities__places-container container">
         {/* left section */}
-        <CitiesPlaceList offers={offers} activeCity={activeCity} />
+        <CityPlaceList offers={offers} activeCity={activeCity} />
 
         {/* right section */}
-        <div className="cities__right-section">
-          <section className="cities__map map">
-            <Map location={offers[0].city.location} points={mapPoints} />
-          </section>
-        </div>
+        <CityMap offers={offers} />
       </div>
     );
   }

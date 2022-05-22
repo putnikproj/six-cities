@@ -8,6 +8,7 @@ import {
   activeOfferOutdated,
   activeOfferSelector,
   loadOffer,
+  mapActivePointSelector,
   mapPointsSelector,
 } from '../../store/slices/active-offer';
 import { authStatusSelector } from '../../store/slices/user';
@@ -35,6 +36,7 @@ function Offer(): JSX.Element {
   const loadingStatus = useTypedSelector(activeOfferLoadingStatusSelector);
   const error = useTypedSelector(activeOfferErrorSelector);
 
+  const mapActivePoint = useTypedSelector(mapActivePointSelector);
   const mapPoints = useTypedSelector(mapPointsSelector);
 
   useEffect(() => {
@@ -78,7 +80,7 @@ function Offer(): JSX.Element {
             </div>
 
             <section className="property__map map">
-              <Map location={offer.location} points={mapPoints} />
+              <Map location={offer.location} points={mapPoints} activePoint={mapActivePoint} />
             </section>
           </section>
 

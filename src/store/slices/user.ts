@@ -24,8 +24,8 @@ const initialState: UserState = {
 enum ActionType {
   AUTH_LOADING = 'user/authLoading',
   AUTH_LOADING_FAILED = 'user/authLoadingFailed',
-  USER_AUTHORIZED = 'user/userUnauthorized',
-  USER_UNAUTHORIZED = 'user/userAuthorized',
+  USER_AUTHORIZED = 'user/userAuthorized',
+  USER_UNAUTHORIZED = 'user/userUnauthorized',
   LOGOUT_FAILED = 'user/logoutFailed',
 }
 

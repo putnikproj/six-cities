@@ -2,10 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Icon, Marker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import { useMap, useTypedSelector } from '../../hooks';
-import { offerToPoint } from '../../helpers/util';
+import { useMap } from '../../hooks';
 import { Point, Offer, Location } from '../../types';
-import { mapActiveOfferSelector } from '../../store/slices/active-offer';
 
 // Pointers
 enum PointerImage {
@@ -34,18 +32,16 @@ type MarkerWithId = {
 type MapProps = {
   location: Location;
   points: Point[];
+  activePoint?: Point;
 };
 
 // Component
-function Map({ location, points }: MapProps): JSX.Element {
+function Map({ location, points, activePoint }: MapProps): JSX.Element {
   // Map references
   const mapRef = useRef(null);
   const map = useMap(mapRef, location);
   // Map markers. Needs in the second effect, that changes marker's 'activePointerIcon'
   const [mapMarkers, setMapMarkers] = useState<MarkerWithId[]>([]);
-  // Active point that is taken from global store
-  const activeOffer = useTypedSelector(mapActiveOfferSelector);
-  const activePoint = activeOffer ? offerToPoint(activeOffer) : null;
 
   // Merges points and activePoint in one array if needed
   const shouldAddActivePoint = activePoint && !points.find((point) => point.id === activePoint.id);

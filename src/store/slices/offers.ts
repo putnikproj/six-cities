@@ -11,6 +11,7 @@ import { Offer } from '../../types';
 
 type OffersState = {
   offers: Offer[];
+  activeOffer: Offer | undefined;
   loadingStatus: LoadingStatus;
   error: APIError | undefined;
   activeCity: CityName;
@@ -19,6 +20,7 @@ type OffersState = {
 
 const initialState: OffersState = {
   offers: [],
+  activeOffer: undefined,
   loadingStatus: LoadingStatus.IDLE,
   error: undefined,
   activeCity: CityName.PARIS,
@@ -33,6 +35,7 @@ enum ActionType {
   OFFERS_LOADING_SUCCEESSED = 'main/offersLoadingSucceessed',
   ACTIVE_CITY_CHANGED = 'main/activeCityChanged',
   SORT_TYPE_CHANGED = 'main/sortTypeChanged',
+  OFFER_HOVERED = 'main/offerHovered',
 }
 
 export default function offersReducer(state = initialState, action: OfferActions): OffersState {
@@ -47,6 +50,8 @@ export default function offersReducer(state = initialState, action: OfferActions
       return { ...state, activeCity: action.payload };
     case ActionType.SORT_TYPE_CHANGED:
       return { ...state, sortType: action.payload };
+    case ActionType.OFFER_HOVERED:
+      return { ...state, activeOffer: action.payload };
     default:
       return state;
   }
@@ -66,12 +71,16 @@ export const activeCityChanged = (cityName: OffersState['activeCity']) =>
 export const sortTypeChanged = (sortType: OffersState['sortType']) =>
   ({ type: ActionType.SORT_TYPE_CHANGED, payload: sortType } as const);
 
+export const offerHovered = (offer: OffersState['activeOffer']) =>
+  ({ type: ActionType.OFFER_HOVERED, payload: offer } as const);
+
 type OfferActions =
   | ReturnType<typeof offersLoading>
   | ReturnType<typeof offersLoadingFailed>
   | ReturnType<typeof offersLoadingSucceessed>
   | ReturnType<typeof activeCityChanged>
-  | ReturnType<typeof sortTypeChanged>;
+  | ReturnType<typeof sortTypeChanged>
+  | ReturnType<typeof offerHovered>;
 
 // Async actions
 
@@ -92,6 +101,7 @@ export function loadAllOffers(): AppThunk {
 export const allOffersSelector = (state: RootState) => state.offers.offers;
 export const areZeroOffersSelector = (state: RootState) => state.offers.offers.length === 0;
 export const activeCitySelector = (state: RootState) => state.offers.activeCity;
+export const activeOfferSelector = (state: RootState) => state.offers.activeOffer;
 export const sortTypeSelector = (state: RootState) => state.offers.sortType;
 
 export const offersLoadingStatusSelector = (state: RootState) => state.offers.loadingStatus;
@@ -109,4 +119,8 @@ export const sortedActiveCityOffersSelector = createSelector(
 
 export const activeCityMapPointsSelector = createSelector([activeCityOffersSelector], (offers) =>
   offers.map((offer) => offerToPoint(offer)),
+);
+
+export const activeMapPointSelector = createSelector([activeOfferSelector], (offer) =>
+  offer ? offerToPoint(offer) : undefined,
 );

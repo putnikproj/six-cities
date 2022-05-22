@@ -12,7 +12,7 @@ import BookmarkButton from '../bookmark-button';
 type PlaceCardProps = {
   offer: Offer;
   type: PlaceCardType;
-  onMouseEnterLeave?: (offer: Offer | null) => () => void;
+  onMouseEnterLeave?: (offer: Offer | undefined) => () => void;
 };
 
 function PlaceCard({ offer, type, onMouseEnterLeave }: PlaceCardProps): JSX.Element {
@@ -87,7 +87,7 @@ function PlaceCard({ offer, type, onMouseEnterLeave }: PlaceCardProps): JSX.Elem
         { [`${classNamePrefix}__place-card`]: type === PlaceCardType.MAIN },
       )}
       onMouseEnter={onMouseEnterLeave && onMouseEnterLeave(offer)}
-      onMouseLeave={onMouseEnterLeave && onMouseEnterLeave(null)}
+      onMouseLeave={onMouseEnterLeave && onMouseEnterLeave(undefined)}
     >
       {renderImage()}
       {renderInformation()}
