@@ -85,7 +85,11 @@ type OfferActions =
 // Async actions
 
 export function loadAllOffers(): AppThunk {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    if (getState().offers.loadingStatus === LoadingStatus.SUCCEEDED) {
+      return;
+    }
+
     dispatch(offersLoading());
     try {
       const { data: allOffers } = await api.get<Offer[]>(ServerRoutes.OFFERS);

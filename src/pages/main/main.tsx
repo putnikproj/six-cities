@@ -2,12 +2,7 @@ import { useEffect } from 'react';
 import classNames from 'classnames';
 
 import { useTypedSelector, useTypedDispatch } from '../../hooks';
-import {
-  areZeroOffersSelector,
-  loadAllOffers,
-  offersLoadingStatusSelector,
-} from '../../store/slices/offers';
-import { LoadingStatus } from '../../helpers/enum';
+import { areZeroOffersSelector, loadAllOffers } from '../../store/slices/offers';
 
 import Header from '../../components/header';
 import CityPlaces from '../../components/city-places';
@@ -15,15 +10,12 @@ import CitiesTabs from '../../components/cities-tabs';
 
 function Main(): JSX.Element {
   const areZeroOffers = useTypedSelector(areZeroOffersSelector);
-  const loadingStatus = useTypedSelector(offersLoadingStatusSelector);
 
   const dispatch = useTypedDispatch();
 
   useEffect(() => {
-    if (loadingStatus === LoadingStatus.IDLE) {
-      dispatch(loadAllOffers());
-    }
-  }, [dispatch, loadingStatus]);
+    dispatch(loadAllOffers());
+  }, [dispatch]);
 
   return (
     <div className="page page--gray page--main">
@@ -35,7 +27,7 @@ function Main(): JSX.Element {
         })}
       >
         <CitiesTabs />
-        <CityPlaces loadingStatus={loadingStatus} />
+        <CityPlaces />
       </main>
     </div>
   );
