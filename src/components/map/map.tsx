@@ -1,33 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Icon, Marker } from 'leaflet';
-import 'leaflet/dist/leaflet.css';
-
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useMap } from '../../hooks';
 import { Point, Offer, Location } from '../../types';
-
-// Pointers
-enum PointerImage {
-  DEFAULT = 'img/pin.svg',
-  ACTIVE = 'img/pin-active.svg',
-}
-
-const defaultPointerIcon = new Icon({
-  iconUrl: PointerImage.DEFAULT,
-  iconSize: [27, 39],
-  iconAnchor: [13.5, 39],
-});
-
-const activePointerIcon = new Icon({
-  iconUrl: PointerImage.ACTIVE,
-  iconSize: [27, 39],
-  iconAnchor: [13.5, 39],
-});
-
-// Types
-type MarkerWithId = {
-  instance: Marker<object>;
-  id: Offer['id'];
-};
+import {
+  Marker,
+  MarkerType,
+  createMapMarker,
+  removeMapMarker,
+  setMapMarkerType,
+} from '../../helpers/map-manager';
 
 type MapProps = {
   location: Location;
@@ -41,7 +21,7 @@ function Map({ location, points, activePoint }: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, location);
   // Map markers. Needs in the second effect, that changes marker's 'activePointerIcon'
-  const [mapMarkers, setMapMarkers] = useState<MarkerWithId[]>([]);
+  const [mapMarkers, setMapMarkers] = useState<Marker[]>([]);
 
   // Merges points and activePoint in one array if needed
   const shouldAddActivePoint = activePoint && !points.find((point) => point.id === activePoint.id);
@@ -59,6 +39,11 @@ function Map({ location, points, activePoint }: MapProps): JSX.Element {
     allPoints.every((point) => prevPointsIds.includes(point.id))
   );
 
+  const getMarkerTypeById = useCallback(
+    (id: Offer['id']) => (activePoint?.id === id ? MarkerType.ACTIVE : MarkerType.DEFAULT),
+    [activePoint],
+  );
+
   //* Effects
   // Effect that renders markers on the map ONLY when points prop changes or mapRef created
   useEffect(() => {
@@ -68,18 +53,10 @@ function Map({ location, points, activePoint }: MapProps): JSX.Element {
     setPrevPointsIds(pointsIds);
 
     // Creates new markers and adds them to map and to state (for further second effect)
-    const curMarkers: MarkerWithId[] = [];
+    const curMarkers: Marker[] = [];
     allPoints.forEach((point) => {
-      const markerIcon = activePoint?.id === point.id ? activePointerIcon : defaultPointerIcon;
-
-      const marker = new Marker<object>({
-        lat: point.latitude,
-        lng: point.longitude,
-      });
-
-      marker.setIcon(markerIcon).addTo(map);
-
-      curMarkers.push({ instance: marker, id: point.id });
+      const marker = createMapMarker(point, getMarkerTypeById(point.id), map);
+      curMarkers.push(marker);
     });
     setMapMarkers(curMarkers);
 
@@ -89,28 +66,22 @@ function Map({ location, points, activePoint }: MapProps): JSX.Element {
         return;
       }
 
-      mapMarkers.forEach((marker) => {
-        marker.instance.removeFrom(map);
-      });
+      mapMarkers.forEach((marker) => removeMapMarker(marker, map));
     };
   }, [
     map,
-    activePoint,
     havePointsPropChanged,
     pointsIds,
     prevPointsIds,
     mapMarkers,
-    shouldAddActivePoint,
     allPoints,
+    getMarkerTypeById,
   ]);
 
-  // Effect that changes point's 'activePointerIcon', if 'activeOffer' state changes
+  // Effect that changes point's 'activeMarkerIcon', if 'activeOffer' state changes
   useEffect(() => {
-    mapMarkers.forEach((marker) => {
-      const markerIcon = activePoint?.id === marker.id ? activePointerIcon : defaultPointerIcon;
-      marker.instance.getElement()?.setAttribute('src', markerIcon.options.iconUrl);
-    });
-  }, [activePoint, mapMarkers]);
+    mapMarkers.forEach((marker) => setMapMarkerType(marker, getMarkerTypeById(marker.id)));
+  }, [getMarkerTypeById, mapMarkers]);
 
   return <div style={{ height: '100%' }} ref={mapRef}></div>;
 }
