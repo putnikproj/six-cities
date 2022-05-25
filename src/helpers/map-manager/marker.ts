@@ -33,26 +33,27 @@ const activeMarkerIcon = new Icon({
 const getMarkerIconFromType = (type: MarkerType) =>
   type === MarkerType.DEFAULT ? defaultMarkerIcon : activeMarkerIcon;
 
-export function createMapMarker(
-  point: Point,
-  type: MarkerType = MarkerType.DEFAULT,
-  map: MapInstance,
-): Marker {
+// functions
+
+export function createMarker(point: Point): Marker {
   const marker = new LeafletMarker({
     lat: point.latitude,
     lng: point.longitude,
   });
 
-  marker.setIcon(getMarkerIconFromType(type));
-  marker.addTo(map);
+  marker.setIcon(defaultMarkerIcon);
 
   return { instance: marker, id: point.id };
 }
 
-export function removeMapMarker(marker: Marker, map: MapInstance) {
-  marker.instance.removeFrom(map);
+export function setMarkerType(marker: Marker, type: MarkerType) {
+  marker.instance.getElement()?.setAttribute('src', getMarkerIconFromType(type).options.iconUrl);
 }
 
-export function setMapMarkerType(marker: Marker, type: MarkerType) {
-  marker.instance.getElement()?.setAttribute('src', getMarkerIconFromType(type).options.iconUrl);
+export function addMarkersToMap(markers: Marker[], map: MapInstance) {
+  markers.forEach((marker) => marker.instance.addTo(map));
+}
+
+export function removeMarkersFromMap(markers: Marker[], map: MapInstance) {
+  markers.forEach((marker) => marker.instance.removeFrom(map));
 }
