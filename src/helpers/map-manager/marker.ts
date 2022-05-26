@@ -1,12 +1,9 @@
 import { Icon, Marker as LeafletMarker } from 'leaflet';
 
-import { Offer, Point } from '../../types';
+import { Point } from '../../types';
 import { MapInstance } from './instance';
 
-export type Marker = {
-  instance: LeafletMarker<object>;
-  id: Offer['id'];
-};
+export type Marker = LeafletMarker;
 
 export enum MarkerType {
   DEFAULT,
@@ -43,17 +40,21 @@ export function createMarker(point: Point): Marker {
 
   marker.setIcon(defaultMarkerIcon);
 
-  return { instance: marker, id: point.id };
+  return marker;
 }
 
-export function setMarkerType(marker: Marker, type: MarkerType) {
-  marker.instance.getElement()?.setAttribute('src', getMarkerIconFromType(type).options.iconUrl);
+export function setMarkerType(marker: Marker | undefined, type: MarkerType) {
+  if (!marker) {
+    return;
+  }
+
+  marker.setIcon(getMarkerIconFromType(type));
 }
 
-export function addMarkersToMap(markers: Marker[], map: MapInstance) {
-  markers.forEach((marker) => marker.instance.addTo(map));
+export function addMarkerToMap(marker: Marker, map: MapInstance) {
+  marker.addTo(map);
 }
 
-export function removeMarkersFromMap(markers: Marker[], map: MapInstance) {
-  markers.forEach((marker) => marker.instance.removeFrom(map));
+export function removeMarkerFromMap(marker: Marker, map: MapInstance) {
+  marker.removeFrom(map);
 }

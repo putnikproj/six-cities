@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { usePrevious } from '.';
 import {
-  addMarkersToMap,
+  addMarkerToMap,
   createMarker,
   MapInstance,
   Marker,
   MarkerType,
-  removeMarkersFromMap,
+  removeMarkerFromMap,
   setMarkerType,
 } from '../helpers/map-manager';
 import { Point } from '../types';
@@ -17,9 +17,6 @@ const mergePoints = (points: Point[], activePoint: Point | undefined) => {
   return shouldAddActivePoint ? [...points, activePoint] : points;
 };
 
-const getMarkerType = (markerId: Marker['id'], pointId: Point['id'] | undefined) =>
-  pointId === markerId ? MarkerType.ACTIVE : MarkerType.DEFAULT;
-
 export const useMapMarkers = (
   points: Point[],
   activePoint: Point | undefined,
@@ -28,36 +25,43 @@ export const useMapMarkers = (
   const newPoints = mergePoints(points, activePoint);
   const prevPoints = usePrevious(map ? newPoints : undefined);
 
-  const [markersOnMap, setMarkersOnMap] = useState<Marker[]>([]);
+  const prevActivePoint = usePrevious(activePoint);
+
+  const [markersOnMap] = useState(new Map<Point['id'], Marker>());
 
   useEffect(() => {
     if (!map) {
       return;
     }
 
+    // Sets active marker if points are the same
     const pointsNotChanged =
       prevPoints &&
       newPoints.length === prevPoints.length &&
       newPoints.every((point) => prevPoints.includes(point));
 
-    // Sets markers type and corresponding icon
     if (pointsNotChanged) {
-      markersOnMap.forEach((marker) =>
-        setMarkerType(marker, getMarkerType(marker.id, activePoint?.id)),
-      );
+      const activeMarker = activePoint && markersOnMap.get(activePoint.id);
+      const prevActiveMarker = prevActivePoint && markersOnMap.get(prevActivePoint.id);
+
+      setMarkerType(prevActiveMarker, MarkerType.DEFAULT);
+      setMarkerType(activeMarker, MarkerType.ACTIVE);
       return;
     }
 
-    // Adds to state markers, that are already on map (for further second effect)
-    const newMarkers = newPoints.map((point) => createMarker(point));
-    addMarkersToMap(newMarkers, map);
-    setMarkersOnMap(newMarkers);
+    // If points changed then clean current markers and create the new ones
+    markersOnMap.forEach((marker) => removeMarkerFromMap(marker, map));
+    markersOnMap.clear();
 
-    // Cleans mapMarkers for the new one if points changed
-    return () => {
-      removeMarkersFromMap(markersOnMap, map);
-    };
-  }, [map, activePoint, prevPoints, newPoints, markersOnMap]);
+    newPoints.forEach((point) => {
+      const newMarker = createMarker(point);
+      if (point.id === activePoint?.id) {
+        setMarkerType(newMarker, MarkerType.ACTIVE);
+      }
+      addMarkerToMap(newMarker, map);
+      markersOnMap.set(point.id, newMarker);
+    });
+  }, [map, markersOnMap, activePoint, prevActivePoint, prevPoints, newPoints]);
 
   return markersOnMap;
 };

@@ -1,6 +1,7 @@
 import { MutableRefObject, useEffect, useState } from 'react';
 
 import { Location } from '../types';
+import { usePrevious } from '.';
 import { createMap, changeMapLocation, isSameLocation, MapInstance } from '../helpers/map-manager';
 
 export function useMap(
@@ -8,27 +9,24 @@ export function useMap(
   newLocation: Location,
 ): MapInstance | null {
   const [map, setMap] = useState<MapInstance | null>(null);
-  const [location, setlocation] = useState(newLocation);
+  const prevLocation = usePrevious(newLocation);
 
-  // Create map, if it doesn't exist
   useEffect(() => {
-    if (!mapRef.current || map) {
+    if (!mapRef.current) {
       return;
     }
 
-    const newMap = createMap(mapRef.current, { location });
-    setMap(newMap);
-  }, [location, map, mapRef]);
-
-  // Fly to location, if it changes
-  useEffect(() => {
-    if (!map || isSameLocation(newLocation, location)) {
+    // Create new map if there is none
+    if (!map) {
+      setMap(createMap(mapRef.current, { location: newLocation }));
       return;
     }
 
-    setlocation(newLocation);
-    changeMapLocation(map, newLocation);
-  }, [location, map, newLocation]);
+    // Change location of the existing map, if it needed
+    if (prevLocation && !isSameLocation(newLocation, prevLocation)) {
+      changeMapLocation(map, newLocation);
+    }
+  }, [map, mapRef, newLocation, prevLocation]);
 
   return map;
 }
