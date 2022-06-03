@@ -108,8 +108,10 @@ export function loadFavoriteOffers(): AppThunk {
 export function removeOfferFromFavorites(offer: Offer): AppThunk {
   return async (dispatch) => {
     try {
-      dispatch(removedFromFavorites(offer));
-      await api.post<Offer>(`${ServerRoutes.FAVORITE}/${offer.id}/0`);
+      const { data: updatedOffer } = await api.post<Offer>(
+        `${ServerRoutes.FAVORITE}/${offer.id}/0`,
+      );
+      dispatch(removedFromFavorites(updatedOffer));
     } catch (error) {
       const errorMessage = serializeAPIError(error).message;
       toast.error(`Offer was not removed from favorites: ${errorMessage}`);
@@ -121,8 +123,10 @@ export function removeOfferFromFavorites(offer: Offer): AppThunk {
 export function addOfferToFavorites(offer: Offer): AppThunk {
   return async (dispatch) => {
     try {
-      const { data: updatedPost } = await api.post<Offer>(`${ServerRoutes.FAVORITE}/${offer.id}/1`);
-      dispatch(addedToFavorites(updatedPost));
+      const { data: updatedOffer } = await api.post<Offer>(
+        `${ServerRoutes.FAVORITE}/${offer.id}/1`,
+      );
+      dispatch(addedToFavorites(updatedOffer));
     } catch (error) {
       const errorMessage = serializeAPIError(error).message;
       toast.error(`Offer was not added to favorites: ${errorMessage}`);

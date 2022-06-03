@@ -1,4 +1,3 @@
-import { SyntheticEvent } from 'react';
 import classNames from 'classnames';
 
 import { CityName } from '../../helpers/enum';
@@ -9,8 +8,11 @@ function CitiesTabs() {
   const activeCity = useTypedSelector(activeCitySelector);
   const dispatch = useTypedDispatch();
 
-  const handleLinkClick = (city: CityName) => (evt: SyntheticEvent<HTMLAnchorElement>) => {
-    evt.preventDefault();
+  const handleLinkClick = (city: CityName) => () => {
+    if (city === activeCity) {
+      return;
+    }
+
     dispatch(activeCityChanged(city));
   };
 
@@ -22,15 +24,19 @@ function CitiesTabs() {
           <ul className="locations__list tabs__list">
             {Object.values(CityName).map((city) => (
               <li key={city} className="locations__item">
-                <a
+                <button
                   onClick={handleLinkClick(city)}
                   className={classNames('locations__item-link', 'tabs__item', {
                     'tabs__item--active': activeCity === city,
                   })}
-                  href="/"
+                  style={{
+                    border: 'none',
+                    background: activeCity !== city ? 'inherit' : undefined,
+                    cursor: 'pointer',
+                  }}
                 >
                   <span>{city}</span>
-                </a>
+                </button>
               </li>
             ))}
           </ul>
