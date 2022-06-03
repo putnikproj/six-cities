@@ -1,18 +1,20 @@
+import { toast } from 'react-toastify';
 import { AppThunk, RootState } from '..';
 import { api, APIError, serializeAPIError } from '../../helpers/api';
-import { LoadingStatus, ServerRoutes } from '../../helpers/enum';
+import { CityName, LoadingStatus, ServerRoutes } from '../../helpers/enum';
 import { Offer } from '../../types';
 
 // Helpers
 
-const groupOffersByCity = (offers: Offer[]) =>
-  offers.reduce<Record<Offer['city']['name'], Offer[]>>((prevValue, curValue) => {
-    if (!prevValue[curValue.city.name]) {
-      prevValue[curValue.city.name] = [];
-    }
-    prevValue[curValue.city.name].push(curValue);
+const groupOffersByCity = (offers: Offer[]) => {
+  const groupedOffers: Record<string, Offer[]> = {};
+  Object.values(CityName).forEach((city) => (groupedOffers[city] = []));
+
+  return offers.reduce<typeof groupedOffers>((prevValue, curValue) => {
+    groupedOffers[curValue.city.name].push(curValue);
     return prevValue;
-  }, {});
+  }, groupedOffers);
+};
 
 // State
 
@@ -35,6 +37,8 @@ enum ActionType {
   FAVORITE_OFFERS_LOADING_FAILED = 'favorites/offersLoadingFailed',
   FAVORITE_OFFERS_LOADING_SUCCEESSED = 'favorites/offersLoadingSucceessed',
   FAVORITE_OFFERS_UNMOUNTED = 'favorites/offersUnmounted',
+  REMOVED_FROM_FAVORITES = 'favorites/removedFromFavorites',
+  ADDED_TO_FAVORITES = 'favorites/addedToFavorites',
 }
 
 export default function favoritesReducer(
@@ -50,6 +54,16 @@ export default function favoritesReducer(
       return { ...state, loadingStatus: LoadingStatus.SUCCEEDED, favoriteOffers: action.payload };
     case ActionType.FAVORITE_OFFERS_UNMOUNTED:
       return { ...state, loadingStatus: LoadingStatus.IDLE };
+    case ActionType.REMOVED_FROM_FAVORITES:
+      return {
+        ...state,
+        favoriteOffers: state.favoriteOffers.filter((offer) => offer.id !== action.payload.id),
+      };
+    case ActionType.ADDED_TO_FAVORITES:
+      return {
+        ...state,
+        favoriteOffers: [...state.favoriteOffers, action.payload],
+      };
     default:
       return state;
   }
@@ -65,11 +79,18 @@ export const favoriteOffersLoadingSucceessed = (favoriteOffers: FavoritesState['
 
 export const favoritesUnmounted = () => ({ type: ActionType.FAVORITE_OFFERS_UNMOUNTED } as const);
 
+export const removedFromFavorites = (offer: Offer) =>
+  ({ type: ActionType.REMOVED_FROM_FAVORITES, payload: offer } as const);
+export const addedToFavorites = (offer: Offer) =>
+  ({ type: ActionType.ADDED_TO_FAVORITES, payload: offer } as const);
+
 type FavoritesActions =
   | ReturnType<typeof favoriteOffersLoading>
   | ReturnType<typeof favoriteOffersLoadingFailed>
   | ReturnType<typeof favoriteOffersLoadingSucceessed>
-  | ReturnType<typeof favoritesUnmounted>;
+  | ReturnType<typeof favoritesUnmounted>
+  | ReturnType<typeof removedFromFavorites>
+  | ReturnType<typeof addedToFavorites>;
 
 // Async actions
 
@@ -80,6 +101,32 @@ export function loadFavoriteOffers(): AppThunk {
       dispatch(favoriteOffersLoadingSucceessed(offers));
     } catch (error) {
       dispatch(favoriteOffersLoadingFailed(serializeAPIError(error)));
+    }
+  };
+}
+
+export function removeOfferFromFavorites(offer: Offer): AppThunk {
+  return async (dispatch) => {
+    try {
+      dispatch(removedFromFavorites(offer));
+      await api.post<Offer>(`${ServerRoutes.FAVORITE}/${offer.id}/0`);
+    } catch (error) {
+      const errorMessage = serializeAPIError(error).message;
+      toast.error(`Offer was not removed from favorites: ${errorMessage}`);
+      throw new Error(errorMessage);
+    }
+  };
+}
+
+export function addOfferToFavorites(offer: Offer): AppThunk {
+  return async (dispatch) => {
+    try {
+      const { data: updatedPost } = await api.post<Offer>(`${ServerRoutes.FAVORITE}/${offer.id}/1`);
+      dispatch(addedToFavorites(updatedPost));
+    } catch (error) {
+      const errorMessage = serializeAPIError(error).message;
+      toast.error(`Offer was not added to favorites: ${errorMessage}`);
+      throw new Error(errorMessage);
     }
   };
 }

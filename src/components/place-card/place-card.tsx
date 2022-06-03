@@ -55,11 +55,9 @@ function PlaceCard({ offer, type, onMouseEnterLeave }: PlaceCardProps): JSX.Elem
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <BookmarkButton
-            containerClassNames={classNames('place-card__bookmark-button', 'button', {
-              'place-card__bookmark-button--active': offer.isFavorite,
-            })}
-            imageClassNames="place-card__bookmark-icon"
+            classNamePrefix="place-card"
             isActive={offer.isFavorite}
+            offer={offer}
             width="18"
             height="19"
           />

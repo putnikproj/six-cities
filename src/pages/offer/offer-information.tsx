@@ -1,5 +1,3 @@
-import classNames from 'classnames';
-
 import { capitalizeFirstLetter } from '../../helpers/util';
 import { Offer } from '../../types';
 
@@ -16,11 +14,9 @@ function OfferInformation({ offer }: { offer: Offer }) {
       <div className="property__name-wrapper">
         <h1 className="property__name">{offer.title}</h1>
         <BookmarkButton
-          containerClassNames={classNames('property__bookmark-button', 'button', {
-            'property__bookmark-button--active': offer.isFavorite,
-          })}
-          imageClassNames="property__bookmark-icon"
+          classNamePrefix="property"
           isActive={offer.isFavorite}
+          offer={offer}
           width="31"
           height="33"
         />

@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useState } from 'react';
+import { MutableRefObject, useLayoutEffect, useState } from 'react';
 
 import { Location } from '../types';
 import { usePrevious } from '.';
@@ -11,7 +11,7 @@ export function useMap(
   const [map, setMap] = useState<MapInstance | null>(null);
   const prevLocation = usePrevious(newLocation);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!mapRef.current) {
       return;
     }

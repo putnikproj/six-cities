@@ -13,8 +13,10 @@ function FavoritesPlaceList(): JSX.Element {
     <section className="favorites">
       <h1 className="favorites__title">Saved listing</h1>
       <ul className="favorites__list">
-        {Object.values(groupedOffers).map((cityOffers) => {
-          const cityName = cityOffers[0].city.name;
+        {Object.entries(groupedOffers).map(([cityName, offers]) => {
+          if (offers.length === 0) {
+            return null;
+          }
 
           return (
             <li key={cityName} className="favorites__locations-items">
@@ -27,7 +29,7 @@ function FavoritesPlaceList(): JSX.Element {
               </div>
 
               <div className="favorites__places">
-                {cityOffers.map((offer) => (
+                {offers.map((offer) => (
                   <PlaceCard key={offer.id} offer={offer} type={PlaceCardType.FAVORITES} />
                 ))}
               </div>

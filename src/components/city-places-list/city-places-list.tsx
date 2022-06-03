@@ -5,7 +5,6 @@ import { offerHovered } from '../../store/slices/offers';
 
 import PlaceCard from '../place-card';
 import PlacesSorting from '../places-sorting';
-
 type CityPlacesListProps = {
   activeCity: CityName;
   offers: Offer[];
