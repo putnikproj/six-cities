@@ -74,7 +74,7 @@ function AddReviewForm({ id }: AddReviewFormProps) {
       success: UploadText.SUCCESS,
       error: {
         render: ({ data }: ToastContentProps<APIError>) =>
-          data ? `Can't upload review. ${data.message}` : UploadText.SUCCESS,
+          data ? `Can't upload review. ${data.message}` : UploadText.ERROR_FALLBACK,
       },
     });
 
