@@ -1,8 +1,15 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { useTypedDispatch, useTypedSelector } from '../../hooks';
 import { authStatusSelector, login } from '../../store/slices/user';
 import { AuthStatus } from '../../helpers/enum';
+
+const passwordRegex = /(?=.*?[0-9])(?=.*?[A-Za-z]).+/;
+const PASSWORD_REGEX_ERROR_TEXT = 'Password must at least one digit and one number';
+
+const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const EMAIL_REGEX_ERROR_TEXT = 'Email must be correct';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -22,6 +29,16 @@ function LoginForm() {
 
   function handleFormSubmit(evt: FormEvent<Element>) {
     evt.preventDefault();
+
+    if (!password.match(passwordRegex)) {
+      toast.error(PASSWORD_REGEX_ERROR_TEXT);
+      return;
+    }
+
+    if (!email.match(emailRegex)) {
+      toast.error(EMAIL_REGEX_ERROR_TEXT);
+      return;
+    }
 
     dispatch(login({ email, password }));
   }
