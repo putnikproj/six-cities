@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect';
+import { createSelector } from '@reduxjs/toolkit';
 
 import { AppThunk, RootState } from '..';
 import { api, APIError, serializeAPIError } from '../../helpers/api';
