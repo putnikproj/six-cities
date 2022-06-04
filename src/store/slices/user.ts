@@ -1,11 +1,19 @@
-import axios from 'axios';
 import { toast } from 'react-toastify';
 
 import { AppThunk, RootState } from '..';
-import { api, serializeAPIError } from '../../helpers/api';
+import { api, APIError, serializeAPIError } from '../../helpers/api';
 import { clearAuthToken, setAuthToken } from '../../helpers/auth-token';
 import { AuthStatus, ResponseCodes, ServerRoutes } from '../../helpers/enum';
 import { AuthUser, AuthUserWithToken, UserLogin } from '../../types';
+
+const isUnathorizedError = (error: APIError) =>
+  error.response?.status === ResponseCodes.UNAUTHORIZED;
+
+enum Message {
+  SUCCESS_LOGIN = 'You have successfully logged in',
+  SUCCESS_LOGOUT = 'You have successfully logged out',
+  UNAUTHORIZED = 'You are not authorised',
+}
 
 // State
 
@@ -15,7 +23,7 @@ type UserState = {
 };
 
 const initialState: UserState = {
-  authStatus: AuthStatus.IDLE,
+  authStatus: AuthStatus.LOADING,
   authUser: null,
 };
 
@@ -23,9 +31,8 @@ const initialState: UserState = {
 
 enum ActionType {
   AUTH_LOADING = 'user/authLoading',
-  AUTH_LOADING_FAILED = 'user/authLoadingFailed',
-  USER_AUTHORIZED = 'user/userAuthorized',
-  USER_UNAUTHORIZED = 'user/userUnauthorized',
+  USER_AUTHORIZED = 'user/authorized',
+  USER_UNAUTHORIZED = 'user/unauthorized',
   LOGOUT_FAILED = 'user/logoutFailed',
 }
 
@@ -33,12 +40,10 @@ export default function userReducer(state = initialState, action: UserActions): 
   switch (action.type) {
     case ActionType.AUTH_LOADING:
       return { ...state, authStatus: AuthStatus.LOADING };
-    case ActionType.AUTH_LOADING_FAILED:
-      return { ...state, authStatus: AuthStatus.UNKNOWN };
     case ActionType.USER_AUTHORIZED:
       return { ...state, authStatus: AuthStatus.AUTH, authUser: action.payload };
     case ActionType.USER_UNAUTHORIZED:
-      return { ...state, authStatus: AuthStatus.UNAUTH, authUser: null };
+      return { ...state, authStatus: AuthStatus.UNAUTH };
     case ActionType.LOGOUT_FAILED:
       return { ...state, authStatus: AuthStatus.AUTH };
     default:
@@ -49,17 +54,15 @@ export default function userReducer(state = initialState, action: UserActions): 
 // Actions
 
 export const authLoading = () => ({ type: ActionType.AUTH_LOADING } as const);
-export const authLoadingFailed = () => ({ type: ActionType.AUTH_LOADING_FAILED } as const);
 
 export const userAuthorized = (authUser: UserState['authUser']) =>
   ({ type: ActionType.USER_AUTHORIZED, payload: authUser } as const);
-
 export const userUnauthorized = () => ({ type: ActionType.USER_UNAUTHORIZED } as const);
+
 export const logoutFailed = () => ({ type: ActionType.LOGOUT_FAILED } as const);
 
 type UserActions =
   | ReturnType<typeof authLoading>
-  | ReturnType<typeof authLoadingFailed>
   | ReturnType<typeof userAuthorized>
   | ReturnType<typeof userUnauthorized>
   | ReturnType<typeof logoutFailed>;
@@ -75,20 +78,18 @@ export function checkAuth(): AppThunk {
       } = await api.get<AuthUserWithToken>(ServerRoutes.LOGIN);
       dispatch(userAuthorized(authUser));
     } catch (error) {
-      const isUnathorizedError =
-        axios.isAxiosError(error) && error.response?.status === ResponseCodes.UNAUTHORIZED;
-      if (isUnathorizedError) {
-        dispatch(userUnauthorized());
-        toast.warn('You are not authorised');
-        return;
+      const serializedError = serializeAPIError(error);
+
+      if (isUnathorizedError(serializedError)) {
+        toast.warn(Message.UNAUTHORIZED);
+      } else {
+        toast.error(`Can't check auth. ${serializedError.message}`);
       }
-      dispatch(authLoadingFailed());
-      toast.error(serializeAPIError(error).message);
+
+      dispatch(userUnauthorized());
     }
   };
 }
-
-const SUCCESS_LOGIN_MESSAGE = 'You have successfully logged in';
 
 export function login({ email, password }: UserLogin): AppThunk {
   return async (dispatch) => {
@@ -100,15 +101,13 @@ export function login({ email, password }: UserLogin): AppThunk {
 
       setAuthToken(token);
       dispatch(userAuthorized(authUser));
-      toast.success(SUCCESS_LOGIN_MESSAGE);
+      toast.success(Message.SUCCESS_LOGIN);
     } catch (error) {
-      dispatch(authLoadingFailed());
-      toast.error(serializeAPIError(error).message);
+      dispatch(userUnauthorized());
+      toast.error(`Login failed. ${serializeAPIError(error).message}`);
     }
   };
 }
-
-const SUCCESS_LOGOUT_TEXT = 'You have successfully logged out';
 
 export function logout(): AppThunk {
   return async (dispatch) => {
@@ -118,10 +117,10 @@ export function logout(): AppThunk {
 
       clearAuthToken();
       dispatch(userUnauthorized());
-      toast.success(SUCCESS_LOGOUT_TEXT);
+      toast.success(Message.SUCCESS_LOGOUT);
     } catch (error) {
       dispatch(logoutFailed());
-      toast.error(serializeAPIError(error).message);
+      toast.error(`Logout failed. ${serializeAPIError(error).message}`);
     }
   };
 }

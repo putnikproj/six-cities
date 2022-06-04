@@ -28,13 +28,10 @@ export enum LoadingStatus {
   FAILED = 'failed',
 }
 
-// Auth
 export enum AuthStatus {
-  IDLE = 'idle',
   LOADING = 'loading',
   AUTH = 'auth',
   UNAUTH = 'unauth',
-  UNKNOWN = 'unknown',
 }
 
 // Cities

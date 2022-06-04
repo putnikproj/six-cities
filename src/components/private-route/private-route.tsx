@@ -33,12 +33,8 @@ function PrivateRoute({ children }: PrivateRouteProps): JSX.Element {
       );
     case AuthStatus.AUTH:
       return <> {children} </>;
-    case AuthStatus.UNAUTH:
-      return <Navigate to={AppRoute.LOGIN} state={{ prevLocation: location }} replace />;
-    case AuthStatus.UNKNOWN:
-      return <Navigate to={AppRoute.ROOT} state={{ prevLocation: location }} replace />;
     default:
-      return <div className="page"></div>;
+      return <Navigate to={AppRoute.LOGIN} state={{ prevLocation: location }} replace />;
   }
 }
 

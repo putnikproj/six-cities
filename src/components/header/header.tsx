@@ -13,12 +13,10 @@ function Header() {
 
   function getHeaderNavList() {
     switch (authStatus) {
-      case AuthStatus.AUTH:
-        return <HeaderAuth />;
       case AuthStatus.LOADING:
         return <div>Loading...</div>;
-      case AuthStatus.IDLE:
-        return <div>Loading...</div>;
+      case AuthStatus.AUTH:
+        return <HeaderAuth />;
       default:
         return <HeaderUnauth />;
     }
