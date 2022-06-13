@@ -62,7 +62,7 @@ function Login(): JSX.Element {
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">
-            <h1 className="login__title">Sign in</h1>
+            <h1 className="login__title">Sign in (type any valid email and password)</h1>
             <LoginForm />
           </section>
 
