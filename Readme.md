@@ -19,7 +19,7 @@ Six cities is a small application for finding rental offers.
 - React-router v6
 - Axios
 
-To overview this project visit [https://six-cities-react.herokuapp.com](https://six-cities-react.herokuapp.com). Login also works. All you need is to type any valid email and password. Then you can add offers to favorites, write comments etc.
+To overview this project visit [https://six-cities-omega.vercel.app/](https://six-cities-omega.vercel.app/). Login also works. All you need is to type any valid email and password. Then you can add offers to favorites, write comments etc.
 
 ## Scripts
 
